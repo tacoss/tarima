@@ -1,0 +1,11 @@
+*~
+.DS_Store
+
+.grunt
+.travis.yml
+.gitignore
+
+Gruntfile.js
+node_modules
+README.md
+spec
