@@ -1,1 +1,1 @@
-[![Build Status](https://travis-ci.org/pateketrueke/temple.png)](https://travis-ci.org/pateketrueke/temple)
+[![Build Status](https://travis-ci.org/pateketrueke/tarima.png)](https://travis-ci.org/pateketrueke/tarima)

@@ -1,5 +1,5 @@
-describe 'Temple', ->
-  temple = require('../lib/temple')
+describe 'Tarima', ->
+  tarima = require('../lib/tarima')
 
   it 'should parse inline templates', ->
     inline_tpl = '''
@@ -7,7 +7,7 @@ describe 'Temple', ->
     p: span: <%= WUT %>
     '''
 
-    inline_test = temple.parse 'index.js.us.jade', inline_tpl
+    inline_test = tarima.parse 'index.js.us.jade', inline_tpl
 
     expect(typeof inline_test).toBe 'function'
     expect(typeof inline_test()).toBe 'function'
@@ -18,7 +18,7 @@ describe 'Temple', ->
     '''
 
   it 'should load file-based templates', ->
-    fs_test = temple.load "#{__dirname}/samples/test.json.hbs.us"
+    fs_test = tarima.load "#{__dirname}/samples/test.json.hbs.us"
 
     expect(typeof fs_test).toBe 'function'
     expect(typeof fs_test(object: 'xy')).toBe 'function'

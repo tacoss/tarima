@@ -1,1 +1,1 @@
-module.exports = require(__dirname + '/lib/temple');
+module.exports = require(__dirname + '/lib/tarima');

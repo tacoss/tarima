@@ -1,5 +1,5 @@
 {
-  "name": "temple",
+  "name": "tarima",
   "version": "0.1.0",
   "description": "Multi-templating for NodeJS",
   "main": "index.js",
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pateketrueke/temple.git"
+    "url": "https://github.com/pateketrueke/tarima.git"
   },
   "bugs": {
-    "url": "https://github.com/pateketrueke/temple/issues"
+    "url": "https://github.com/pateketrueke/tarima/issues"
   },
   "keywords": ["templating", "template", "partial", "views"],
   "author": {
