@@ -1,0 +1,37 @@
+{
+  "name": "temple",
+  "version": "0.1.0",
+  "description": "Multi-templating for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pateketrueke/temple.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pateketrueke/temple/issues"
+  },
+  "keywords": ["templating", "template", "partial", "views"],
+  "author": {
+    "name": "Alvaro Cabrera",
+    "email": "pateketrueke@gmail.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "~>0.10.21"
+  },
+  "dependencies": {
+    "coffee-script": "~1.6.3",
+    "handlebars": "~1.1.2",
+    "lodash": "~2.3.0",
+    "jade": "~0.35.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-jasmine-node": "~0.1.0"
+  }
+}
