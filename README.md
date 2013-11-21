@@ -2,7 +2,7 @@ Precompile your templates with style:
 
 **config.json.hbs.us**
 
-```json
+```
 {
   "<%= target %>": {
     {{#options}}
