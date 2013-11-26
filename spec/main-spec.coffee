@@ -31,3 +31,22 @@ describe 'Tarima', ->
     json = fs_test(object: 'ab')(items: data)
 
     expect(JSON.parse(json).ab).toEqual { foo: 'bar', candy: 'does' }
+
+  it 'should expose template params and source', ->
+    code_test = tarima.parse 'test.js.ract', '''
+    <ul>
+    {{#items}}
+      <li>{{value}}</li>
+    {{/items}}
+    </ul>
+    '''
+
+    partial = code_test()
+
+    expect(partial.params.filepath).toBe 'test.js.ract'
+    expect(partial.params.name).toBe 'test'
+    expect(partial.params.ext).toBe 'js'
+
+    expect(partial.source).toBe '''
+    [{t:7,e:"ul",f:[{t:4,r:"items",f:[" ",{t:7,e:"li",f:[{t:2,r:"value"}]}," "]}]}]
+    '''
