@@ -50,3 +50,65 @@ describe 'Tarima', ->
     expect(partial.source).toBe '''
     [{t:7,e:"ul",f:[{t:4,r:"items",f:[" ",{t:7,e:"li",f:[{t:2,r:"value"}]}," "]}]}]
     '''
+
+  describe 'Engines', ->
+    data =
+      foo: 'bar'
+      candy: ['does', 'nothing']
+      baz: {  buzz: 'bazzinga', x: 'y' }
+
+    it 'should parse EJS', ->
+      expect(tarima.parse('test.js.ejs', '<%= foo %>')()(data)).toBe 'bar'
+
+    it 'should parse ECO', ->
+      expect(tarima.parse('test.js.eco', '''
+        <% for @item in @candy: %>- <%= @item %>
+        <% end %>
+      ''')()(data)).toBe '''
+      - does
+      - nothing
+
+      '''
+
+    it 'should parse LESS', ->
+      expect(tarima.parse('test.css.less', '.foo { .candy { bar: does nothing; } }')()).toBe '''
+      .foo .candy {
+        bar: does nothing;
+      }
+
+      '''
+
+    it 'should parse Ractive', ->
+      expect(tarima.parse('test.json.ract', '{{foo}}')(data)[0].r).toBe 'foo'
+
+    it 'should parse CoffeeScript', ->
+      expect(tarima.parse('test.js.coffee', 'foo = -> bar')()).toBe '''
+      var foo;
+
+      foo = function() {
+        return bar;
+      };
+
+      '''
+
+    it 'should parse Jade', ->
+      expect(tarima.parse('test.html.jade', '''
+        ul
+          each val, key in baz
+            li #{key}: #{val}
+      ''', client: off)()(data)).toBe '''
+      <ul><li>buzz: bazzinga</li><li>x: y</li></ul>
+      '''
+
+    it 'should parse Handlebars', ->
+      expect(tarima.parse('test.js.hbs', "{{baz.buzz}}")()(data)).toBe 'bazzinga'
+
+    it 'should parse Underscore (using lodash)', ->
+      expect(tarima.parse('test.js.us', '''
+        <% for (var item in candy) { %>- <%= candy[item] %>
+        <% } %>
+      ''')()(data)).toBe '''
+      - does
+      - nothing
+
+      '''
