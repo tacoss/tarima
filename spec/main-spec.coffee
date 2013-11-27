@@ -43,7 +43,8 @@ describe 'Tarima', ->
 
     partial = code_test()
 
-    expect(partial.params.filepath).toBe 'test.js.ract'
+    expect(partial.params.filename).toBe 'test.js.ract'
+    expect(partial.params.filepath).toBe ''
     expect(partial.params.name).toBe 'test'
     expect(partial.params.ext).toBe 'js'
 
