@@ -9,26 +9,28 @@ describe 'Tarima', ->
 
     inline_test = tarima.parse 'index.js.us.jade', inline_tpl
 
-    expect(typeof inline_test).toBe 'function'
-    expect(typeof inline_test()).toBe 'function'
+    expect(typeof inline_test).toBe 'object'
+    expect(typeof inline_test.compile).toBe 'function'
+    expect(typeof inline_test.toSource).toBe 'function'
 
-    expect(inline_test()).toThrow()
-    expect(inline_test()(WUT: 'WUUUUUTZ')).toBe '''
+    expect(-> inline_test.compile()).toThrow()
+    expect(inline_test.compile(WUT: 'WUUUUUTZ')).toBe '''
     <h1>I'm a template</h1><p><span>WUUUUUTZ</span></p>
     '''
 
   it 'should load file-based templates', ->
     fs_test = tarima.load "#{__dirname}/samples/test.json.hbs.us"
 
-    expect(typeof fs_test).toBe 'function'
-    expect(typeof fs_test(object: 'xy')).toBe 'function'
+    expect(typeof fs_test).toBe 'object'
+    expect(typeof fs_test.compile).toBe 'function'
+    expect(typeof fs_test.toSource).toBe 'function'
 
     data = [
       { key: 'foo', value: 'bar' }
       { key: 'candy', value: 'does' }
     ]
 
-    json = fs_test(object: 'ab')(items: data)
+    json = fs_test.compile(object: 'ab', items: data)
 
     expect(JSON.parse(json).ab).toEqual { foo: 'bar', candy: 'does' }
 
@@ -41,14 +43,12 @@ describe 'Tarima', ->
     </ul>
     '''
 
-    partial = code_test()
+    expect(code_test.params.filename).toBe 'test.js.ract'
+    expect(code_test.params.filepath).toBe ''
+    expect(code_test.params.name).toBe 'test'
+    expect(code_test.params.ext).toBe 'js'
 
-    expect(partial.params.filename).toBe 'test.js.ract'
-    expect(partial.params.filepath).toBe ''
-    expect(partial.params.name).toBe 'test'
-    expect(partial.params.ext).toBe 'js'
-
-    expect(partial.source).toBe '''
+    expect(code_test.toSource()).toBe '''
     [{t:7,e:"ul",f:[{t:4,r:"items",f:[" ",{t:7,e:"li",f:[{t:2,r:"value"}]}," "]}]}]
     '''
 
@@ -59,20 +59,26 @@ describe 'Tarima', ->
       baz: {  buzz: 'bazzinga', x: 'y' }
 
     it 'should parse EJS', ->
-      expect(tarima.parse('test.js.ejs', '<%= foo %>')()(data)).toBe 'bar'
+      ejs_test = tarima.parse 'test.js.ejs', '<%= foo %>'
+
+      expect(ejs_test.compile(data)).toBe 'bar'
 
     it 'should parse ECO', ->
-      expect(tarima.parse('test.js.eco', '''
+      eco_test = tarima.parse 'test.js.eco', '''
         <% for @item in @candy: %>- <%= @item %>
         <% end %>
-      ''')()(data)).toBe '''
+      '''
+
+      expect(eco_test.compile(data)).toBe '''
       - does
       - nothing
 
       '''
 
     it 'should parse LESS', ->
-      expect(tarima.parse('test.css.less', '.foo { .candy { bar: does nothing; } }')()).toBe '''
+      less_test = tarima.parse('test.css.less', '.foo { .candy { bar: does nothing; } }')
+
+      expect(less_test.compile()).toBe '''
       .foo .candy {
         bar: does nothing;
       }
@@ -80,10 +86,14 @@ describe 'Tarima', ->
       '''
 
     it 'should parse Ractive', ->
-      expect(tarima.parse('test.json.ract', '{{foo}}')(data)[0].r).toBe 'foo'
+      ract_test = tarima.parse('test.json.ract', '{{foo}}')
+
+      expect(ract_test.compile(data)[0].r).toBe 'foo'
 
     it 'should parse CoffeeScript', ->
-      expect(tarima.parse('test.js.coffee', 'foo = -> bar')()).toBe '''
+      coffee_test = tarima.parse 'test.js.coffee', 'foo = -> bar'
+
+      expect(coffee_test.compile()).toBe '''
       var foo;
 
       foo = function() {
@@ -93,22 +103,30 @@ describe 'Tarima', ->
       '''
 
     it 'should parse Jade', ->
-      expect(tarima.parse('test.html.jade', '''
+      jade_test = tarima.parse 'test.html.jade', '''
         ul
           each val, key in baz
             li #{key}: #{val}
-      ''', client: off)()(data)).toBe '''
-      <ul><li>buzz: bazzinga</li><li>x: y</li></ul>
       '''
 
+      expect(jade_test.compile(data)).toBe '''
+      <ul><li>buzz: bazzinga</li><li>x: y</li></ul>
+      '''
+      expect(~jade_test.toSource().indexOf('Object.create(runtime)')).toBeFalsy()
+
     it 'should parse Handlebars', ->
-      expect(tarima.parse('test.js.hbs', "{{baz.buzz}}")()(data)).toBe 'bazzinga'
+      hbs_test = tarima.parse 'test.js.hbs', "{{baz.buzz}}"
+
+      expect(hbs_test.compile(data)).toBe 'bazzinga'
+      expect(~hbs_test.toSource().indexOf('compiled = compileInput();')).toBeFalsy()
 
     it 'should parse Underscore (using lodash)', ->
-      expect(tarima.parse('test.js.us', '''
+      us_test = tarima.parse 'test.js.us', '''
         <% for (var item in candy) { %>- <%= candy[item] %>
         <% } %>
-      ''')()(data)).toBe '''
+      '''
+
+      expect(us_test.compile(data)).toBe '''
       - does
       - nothing
 
