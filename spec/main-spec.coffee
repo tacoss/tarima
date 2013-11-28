@@ -112,12 +112,16 @@ describe 'Tarima', ->
       expect(jade_test.compile(data)).toBe '''
       <ul><li>buzz: bazzinga</li><li>x: y</li></ul>
       '''
-      expect(~jade_test.toSource().indexOf('Object.create(runtime)')).toBeFalsy()
+
+      expect(jade_test.toSource()).not.toBe 'false'
+      expect(~jade_test.toSource().indexOf('return fn(locals')).toBeFalsy()
+      expect(~jade_test.toSource().indexOf('function anonymous')).not.toBeFalsy()
 
     it 'should parse Handlebars', ->
       hbs_test = tarima.parse 'test.js.hbs', "{{baz.buzz}}"
 
       expect(hbs_test.compile(data)).toBe 'bazzinga'
+      expect(~hbs_test.toSource().indexOf('function (Handlebars')).not.toBeFalsy()
       expect(~hbs_test.toSource().indexOf('compiled = compileInput();')).toBeFalsy()
 
     it 'should parse Underscore (using lodash)', ->
