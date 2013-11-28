@@ -15,18 +15,22 @@ Precompile your templates with style:
 **script.js**
 
 ```javascript
-var template = require('tarima').load('config.json.hbs.us'),
-    config = template({ target: 'main', key: 'field', val: 'value' });
+var config = require('tarima').load('config.json.hbs.us');
 
-var data = [
-  { field: 'item', value: 'something' },
-  { field: 'other', value: 'setting' }
-];
+var data = {
+  target: 'main',
+  key: 'field',
+  val: 'value',
+  options: [
+    { field: 'item', value: 'something' },
+    { field: 'other', value: 'setting' }
+  ]
+};
 
 var fs = require('fs');
 
-fs.writeFileSync('config.json.hbs', config.toString());
-fs.writeFileSync('config.json', config({ options: data }));
+fs.writeFileSync('config.json.hbs', 'module.exports = ' + config.toSource(data) + ';');
+fs.writeFileSync('config.json', config.compile(data));
 
 var test = JSON.parse(fs.readFileSync('config.json'));
 
