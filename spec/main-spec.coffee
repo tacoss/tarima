@@ -48,8 +48,8 @@ describe 'Tarima', ->
     expect(code_test.params.name).toBe 'test'
     expect(code_test.params.ext).toBe 'js'
 
-    expect(code_test.toSource()).toBe '''
-    [{t:7,e:"ul",f:[{t:4,r:"items",f:[" ",{t:7,e:"li",f:[{t:2,r:"value"}]}," "]}]}]
+    expect(code_test.toSource().replace(/\s+/g, '')).toBe '''
+    [{t:7,e:"ul",f:[{t:4,r:"items",f:["",{t:7,e:"li",f:[{t:2,r:"value"}]},""]}]}]
     '''
 
   describe 'Engines', ->
@@ -62,6 +62,8 @@ describe 'Tarima', ->
       ejs_test = tarima.parse 'test.js.ejs', '<%= foo %>'
 
       expect(ejs_test.compile(data)).toBe 'bar'
+      expect(~ejs_test.toSource(data).indexOf('function (locals')).toBeFalsy()
+      expect(~ejs_test.toSource(data).indexOf('function anonymous')).not.toBeFalsy()
 
     it 'should parse ECO', ->
       eco_test = tarima.parse 'test.js.eco', '''
@@ -74,6 +76,7 @@ describe 'Tarima', ->
       - nothing
 
       '''
+      expect(~eco_test.toSource(data).indexOf('function (__obj')).not.toBeFalsy()
 
     it 'should parse LESS', ->
       less_test = tarima.parse('test.css.less', '.foo { .candy { bar: does nothing; } }')
