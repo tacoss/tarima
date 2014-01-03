@@ -4,8 +4,8 @@
   "description": "Multi-templating for NodeJS",
   "main": "lib/tarima.js",
   "scripts": {
-    "test": "grunt",
-    "prepublish": "grunt expand-include"
+    "test": "node_modules/.bin/grunt",
+    "prepublish": "node_modules/.bin/grunt expand-include"
   },
   "repository": {
     "type": "git",
@@ -41,8 +41,8 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.11",
     "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-watch": "~0.5.3",
     "grunt-jasmine-node": "~0.1.0",
     "grunt-expand-include": "~0.9.6"
   }

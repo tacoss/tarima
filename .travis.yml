@@ -1,7 +1,5 @@
 language: node_js
 node_js:
   - 0.9
-before_script:
-  - npm install -g grunt-cli
 script:
-  - grunt
+  - node_modules/.bin/grunt
