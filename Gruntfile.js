@@ -1,10 +1,13 @@
+var pad = function(n) { return ('0' + n).slice(-2); },
+    now = function() { var d = new Date(); return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
+
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['lib/**/*.js', 'spec/**/*.coffee'],
-        tasks: ['jshint', 'jasmine_node']
+        files: ['src/**/*.js', 'spec/**/*.coffee'],
+        tasks: ['expand-include', 'jshint', 'jasmine_node']
       }
     },
     jshint: {
@@ -14,12 +17,28 @@ module.exports = function(grunt) {
       useCoffee: true,
       extensions: 'coffee',
       projectRoot: __dirname
+    },
+    'expand-include': {
+      build: {
+        src: 'src/<%= pkg.name %>.js',
+        dest: 'lib/<%= pkg.name %>.js',
+        options: {
+          stripHeaderOfInclude: false,
+          globalDefines: {
+            major: "<%= pkg.version.split('.')[0] %>",
+            minor: "<%= pkg.version.split('.')[1] %>",
+            micro: "<%= pkg.version.split('.')[2] %>",
+            date: now()
+          }
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-expand-include');
 
-  grunt.registerTask('default', ['jshint', 'jasmine_node']);
+  grunt.registerTask('default', ['expand-include', 'jshint', 'jasmine_node']);
 };
