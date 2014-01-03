@@ -52,6 +52,13 @@ describe 'Tarima', ->
     [{t:7,e:"ul",f:[{t:4,r:"items",f:["",{t:7,e:"li",f:[{t:2,r:"value"}]},""]}]}]
     '''
 
+  it 'should expose a reasonable version for debug', ->
+    expect(tarima.version).not.toBeUndefined()
+    expect(tarima.version.major).toMatch /^\d+$/
+    expect(tarima.version.minor).toMatch /^\d+$/
+    expect(tarima.version.micro).toMatch /^\d+$/
+    expect(tarima.version.date).toMatch /^\d{8}$/
+
   describe 'Engines', ->
     data =
       foo: 'bar'
