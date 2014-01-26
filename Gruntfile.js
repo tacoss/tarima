@@ -4,6 +4,9 @@ var pad = function(n) { return ('0' + n).slice(-2); },
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    clean: {
+      all: ['lib']
+    },
     jshint: {
       all: ['lib/**/*.js']
     },
@@ -30,8 +33,9 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-jasmine-node');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-expand-include');
 
-  grunt.registerTask('default', ['expand-include', 'jshint', 'jasmine_node']);
+  grunt.registerTask('default', ['clean', 'expand-include', 'jshint', 'jasmine_node']);
 };

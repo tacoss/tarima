@@ -6,5 +6,17 @@
   include('reduce.js');
   include('partial.js');
   include('methods.js');
-  include('engines.js');
+  include('engines/coffee.js');
+  include('engines/eco.js');
+  include('engines/ejs.js');
+  include('engines/hbs.js');
+  include('engines/html.js');
+  include('engines/jade.js');
+  include('engines/js.js');
+  include('engines/json.js');
+  include('engines/less.js');
+  include('engines/md.js');
+  include('engines/ract.js');
+  include('engines/us.js');
+  include('engines/less.js');
 })();
