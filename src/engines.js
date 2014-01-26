@@ -9,16 +9,33 @@ register_engine('eco', function(params) {
 
 register_engine('less', function(params) {
   var less = require('less'),
-      compiled,
-      parser;
+      compiled;
 
   if (!params.head) {
     compiled = params.source;
   } else {
-    parser = new less.Parser(defs_tpl('less', params.options));
-    parser.parse(params.source, function(e, tree) {
-      compiled = tree.toCSS();
-    });
+    compiled = function(locals) {
+      var output, parser,
+          vars = [];
+
+      var inject = function(from) {
+        for (var key in from) {
+          if (/boolean|number|string/.test(typeof from[key])) {
+            vars.push('@' + key + ': ~' + JSON.stringify(from[key].toString()) + ';');
+          }
+        }
+      };
+
+      inject(params.options.locals);
+      inject(locals);
+
+      parser = new less.Parser(defs_tpl('less', params.options));
+      parser.parse(vars.concat([params.source]).join('\n'), function(e, tree) {
+        output = tree.toCSS();
+      });
+
+      return output;
+    };
   }
 
   return compiled;
