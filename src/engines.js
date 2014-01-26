@@ -9,12 +9,17 @@ register_engine('eco', function(params) {
 
 register_engine('less', function(params) {
   var less = require('less'),
-      parser = new less.Parser(defs_tpl('less', params.options)),
-      compiled;
+      compiled,
+      parser;
 
-  parser.parse(params.source, function(e, tree) {
-    compiled = tree.toCSS();
-  });
+  if (!params.head) {
+    compiled = params.source;
+  } else {
+    parser = new less.Parser(defs_tpl('less', params.options));
+    parser.parse(params.source, function(e, tree) {
+      compiled = tree.toCSS();
+    });
+  }
 
   return compiled;
 });

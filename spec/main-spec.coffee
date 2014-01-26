@@ -87,11 +87,20 @@ describe 'Tarima', ->
 
     it 'should parse LESS', ->
       less_test = tarima.parse('test.css.less', '.foo { .candy { bar: does nothing; } }')
+      less_raw = tarima.load("#{__dirname}/samples/style.css.less")
 
       expect(less_test.compile()).toBe '''
       .foo .candy {
         bar: does nothing;
       }
+
+      '''
+
+      expect(-> less_raw.compile()).toThrow()
+      expect(less_raw.toSource()).toBe '''
+        body {
+          color: @fgcolor;
+        }
 
       '''
 
