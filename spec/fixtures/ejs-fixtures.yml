@@ -1,0 +1,35 @@
+ejs:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_ejs:
+  params:
+  source:
+  contain:
+
+foo_ejs_ejs:
+  params:
+  source:
+  contain:
+
+foo_ejs_ejs_ejs:
+  params:
+  source:
+  contain:
+
+foo_ejs_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_ejs:
+  params:
+  source:
+  contain:
+
+tpl_foo_ejs_bar:
+  params:
+  source:
+  contain:

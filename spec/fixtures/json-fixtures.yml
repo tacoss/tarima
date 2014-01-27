@@ -1,0 +1,35 @@
+json:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_json:
+  params:
+  source:
+  contain:
+
+foo_json_json:
+  params:
+  source:
+  contain:
+
+foo_json_json_json:
+  params:
+  source:
+  contain:
+
+foo_json_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_json:
+  params:
+  source:
+  contain:
+
+tpl_foo_json_bar:
+  params:
+  source:
+  contain:

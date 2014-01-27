@@ -1,0 +1,35 @@
+us:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_us:
+  params:
+  source:
+  contain:
+
+foo_us_us:
+  params:
+  source:
+  contain:
+
+foo_us_us_us:
+  params:
+  source:
+  contain:
+
+foo_us_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_us:
+  params:
+  source:
+  contain:
+
+tpl_foo_us_bar:
+  params:
+  source:
+  contain:

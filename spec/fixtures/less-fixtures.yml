@@ -1,0 +1,35 @@
+less:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_less:
+  params:
+  source:
+  contain:
+
+foo_less_less:
+  params:
+  source:
+  contain:
+
+foo_less_less_less:
+  params:
+  source:
+  contain:
+
+foo_less_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_less:
+  params:
+  source:
+  contain:
+
+tpl_foo_less_bar:
+  params:
+  source:
+  contain:

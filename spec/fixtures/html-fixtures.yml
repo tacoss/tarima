@@ -1,0 +1,35 @@
+html:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_html:
+  params:
+  source:
+  contain:
+
+foo_html_html:
+  params:
+  source:
+  contain:
+
+foo_html_html_html:
+  params:
+  source:
+  contain:
+
+foo_html_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_html:
+  params:
+  source:
+  contain:
+
+tpl_foo_html_bar:
+  params:
+  source:
+  contain:

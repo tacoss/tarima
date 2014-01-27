@@ -1,8 +1,10 @@
 __ = 'IMPLEMENT THIS'
 
+engines = ['js']
 
 validateEngine = require('./validate-engines')
 tarimaFixtures = require('./tarima-fixtures')
+testEngine = require('./test-engine')
 
 
 describe 'Tarima will take care:', ->
@@ -44,13 +46,14 @@ describe 'Tarima will take care:', ->
       expect(foo.partial.compile()).toBe foo.result
 
     it 'foo.bar will return as is (unknown bar-engine)', ->
-      bar = tarimaFixtures('bar')
+      foo_bar = tarimaFixtures('foo_bar')
 
-      expect(bar.partial.render()).toBe bar.result
-      expect(bar.partial.compile()).toBe bar.result
+      expect(foo_bar.partial.render()).toBe foo_bar.result
+      expect(foo_bar.partial.compile()).toBe foo_bar.result
 
-    # js-engine
-    require('./engines/js-specs')
+    # all-engines
+    testEngine(engine) for engine in engines
+
 
     ###
 
@@ -113,36 +116,3 @@ describe 'Tarima will take care:', ->
       Look at src/tarima.js for more info.
 
     ###
-
-    # jade-engine
-    require('./engines/jade-specs')
-
-    # html-engine
-    #require('./engines/html-specs')
-
-    # ract-engine
-    #require('./engines/ract-specs')
-
-    # hbs-engine
-    #require('./engines/hbs-specs')
-
-    # us-engine
-    #require('./engines/us-specs')
-
-    # eco-engine
-    #require('./engines/eco-specs')
-
-    # ejs-engine
-    #require('./engines/ejs-specs')
-
-    # coffee-engine
-    #require('./engines/coffee-specs')
-
-    # json-engine
-    #require('./engines/json-specs')
-
-    # less-engine
-    #require('./engines/less-specs')
-
-    # md-engine
-    #require('./engines/md-specs')

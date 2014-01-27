@@ -1,0 +1,54 @@
+jade:
+  dummy: "function anonymous(locals){var buf = [];)}"
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok
+
+foo_jade:
+  params:
+    ok: 'nice html pre-processor'
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok
+
+foo_jade_jade:
+  params:
+    ok: 'another test string'
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok
+
+foo_jade_jade_jade:
+  params:
+    ok: 'zzz..'
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok
+
+foo_jade_bar:
+  params:
+    ok: '...'
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok
+
+tpl_foo_jade:
+  params:
+    ok: '...'
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok
+
+tpl_foo_jade_bar:
+  params:
+    ok: '...'
+  source: |
+    h1 I'm {{a||'?'}} template
+    p: span: <%= WUT %>
+    span= ok

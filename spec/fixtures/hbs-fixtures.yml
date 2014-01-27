@@ -1,0 +1,35 @@
+hbs:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_hbs:
+  params:
+  source:
+  contain:
+
+foo_hbs_hbs:
+  params:
+  source:
+  contain:
+
+foo_hbs_hbs_hbs:
+  params:
+  source:
+  contain:
+
+foo_hbs_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_hbs:
+  params:
+  source:
+  contain:
+
+tpl_foo_hbs_bar:
+  params:
+  source:
+  contain:

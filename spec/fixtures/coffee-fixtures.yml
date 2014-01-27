@@ -1,0 +1,35 @@
+coffee:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_coffee:
+  params:
+  source:
+  contain:
+
+foo_coffee_coffee:
+  params:
+  source:
+  contain:
+
+foo_coffee_coffee_coffee:
+  params:
+  source:
+  contain:
+
+foo_coffee_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_coffee:
+  params:
+  source:
+  contain:
+
+tpl_foo_coffee_bar:
+  params:
+  source:
+  contain:

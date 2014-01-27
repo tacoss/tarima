@@ -1,0 +1,35 @@
+ract:
+  dummy:
+  params:
+  source:
+  contain:
+
+foo_ract:
+  params:
+  source:
+  contain:
+
+foo_ract_ract:
+  params:
+  source:
+  contain:
+
+foo_ract_ract_ract:
+  params:
+  source:
+  contain:
+
+foo_ract_bar:
+  params:
+  source:
+  contain:
+
+tpl_foo_ract:
+  params:
+  source:
+  contain:
+
+tpl_foo_ract_bar:
+  params:
+  source:
+  contain:

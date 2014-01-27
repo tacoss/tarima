@@ -17,6 +17,7 @@
 
   Defining engines:
 
+  # fun.js
   tarima.add('fun', function(params) {
     var compile = function(exec) {
       var fun = require('fun-template-engine'),
@@ -27,6 +28,33 @@
 
     return compile(!params.next && params.call);
   });
+
+  Other task to accomplish is testing our engines are working properly.
+
+  # fun-fixtures.yml
+  file_fun:
+    key: value
+    source: |
+      [{ foo -> bar }]
+
+  Testing engines:
+
+  # fun-specs.coffee
+  validateEngine = require('../validate-engines')
+  tarimaFixtures = require('../tarima-fixtures')
+
+  xdescribe 'file_fun', ->
+    xit 'test', ->
+      # load required fixtures
+      file_fun = tarimaFixtures('file_fun')
+
+      # validate the output?
+      expect(file_fun.partial.compile(file_fun.params)).toBe file_fun.source
+      expect(file_fun.partial.render(file_fun.params)).toBe file_fun.source
+
+      # validate fun-engine if needed
+      expect(-> validatefun('fun').notPass(file_fixture_fun.partial.render(file_fixture_fun.params))).toThrow()
+      expect(-> validatefun('fun').pass(file_fixture_fun.partial.compile(file_fixture_fun.params))).not.toThrow()
 
   */
 
