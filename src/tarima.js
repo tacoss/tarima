@@ -12,7 +12,7 @@
   The rules about interacting between engines are simple (?):
 
   - Return a runtime-callable function that produces another output given the engine by itself.
-  - Return a javascript source code representation for that code in form of a callable template.
+  - Return a the javascript source code representation for that code in form of a callable template.
 . - Every engine receive context options to determine what output: a callable function, or source code.
 
   Defining engines:

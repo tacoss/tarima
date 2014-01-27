@@ -37,7 +37,6 @@ describe 'Tarima will take care:', ->
   ###
 
   describe 'testing escenario', ->
-
     it 'foo will return as is (no-engine)', ->
       foo = tarimaFixtures('foo')
 
@@ -50,111 +49,100 @@ describe 'Tarima will take care:', ->
       expect(bar.partial.render()).toBe bar.result
       expect(bar.partial.compile()).toBe bar.result
 
-    describe 'foo.js', ->
+    # js-engine
+    require('./engines/js-specs')
 
-      it 'should return as is (regular js-file)', ->
-        js_foo = tarimaFixtures('js_foo')
+    ###
 
-        expect(js_foo.partial.compile(js_foo.params)).toBe js_foo.source
-        expect(js_foo.partial.render(js_foo.params)).toBe js_foo.source
+      Here is my essay:
 
-    describe 'foo.js.js', ->
+      I want to use this kind of black magic to automatize my source code.
+      I want to produce my assets, configs, documents, etc. in a nice an cleaver way.
+      I notice that last file's extension rule about it's content and has higher precedence.
 
-      it 'should return js-code precompiled to be called with tpl(locals)', ->
-        js_js = tarimaFixtures('js_js')
+      Then, source code will produce source code.
 
-        expect(-> validateEngine('js').pass(js_js.partial.compile(js_js.params))).not.toThrow()
-        expect(-> validateEngine('js').pass(js_js.partial.render(js_js.params))).not.toThrow()
-        expect(js_js.partial.compile(js_js.params)).toBe js_js.partial.compile(js_js.params)
+      There are few engines:
+      - Use .js for js-source (plain old javascript) -- READY (?) --
+      - Use .jade for jade-source (templating engine that produces html) -- NOT READY --
+      - Use .html for html-source (plain old html-markup) -- NOT READY --
+      - Use .ract for ract-source (for ractive.js) -- NOT READY --
+      - Use .hbs for hbs-source (handlebars) -- NOT READY --
+      - Use .us for us-source (underscore) -- NOT READY --
+      - Use .eco for eco-source (embedded coffee) -- NOT READY --
+      - Use .ejs for ejs-source (embedded javascript) -- NOT READY --
+      - Use .coffee for coffee-source (you known) -- NOT READY --
+      - Use .json for json-source (JSON data) -- NOT READY --
+      - Use .less for less-source (compile down css stylesheets) -- NOT READY --
+      - Use .md for md-source (plain old markdown) -- NOT READY --
 
-    describe 'foo.js.js.js', ->
+      Given a posts.html.md.hbs.us file we could have a file like this:
 
-      it 'should precompile templates just one time if demanded (keep calm)', ->
-        js_js_js = tarimaFixtures('js_js_js')
+      # <%= title || 'Untitled' %>
 
-        expect(-> validateEngine('js').pass(js_js_js.partial.compile(js_js_js.params))).not.toThrow()
-        expect(-> validateEngine('js').pass(js_js_js.partial.render(js_js_js.params))).not.toThrow()
-        expect(js_js_js.partial.compile(js_js_js.params)).toBe js_js_js.partial.compile(js_js_js.params)
+      {{#package}}
+      >    <%= JSON.stringify(pkg) %>
+      {{/package}}
 
-    describe 'foo.js.bar', ->
-      it 'should return js-code as is (unknown bar-engine, regular js-file)', ->
-        js_bar = tarimaFixtures('js_bar')
+      {{#links}}- [{{title}}]({{url}})
+      {{/links}}
 
-        expect(-> validateEngine('js').notPass(js_bar.partial.compile(js_bar.params))).not.toThrow()
-        expect(js_bar.partial.render(js_bar.params)).toBe js_bar.result
+      Using data.json produces somewhat:
 
-    describe 'tpl.foo.js', ->
-      it 'should execute and return from js-code (js-engine, unknown engines)', ->
-        js_tpl_foo = tarimaFixtures('js_tpl_foo')
+      {
+        title: 'FU',
+        links: [
+          { title: 'bar', url: '#buzz' }
+        ],
+        pkg: { name: 'candy' }
+      }
 
-        expect(-> validateEngine('js').pass(js_tpl_foo.partial.compile(js_tpl_foo.params))).not.toThrow()
-        expect(js_tpl_foo.partial.render(js_tpl_foo.params)).toBe js_tpl_foo.result
+      <h1>FU</h1>
+      <blockquote>
+        <pre>{ "name": "candy" }<pre>
+      </blockquote>
+      <ul>
+        <li>
+          <a href="#buzz">bar</a>
+        </li>
+      </ul>
 
-    describe 'tpl.foo.js.bar', ->
-      it 'should return js-code as is (unknown bar-engine, cancel any further compilation)', ->
-        js_tpl_bar = tarimaFixtures('js_tpl_bar')
+      Obviously you can't compile between all engines out of the box, to achieve this,
+      you'll ensure which one return valid source code for each another.
 
-        expect(-> validateEngine('js').notPass(js_tpl_bar.partial.compile(js_tpl_bar.params))).not.toThrow()
-        expect(js_tpl_bar.partial.render(js_tpl_bar.params)).toBe js_tpl_bar.result
+      Look at src/tarima.js for more info.
 
-  ###
+    ###
 
-    Here is my essay:
+    # jade-engine
+    require('./engines/jade-specs')
 
-    I want to use this kind of black magic to automatize my source code.
-    I want to produce my assets, configs, documents, etc. in a nice an cleaver way.
-    I notice that last file's extension rule about it's content and has higher precedence.
+    # html-engine
+    #require('./engines/html-specs')
 
-    Then, source code will produce source code.
+    # ract-engine
+    #require('./engines/ract-specs')
 
-    There are few engines:
-    - Use .js for js-source (plain old javascript) -- READY (?) --
-    - Use .jade for jade-source (templating engine that produces html) -- NOT READY --
-    - Use .html for html-source (plain old html-markup) -- NOT READY --
-    - Use .ract for ract-source (for ractive.js) -- NOT READY --
-    - Use .hbs for hbs-source (handlebars) -- NOT READY --
-    - Use .us for us-source (underscore) -- NOT READY --
-    - Use .eco for eco-source (embedded coffee) -- NOT READY --
-    - Use .ejs for ejs-source (embedded javascript) -- NOT READY --
-    - Use .coffee for coffee-source (you known) -- NOT READY --
-    - Use .json for json-source (JSON data) -- NOT READY --
-    - Use .less for less-source (compile down css stylesheets) -- NOT READY --
-    - Use .md for md-source (plain old markdown) -- NOT READY --
+    # hbs-engine
+    #require('./engines/hbs-specs')
 
-    Given a posts.html.md.hbs.us file we could have a file like this:
+    # us-engine
+    #require('./engines/us-specs')
 
-    # <%= title || 'Untitled' %>
+    # eco-engine
+    #require('./engines/eco-specs')
 
-    {{#package}}
-    >    <%= JSON.stringify(pkg) %>
-    {{/package}}
+    # ejs-engine
+    #require('./engines/ejs-specs')
 
-    {{#links}}- [{{title}}]({{url}})
-    {{/links}}
+    # coffee-engine
+    #require('./engines/coffee-specs')
 
-    Using data.json produces somewhat:
+    # json-engine
+    #require('./engines/json-specs')
 
-    {
-      title: 'FU',
-      links: [
-        { title: 'bar', url: '#buzz' }
-      ],
-      pkg: { name: 'candy' }
-    }
+    # less-engine
+    #require('./engines/less-specs')
 
-    <h1>FU</h1>
-    <blockquote>
-      <pre>{ "name": "candy" }<pre>
-    </blockquote>
-    <ul>
-      <li>
-        <a href="#buzz">bar</a>
-      </li>
-    </ul>
-
-    Obviously you can't compile between all engines out of the box, to achieve this,
-    you'll ensure which one return valid source code for each another.
-
-    Look at src/tarima.js for more info.
-
-  ###
+    # md-engine
+    #require('./engines/md-specs')
