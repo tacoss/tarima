@@ -1,3 +1,6 @@
+
+engines = ['js', 'jade']
+
 validateEngine = require("./validate-engines")
 tarimaFixtures = require("./tarima-fixtures")
 
@@ -55,3 +58,5 @@ module.exports = (engine) ->
 
       expect(-> validateEngine(engine).notPass(tpl_foo_engine_bar.partial.compile(tpl_foo_engine_bar.params))).not.toThrow()
       expect(tpl_foo_engine_bar.partial.render(tpl_foo_engine_bar.params)).toContain(tpl_foo_engine_bar.contain) if tpl_foo_engine_bar.contain
+
+  require("./engines/#{engine}-specs")

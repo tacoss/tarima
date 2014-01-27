@@ -54,3 +54,11 @@ tpl_foo_jade_bar:
     p: span: <%= WUT %>
     span= ok
   contain: "p: span:"
+
+foo_js_jade:
+  params:
+   subtitle: "get fun!"
+  source: |
+    h1= title
+    p= subtitle
+  contain: "<h1></h1>"
