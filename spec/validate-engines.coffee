@@ -13,22 +13,15 @@
 
 ###
 
+tarimaFixtures = require('./tarima-fixtures')
+
 runTest = (source, invalidateEngine) ->
   (type) ->
-    engine =
-      js: ->
-        source.should.toContain 'function anonymous(locals_)'
-        source.should.toContain 'with(locals_||{})'
-
-      jade: ->
-        source.should.toContain 'function anonymous(locals)'
-        source.should.toContain 'var buf = [];'
-
-    unless engine[type]
+    unless fragments = tarimaFixtures(type).contain
       throw "Engine '#{type}' not supported"
     else
       try
-        engine[type]()
+        source.should.toContain(code) for code in fragments
       catch e
         throw "Invalid source for engine '#{type}' (#{source.actual})"
 

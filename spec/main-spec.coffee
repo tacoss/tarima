@@ -20,15 +20,11 @@ describe 'Tarima will take care:', ->
     it 'would validate unsupported engines', ->
       expect(-> validateEngine().pass()).toThrow()
 
-    describe 'js-engine', ->
-      it 'should validate plain js-code integrity', ->
-        expect(-> validateEngine('js').pass()).toThrow()
-        expect(-> validateEngine('js').pass(tarimaFixtures('js').dummy)).not.toThrow()
-
-    describe 'jade-engine', ->
-      it 'should validate plain js-code integrity (jade)', ->
-        expect(-> validateEngine('jade').pass()).toThrow()
-        expect(-> validateEngine('jade').pass(tarimaFixtures('jade').dummy)).not.toThrow()
+    for engine in engines
+      describe "#{engine}-engine", ->
+        it "should validate plain #{engine}-code integrity", ->
+          expect(-> validateEngine(engine).pass()).toThrow()
+          expect(-> validateEngine(engine).pass(tarimaFixtures(engine).dummy)).not.toThrow()
 
   ###
 
@@ -53,7 +49,9 @@ describe 'Tarima will take care:', ->
       expect(foo_bar.partial.compile()).toBe foo_bar.result
 
     # all-engines
-    testEngine(engine) for engine in engines
+    for engine in engines
+      describe "#{engine}-engine", ->
+        testEngine(engine)
 
 
     ###
@@ -91,7 +89,7 @@ describe 'Tarima will take care:', ->
       {{#links}}- [{{title}}]({{url}})
       {{/links}}
 
-      Using data.json produces somewhat:
+      Using data.json
 
       {
         title: 'FU',
@@ -100,6 +98,8 @@ describe 'Tarima will take care:', ->
         ],
         pkg: { name: 'candy' }
       }
+
+      produces somewhat:
 
       <h1>FU</h1>
       <blockquote>

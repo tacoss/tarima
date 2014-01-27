@@ -2,6 +2,9 @@ js:
   dummy: "function anonymous(locals_){with(locals_||{}){}}"
   source: |
     return '|{{#i}}' + n + "{{/i}}"
+  contain:
+    - "function anonymous(locals_)"
+    - "with(locals_||{})"
 
 foo_js:
   source: |

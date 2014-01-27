@@ -4,6 +4,9 @@ jade:
     h1 I'm {{a||'?'}} template
     p: span: <%= WUT %>
     span= ok
+  contain:
+    - "function anonymous(locals)"
+    - "var buf = [];"
 
 foo_jade:
   params:
