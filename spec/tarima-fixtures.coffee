@@ -1,5 +1,5 @@
 
-engines = ['js', 'jade']
+engines = require('./engines')
 
 grunt = require('grunt')
 tarima = require('../lib/tarima')

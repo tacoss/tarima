@@ -1,5 +1,5 @@
 
-engines = ['js', 'jade']
+engines = require('./engines')
 
 global.jade = require('jade').runtime
 

@@ -1,5 +1,5 @@
 
-engines = ['js', 'jade']
+engines = require('./engines')
 
 validateEngine = require("./validate-engines")
 tarimaFixtures = require("./tarima-fixtures")
