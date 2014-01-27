@@ -1,9 +1,9 @@
-tarima = require('../lib/tarima')
+__ = 'IMPLEMENT THIS'
 
-jade_tpl = '''
-  h1 I'm a template
-  p: span: <%= WUT %>
-'''
+
+validateEngine = require('./validate-engines')
+tarimaFixtures = require('./tarima-fixtures')
+
 
 describe 'Tarima will take care:', ->
   xit 'should expose a reasonable version for debug', ->
@@ -12,6 +12,20 @@ describe 'Tarima will take care:', ->
     expect(tarima.version.minor).toMatch /^\d+$/
     expect(tarima.version.micro).toMatch /^\d+$/
     expect(tarima.version.date).toMatch /^\d{8}$/
+
+  describe 'validateEngine matcher', ->
+    it 'would validate unsupported engines', ->
+      expect(-> validateEngine().pass()).toThrow()
+
+    describe 'js-engine', ->
+      it 'should validate plain js-code integrity', ->
+        expect(-> validateEngine('js').pass()).toThrow()
+        expect(-> validateEngine('js').pass(tarimaFixtures('js').dummy)).not.toThrow()
+
+    describe 'jade-engine', ->
+      it 'should validate plain js-code integrity (jade)', ->
+        expect(-> validateEngine('jade').pass()).toThrow()
+        expect(-> validateEngine('jade').pass(tarimaFixtures('jade').dummy)).not.toThrow()
 
   ###
 
@@ -22,168 +36,125 @@ describe 'Tarima will take care:', ->
 
   ###
 
-  it 'tpl.jade will return as-is', ->
-    expect(tarima.parse('tpl.jade', jade_tpl).compile()).toBe jade_tpl
-    expect(tarima.parse('tpl.jade', jade_tpl).toSource()).toBe jade_tpl
+  describe 'testing escenario', ->
 
+    it 'foo will return as is (no-engine)', ->
+      foo = tarimaFixtures('foo')
 
+      expect(foo.partial.compile()).toBe foo.result
+      expect(foo.partial.toSource()).toBe foo.result
 
-  #   inline_test = tarima.parse 'index.js.us.jade', inline_tpl
+    it 'foo.bar will return as is (unknown bar-engine)', ->
+      bar = tarimaFixtures('bar')
 
-  #   expect(typeof inline_test).toBe 'object'
-  #   expect(typeof inline_test.compile).toBe 'function'
-  #   expect(typeof inline_test.toSource).toBe 'function'
+      expect(bar.partial.compile()).toBe bar.result
+      expect(bar.partial.toSource()).toBe bar.result
 
-  #   expect(-> inline_test.compile()).toThrow()
-  #   expect(inline_test.compile(WUT: 'WUUUUUTZ')).toBe '''
-  #   <h1>I'm a template</h1><p><span>WUUUUUTZ</span></p>
-  #   '''
+    describe 'foo.js', ->
 
-  # it 'should load file-based templates', ->
-  #   fs_test = tarima.load "#{__dirname}/samples/test.json.hbs.us"
+      it 'should return as is (regular js-file)', ->
+        js_foo = tarimaFixtures('js_foo')
 
-  #   expect(typeof fs_test).toBe 'object'
-  #   expect(typeof fs_test.compile).toBe 'function'
-  #   expect(typeof fs_test.toSource).toBe 'function'
+        expect(js_foo.partial.toSource(js_foo.params)).toBe js_foo.source
+        expect(js_foo.partial.compile(js_foo.params)).toBe js_foo.source
 
-  #   data = [
-  #     { key: 'foo', value: 'bar' }
-  #     { key: 'candy', value: 'does' }
-  #   ]
+    describe 'foo.js.js', ->
 
-  #   json = fs_test.compile(object: 'ab', items: data)
+      it 'should return js-code precompiled to be called with tpl(locals)', ->
+        js_js = tarimaFixtures('js_js')
 
-  #   expect(JSON.parse(json).ab).toEqual { foo: 'bar', candy: 'does' }
+        expect(-> validateEngine('js').pass(js_js.partial.toSource(js_js.params))).not.toThrow()
+        expect(-> validateEngine('js').pass(js_js.partial.compile(js_js.params))).not.toThrow()
+        expect(js_js.partial.toSource(js_js.params)).toBe js_js.partial.toSource(js_js.params)
 
-  # it 'should expose template params and source', ->
-  #   code_test = tarima.parse 'test.js.ract', '''
-  #   <ul>
-  #   {{#items}}
-  #     <li>{{value}}</li>
-  #   {{/items}}
-  #   </ul>
-  #   '''
+    describe 'foo.js.js.js', ->
 
-  #   expect(code_test.params.filename).toBe 'test.js.ract'
-  #   expect(code_test.params.filepath).toBe ''
-  #   expect(code_test.params.name).toBe 'test'
-  #   expect(code_test.params.ext).toBe 'js'
+      it 'should precompile templates just one time if demanded (keep calm)', ->
+        js_js_js = tarimaFixtures('js_js_js')
 
-  #   expect(code_test.toSource().replace(/\s+/g, '')).toBe '''
-  #   [{t:7,e:"ul",f:[{t:4,r:"items",f:["",{t:7,e:"li",f:[{t:2,r:"value"}]},""]}]}]
-  #   '''
+        expect(-> validateEngine('js').pass(js_js_js.partial.toSource(js_js_js.params))).not.toThrow()
+        expect(-> validateEngine('js').pass(js_js_js.partial.compile(js_js_js.params))).not.toThrow()
+        expect(js_js_js.partial.toSource(js_js_js.params)).toBe js_js_js.partial.toSource(js_js_js.params)
 
+    describe 'foo.js.bar', ->
+      it 'should return js-code as is (unknown bar-engine, regular js-file)', ->
+        js_bar = tarimaFixtures('js_bar')
 
-  # describe 'Engines', ->
-  #   data =
-  #     foo: 'bar'
-  #     candy: ['does', 'nothing']
-  #     baz: {  buzz: 'bazzinga', x: 'y' }
+        expect(-> validateEngine('js').notPass(js_bar.partial.toSource(js_bar.params))).not.toThrow()
+        expect(js_bar.partial.compile(js_bar.params)).toBe js_bar.result
 
-  #   it 'should parse EJS', ->
-  #     ejs_test = tarima.parse 'test.js.ejs', '<%= foo %>'
+    describe 'tpl.foo.js', ->
+      it 'should execute and return from js-code (js-engine, unknown engines)', ->
+        js_tpl_foo = tarimaFixtures('js_tpl_foo')
 
-  #     expect(ejs_test.compile(data)).toBe 'bar'
-  #     expect(~ejs_test.toSource(data).indexOf('function (locals')).toBeFalsy()
-  #     expect(~ejs_test.toSource(data).indexOf('function anonymous')).not.toBeFalsy()
+        expect(-> validateEngine('js').pass(js_tpl_foo.partial.toSource(js_tpl_foo.params))).not.toThrow()
+        expect(js_tpl_foo.partial.compile(js_tpl_foo.params)).toBe js_tpl_foo.result
 
-  #   it 'should parse ECO', ->
-  #     eco_test = tarima.parse 'test.js.eco', '''
-  #       <% for @item in @candy: %>- <%= @item %>
-  #       <% end %>
-  #     '''
+    describe 'tpl.foo.js.bar', ->
+      it 'should return js-code as is (unknown bar-engine, cancel any further compilation)', ->
+        js_tpl_bar = tarimaFixtures('js_tpl_bar')
 
-  #     expect(eco_test.compile(data)).toBe '''
-  #     - does
-  #     - nothing
+        expect(-> validateEngine('js').notPass(js_tpl_bar.partial.toSource(js_tpl_bar.params))).not.toThrow()
+        expect(js_tpl_bar.partial.compile(js_tpl_bar.params)).toBe js_tpl_bar.result
 
-  #     '''
-  #     expect(~eco_test.toSource(data).indexOf('function (__obj')).not.toBeFalsy()
+  ###
 
-  #   it 'should parse LESS', ->
-  #     less_tail_vars = tarima.load("#{__dirname}/samples/style.css.less", locals: { baz: 'buzz', var: 'WTF' })
-  #     less_head_vars = tarima.parse('style.less', less_tail_vars.params.source, less_tail_vars.params.options)
+    Here is my essay:
 
-  #     less_tail_raw = tarima.load("#{__dirname}/samples/style.css.less")
-  #     less_head_raw = tarima.parse('style.less', less_tail_raw.params.source)
+    I want to use this kind of black magic to automatize my source code.
+    I want to produce my assets, configs, documents, etc. in a nice an cleaver way.
+    I notice that last file's extension rule about it's content and has higher precedence.
 
-  #     console.log('1===================', less_tail_raw.toSource());
-  #     console.log('2===================', less_head_raw.toSource());
+    Then, source code will produce source code.
 
-  #     console.log('3===================', less_tail_vars.toSource(baz: 'BUZZ'));
-  #     console.log('4===================', less_head_vars.toSource());
+    There are few engines:
+    - Use .js for js-source (plain old javascript) -- READY (?) --
+    - Use .jade for jade-source (templating engine that produces html) -- NOT READY --
+    - Use .html for html-source (plain old html-markup) -- NOT READY --
+    - Use .ract for ract-source (for ractive.js) -- NOT READY --
+    - Use .hbs for hbs-source (handlebars) -- NOT READY --
+    - Use .us for us-source (underscore) -- NOT READY --
+    - Use .eco for eco-source (embedded coffee) -- NOT READY --
+    - Use .ejs for ejs-source (embedded javascript) -- NOT READY --
+    - Use .coffee for coffee-source (you known) -- NOT READY --
+    - Use .json for json-source (JSON data) -- NOT READY --
+    - Use .less for less-source (compile down css stylesheets) -- NOT READY --
+    - Use .md for md-source (plain old markdown) -- NOT READY --
 
-  #     console.log('5===================', less_tail_raw.compile());
-  #     console.log('6===================', less_head_raw.compile());
+    Given a posts.html.md.hbs.us file we could have a file like this:
 
-  #     console.log('7===================', less_tail_vars.compile());
-  #     console.log('8===================', less_head_vars.compile());
+    # <%= title || 'Untitled' %>
 
-  #     # expect(-> less_raw.compile()).toThrow()
-  #     # expect(less_raw.toSource()).toBe less_vars.toSource()
-  #     # expect(less_raw.compile(baz: 'WIZZ')).toBe '''
-  #     #   body {
-  #     #     color: buzz;
-  #     #     value: WIZZ;
-  #     #   }
+    {{#package}}
+    >    <%= JSON.stringify(pkg) %>
+    {{/package}}
 
-  #     # '''
+    {{#links}}- [{{title}}]({{url}})
+    {{/links}}
 
-  #     # expect(less_vars.compile()).toBe '''
-  #     #   body {
-  #     #     color: buzz;
-  #     #     value: WUT;
-  #     #   }
+    Using data.json produces somewhat:
 
-  #     # '''
+    {
+      title: 'FU',
+      links: [
+        { title: 'bar', url: '#buzz' }
+      ],
+      pkg: { name: 'candy' }
+    }
 
-  #   it 'should parse Ractive', ->
-  #     ract_test = tarima.parse('test.json.ract', '{{foo}}')
+    <h1>FU</h1>
+    <blockquote>
+      <pre>{ "name": "candy" }<pre>
+    </blockquote>
+    <ul>
+      <li>
+        <a href="#buzz">bar</a>
+      </li>
+    </ul>
 
-  #     expect(ract_test.compile(data)[0].r).toBe 'foo'
+    Obviously you can't compile between all engines out of the box, to achieve this,
+    you'll ensure which one return valid source code for each another.
 
-  #   it 'should parse CoffeeScript', ->
-  #     coffee_test = tarima.parse 'test.js.coffee', 'foo = -> bar'
+    Look at src/tarima.js for more info.
 
-  #     expect(coffee_test.compile()).toBe '''
-  #     var foo;
-
-  #     foo = function() {
-  #       return bar;
-  #     };
-
-  #     '''
-
-  #   it 'should parse Jade', ->
-  #     jade_test = tarima.parse 'test.html.jade', '''
-  #       ul
-  #         each val, key in baz
-  #           li #{key}: #{val}
-  #     '''
-
-  #     expect(jade_test.compile(data)).toBe '''
-  #     <ul><li>buzz: bazzinga</li><li>x: y</li></ul>
-  #     '''
-
-  #     expect(jade_test.toSource()).not.toBe 'false'
-  #     expect(~jade_test.toSource().indexOf('return fn(locals')).toBeFalsy()
-  #     expect(~jade_test.toSource().indexOf('function anonymous')).not.toBeFalsy()
-
-  #   it 'should parse Handlebars', ->
-  #     hbs_test = tarima.parse 'test.js.hbs', "{{baz.buzz}}"
-
-  #     expect(hbs_test.compile(data)).toBe 'bazzinga'
-  #     expect(~hbs_test.toSource().indexOf('function (Handlebars')).not.toBeFalsy()
-  #     expect(~hbs_test.toSource().indexOf('compiled = compileInput();')).toBeFalsy()
-
-  #   it 'should parse Underscore (using lodash)', ->
-  #     us_test = tarima.parse 'test.js.us', '''
-  #       <% for (var item in candy) { %>- <%= candy[item] %>
-  #       <% } %>
-  #     '''
-
-  #     expect(us_test.compile(data)).toBe '''
-  #     - does
-  #     - nothing
-
-  #     '''
+  ###
