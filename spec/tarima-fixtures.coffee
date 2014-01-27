@@ -1,15 +1,15 @@
-__ = 'WHAT YOU EXPECT?'
 
 engines = ['js', 'jade']
 
 grunt = require('grunt')
 tarima = require('../lib/tarima')
 
+# dummies
 template = {}
 template.foo =
   source: 'a:b:c:|{{d||"e=<%=f%>"}}'
-  partial: tarima.parse 'foo', __
-  result: __
+  partial: tarima.parse 'foo', '__'
+  result: '__'
 
 template.foo_bar =
   source: "pre.\n  " + template.foo.source

@@ -1,6 +1,7 @@
-__ = 'IMPLEMENT THIS'
 
-engines = ['js']
+engines = ['js', 'jade']
+
+global.jade = require('jade').runtime
 
 validateEngine = require('./validate-engines')
 tarimaFixtures = require('./tarima-fixtures')
