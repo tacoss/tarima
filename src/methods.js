@@ -13,7 +13,7 @@ module.exports.parse = from_source = function(path, source, options) {
 
   defaults(params, {
     options: options || {},
-    source: source
+    source: String(source)
   });
 
   return new Partial(params);
