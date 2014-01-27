@@ -41,61 +41,61 @@ describe 'Tarima will take care:', ->
     it 'foo will return as is (no-engine)', ->
       foo = tarimaFixtures('foo')
 
+      expect(foo.partial.render()).toBe foo.result
       expect(foo.partial.compile()).toBe foo.result
-      expect(foo.partial.toSource()).toBe foo.result
 
     it 'foo.bar will return as is (unknown bar-engine)', ->
       bar = tarimaFixtures('bar')
 
+      expect(bar.partial.render()).toBe bar.result
       expect(bar.partial.compile()).toBe bar.result
-      expect(bar.partial.toSource()).toBe bar.result
 
     describe 'foo.js', ->
 
       it 'should return as is (regular js-file)', ->
         js_foo = tarimaFixtures('js_foo')
 
-        expect(js_foo.partial.toSource(js_foo.params)).toBe js_foo.source
         expect(js_foo.partial.compile(js_foo.params)).toBe js_foo.source
+        expect(js_foo.partial.render(js_foo.params)).toBe js_foo.source
 
     describe 'foo.js.js', ->
 
       it 'should return js-code precompiled to be called with tpl(locals)', ->
         js_js = tarimaFixtures('js_js')
 
-        expect(-> validateEngine('js').pass(js_js.partial.toSource(js_js.params))).not.toThrow()
         expect(-> validateEngine('js').pass(js_js.partial.compile(js_js.params))).not.toThrow()
-        expect(js_js.partial.toSource(js_js.params)).toBe js_js.partial.toSource(js_js.params)
+        expect(-> validateEngine('js').pass(js_js.partial.render(js_js.params))).not.toThrow()
+        expect(js_js.partial.compile(js_js.params)).toBe js_js.partial.compile(js_js.params)
 
     describe 'foo.js.js.js', ->
 
       it 'should precompile templates just one time if demanded (keep calm)', ->
         js_js_js = tarimaFixtures('js_js_js')
 
-        expect(-> validateEngine('js').pass(js_js_js.partial.toSource(js_js_js.params))).not.toThrow()
         expect(-> validateEngine('js').pass(js_js_js.partial.compile(js_js_js.params))).not.toThrow()
-        expect(js_js_js.partial.toSource(js_js_js.params)).toBe js_js_js.partial.toSource(js_js_js.params)
+        expect(-> validateEngine('js').pass(js_js_js.partial.render(js_js_js.params))).not.toThrow()
+        expect(js_js_js.partial.compile(js_js_js.params)).toBe js_js_js.partial.compile(js_js_js.params)
 
     describe 'foo.js.bar', ->
       it 'should return js-code as is (unknown bar-engine, regular js-file)', ->
         js_bar = tarimaFixtures('js_bar')
 
-        expect(-> validateEngine('js').notPass(js_bar.partial.toSource(js_bar.params))).not.toThrow()
-        expect(js_bar.partial.compile(js_bar.params)).toBe js_bar.result
+        expect(-> validateEngine('js').notPass(js_bar.partial.compile(js_bar.params))).not.toThrow()
+        expect(js_bar.partial.render(js_bar.params)).toBe js_bar.result
 
     describe 'tpl.foo.js', ->
       it 'should execute and return from js-code (js-engine, unknown engines)', ->
         js_tpl_foo = tarimaFixtures('js_tpl_foo')
 
-        expect(-> validateEngine('js').pass(js_tpl_foo.partial.toSource(js_tpl_foo.params))).not.toThrow()
-        expect(js_tpl_foo.partial.compile(js_tpl_foo.params)).toBe js_tpl_foo.result
+        expect(-> validateEngine('js').pass(js_tpl_foo.partial.compile(js_tpl_foo.params))).not.toThrow()
+        expect(js_tpl_foo.partial.render(js_tpl_foo.params)).toBe js_tpl_foo.result
 
     describe 'tpl.foo.js.bar', ->
       it 'should return js-code as is (unknown bar-engine, cancel any further compilation)', ->
         js_tpl_bar = tarimaFixtures('js_tpl_bar')
 
-        expect(-> validateEngine('js').notPass(js_tpl_bar.partial.toSource(js_tpl_bar.params))).not.toThrow()
-        expect(js_tpl_bar.partial.compile(js_tpl_bar.params)).toBe js_tpl_bar.result
+        expect(-> validateEngine('js').notPass(js_tpl_bar.partial.compile(js_tpl_bar.params))).not.toThrow()
+        expect(js_tpl_bar.partial.render(js_tpl_bar.params)).toBe js_tpl_bar.result
 
   ###
 
