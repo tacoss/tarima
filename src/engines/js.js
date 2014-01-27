@@ -3,7 +3,7 @@ register_engine('js', function(params) {
   var compile = function(exec) {
     var body, fn;
 
-    if (!/^\s*function\s*[\w\s]*(?=\(\s*\w)/g.test(params.source)) {
+    if (!/^\s*function\s*[\w\s]*(?=\(\s*[$a-zA-Z_])/g.test(params.source)) {
       body = 'with(locals_||{}){' + params.source + '}';
     } else {
       body = 'return (' + params.source + ')(locals_);';
