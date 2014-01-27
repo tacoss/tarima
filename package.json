@@ -45,6 +45,8 @@
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-jasmine-node": "~0.1.0",
-    "grunt-expand-include": "~0.9.6"
+    "grunt-expand-include": "~0.9.6",
+    "handlebars-runtime": "~1.0.12",
+    "runtime-jade": "~1.0.0"
   }
 }
