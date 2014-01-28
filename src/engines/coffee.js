@@ -7,12 +7,11 @@ register_engine('coffee', function(params) {
       };
 
 
-  if ('js' === params.next) {
-    return compile(tpl).toString();
-  }
-
-  if ('html' === params.next) {
-    return compile(tpl)(params.options.locals);
+  switch (params.next) {
+    case 'js':
+      return compile(tpl).toString();
+    case 'html':
+      return compile(tpl)(params.options.locals);
   }
 
   if (!params.next) {
