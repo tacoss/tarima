@@ -14,12 +14,13 @@ register_engine('js', function(params) {
   };
 
 
-  if (!params.next && !params.call) {
-    return compile();
+  switch (params.next) {
+    case 'js':
+      return compile().toString();
   }
 
-  if ('js' === params.next) {
-    return compile().toString();
+  if (!params.next) {
+    return compile(!params.call);
   }
 
   return params.source;
