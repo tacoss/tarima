@@ -4,9 +4,9 @@ var reduce_tpl = function(params, locals, call) {
     return params;
   }
 
-
+  params.options.locals = locals;
   params.type = params.parts.pop();
-  params.next = params.parts[0];
+  params.next = params.parts[params.parts.length - 1];
 
   if (params.type === 'litcoffee') {
     params.options.literate = true;
