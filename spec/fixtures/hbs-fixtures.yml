@@ -1,35 +1,79 @@
 hbs:
-  dummy:
-  params:
-  source:
+  dummy: "Handlebars.template(function(Handlebars,depth0,helpers,partials,data){this.compilerInfo;Handlebars.helpers})"
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+        <%= l || 'm' %>
+    {{/ok}}
   contain:
+    - "Handlebars.template"
+    - "Handlebars,depth0,helpers,partials,data"
+    - "Handlebars.helpers"
+    - "this.compilerInfo"
 
 foo_hbs:
   params:
-  source:
-  contain:
+    m: 2
+    ok: [0, 1]
+    s: "no"
+  source: |
+    ul {{#ok}}
+      li.
+        {{.}}
+    {{/ok}}
+    <%= s %>{{m}}
 
 foo_hbs_hbs:
-  params:
-  source:
-  contain:
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+    {{/ok}}
 
 foo_hbs_hbs_hbs:
-  params:
-  source:
-  contain:
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+    {{/ok}}
 
 foo_hbs_bar:
-  params:
-  source:
-  contain:
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+    {{/ok}}
 
 tpl_foo_hbs:
   params:
-  source:
-  contain:
+    ok: "yes"
+  source: |
+    ul {{#ok}}
+      li
+        |{{.}}
+        <%= l || '|{{m}}' %>
+    {{/ok}}
+  contain: "'|'"
 
 tpl_foo_hbs_bar:
-  params:
-  source:
-  contain:
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+    {{/ok}}
+
+foo_js_hbs:
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+    {{/ok}}
+  contain: "ul"
+
+foo_hbs_js_hbs:
+  source: |
+    ul {{#ok}}
+      li
+        {{.}}
+    {{/ok}}
