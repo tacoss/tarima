@@ -7,12 +7,13 @@ register_engine('jade', function(params) {
   };
 
 
-  if ('js' === params.next) {
-    return compile(true).toString();
-  }
-
-  if ('html' === params.next) {
-    return compile()(params.options.locals);
+  switch (params.next) {
+    case 'js':
+      return compile(true).toString();
+    case 'us':
+    case 'hbs':
+    case 'html':
+      return compile()(params.options.locals);
   }
 
   if (!params.next) {
