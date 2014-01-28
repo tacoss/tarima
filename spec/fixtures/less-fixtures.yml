@@ -1,35 +1,38 @@
 less:
-  dummy:
-  params:
-  source:
+  dummy: "function (locals){var P = new less.Parser}"
+  source: ".foo { .bar { candy: @does nothing } }"
   contain:
+    - "function (locals"
+    - "new less.Parser"
 
 foo_less:
-  params:
-  source:
-  contain:
+  source: ".foo { .bar { candy: @does nothing } }"
 
 foo_less_less:
-  params:
-  source:
-  contain:
+  source: ".foo { .bar { candy: @does nothing } }"
 
 foo_less_less_less:
-  params:
-  source:
-  contain:
+  source: ".foo { .bar { candy: @does nothing } }"
 
 foo_less_bar:
-  params:
-  source:
-  contain:
+  source: ".foo { .bar { candy: @does nothing } }"
+  contain: "@does"
 
 tpl_foo_less:
   params:
-  source:
-  contain:
+    does: 'lulz'
+  source: ".foo { .bar { candy: @does nothing } }"
+  contain: ".foo .bar"
 
 tpl_foo_less_bar:
-  params:
-  source:
-  contain:
+  source: ".foo { .bar { candy: @does nothing } }"
+  contain: "@does"
+
+foo_js_less:
+  source: |
+    body {
+      color: @fg;
+    }
+
+foo_less_js_less:
+  source: ".foo { .bar { candy: @does nothing } }"

@@ -1,48 +1,71 @@
 
 register_engine('less', function(params) {
-  var less = require('less'),
-      parser, str;
+  var less = require('less');
 
-  console.log(params.head, params.filename);
+  var prepare = function(code, locals) {
+    var out = [];
 
-  return str;
+    for (var key in locals) {
+      if (/boolean|number|string/.test(typeof locals[key])) {
+        out.push('@' + (key.charAt() === '@' ? key.substr(1) : key) + ': ~' + JSON.stringify(locals[key].toString()) + ';');
+      }
+    }
 
-  // var less = require('less'),
-  //     compiler;
+    return out.concat([code]).join('\n');
+  };
 
-  // compiler = function(locals) {
-  //   var output, parser,
-  //       vars = [],
-  //       inject;
+  var compile = function(client) {
+    var css, source = [];
 
-  //   inject = function(from) {
-  //     for (var key in from) {
-  //       if (/boolean|number|string/.test(typeof from[key])) {
-  //         vars.push('@' + (key.charAt() === '@' ? key.substr(1) : key) + ': ~' + JSON.stringify(from[key].toString()) + ';');
-  //       }
-  //     }
-  //   };
+    if (client) {
+      less.render(prepare(params.source, params.options.locals), function(e, tree) {
+        if (e) {
+          throw new Error(e.message);
+        }
 
-  //   inject(locals);
+        css = tree.toCSS();
+      });
 
-  //   console.log('VARS --->', vars.concat([params.source]).join('\n'));
+      return css;
+    }
 
-  //   parser = new less.Parser(defs_tpl('less', params.options));
-  //   parser.parse(vars.concat([params.source]).join('\n'), function(e, tree) {
-  //     output = tree.toCSS();
-  //   });
+    return function(locals) {
+      var parser = new less.Parser(defs_tpl('less', params.options)),
+          output, vars = _.defaults({}, params.options.locals);
 
-  //   console.log('<--- CSS', output);
+      parser.parse(prepare(params.source, _.defaults(vars, locals)), function(e, tree) {
+        if (e) {
+          throw new Error(e.message);
+        }
 
-  //   return output;
-  // };
+        output = tree.toCSS();
+      });
 
-  // console.log('LESS --->', !params.head);
-  // console.log('--->', params.source);
+      return output;
+    };
+  };
 
-  // if (!params.head || params.options.locals) {
-  //   return compiler(params.options.locals);
-  // }
 
-  // return params.head ? compiler : params.source;
+  if ('js' === params.next) {
+    var source = [];
+
+    source.push('function (locals, options) { var P = new less.Parser(options), L = [], s, k;');
+    source.push('for (k in locals) if (/boolean|number|string/.test(typeof locals[k]))');
+    source.push('L.push("@" + k + ": ~" + JSON.stringify(locals[k].toString()) + ";");');
+    source.push('P.parse(L.join("\\n") + ' + JSON.stringify(params.source));
+    source.push(', function(e, T) { s = T.toCSS(); });');
+    source.push('return s;}');
+
+    return source.join('');
+  }
+
+  if ('css' === params.next) {
+    return compile(true);
+  }
+
+  if (!params.next) {
+    return compile();
+  }
+
+  return params.source;
 });
