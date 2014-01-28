@@ -39,6 +39,8 @@ module.exports = (engine) ->
   ###
 
   unless engine is 'js'
+    foo_js_engine = tarimaFixtures("foo_js_#{engine}")
+
     describe "foo.#{engine}.#{engine}", ->
       it "should return the #{engine}-code as is (#{engine}-engine, ...)", ->
         foo_engine_engine = tarimaFixtures("foo_#{engine}_#{engine}")
@@ -54,7 +56,6 @@ module.exports = (engine) ->
         expect(foo_engine_engine_engine.partial.compile()).toBe foo_engine_engine_engine.source
 
     describe "foo.js.#{engine}", ->
-      foo_js_engine = tarimaFixtures("foo_js_#{engine}")
 
       it "compile() should return #{engine}-code precompiled to be called with tpl(locals)", ->
         expect(-> validateEngine(engine).pass(foo_js_engine.partial.compile(foo_js_engine.params))).not.toThrow()
@@ -69,14 +70,28 @@ module.exports = (engine) ->
         foo_js_engine_js = tarimaFixtures("foo_#{engine}_js_#{engine}")
 
         #expect(-> foo_js_engine_js.partial.params.source()()).toBe null
-        console.log foo_js_engine_js.partial.render(foo_js_engine_js.params), "#{engine}-render"
-        console.log foo_js_engine_js.partial.compile(foo_js_engine_js.params), "#{engine}-compile"
+        #console.log foo_js_engine_js.partial.render(foo_js_engine_js.params), "#{engine}-render"
+        #console.log foo_js_engine_js.partial.compile(foo_js_engine_js.params), "#{engine}-compile"
 
         expect(-> validateEngine(engine).pass foo_js_engine_js.partial.render(foo_js_engine_js.params)).not.toThrow()
         expect(-> validateEngine(engine).pass foo_js_engine_js.partial.compile(foo_js_engine_js.params)).not.toThrow()
 
         # expect(-> foo_js_engine_js.partial.render(foo_js_engine_js.params)).not.toThrow()
         # expect(-> foo_js_engine_js.partial.compile(foo_js_engine_js.params)).not.toThrow()
+
+    describe "foo.js.js.#{engine}", ->
+      foo_js_js_engine = foo_js_engine.partial.override("foo.js.js.#{engine}")
+
+      it "using compile() and render() would return precompiled js-code (#{engine} into js, ...)", ->
+        expect(-> validateEngine(engine).pass foo_js_js_engine.compile(foo_js_engine.params)).not.toThrow()
+        expect(-> validateEngine(engine).pass foo_js_js_engine.render(foo_js_engine.params)).not.toThrow()
+
+    describe "foo.js.#{engine}.js", ->
+      foo_js_engine_js = foo_js_engine.partial.override("foo.js.#{engine}.js")
+
+      it "using compile() and render() would return precompiled js-code (js-engine, #{engine} into js, ...)", ->
+        expect(-> validateEngine(engine).pass foo_js_engine_js.compile(foo_js_engine.params)).not.toThrow()
+        expect(-> validateEngine(engine).pass foo_js_engine_js.render(foo_js_engine.params)).not.toThrow()
 
   else
     describe "foo.#{engine}.#{engine}", ->
