@@ -4,7 +4,7 @@ var debug_tpl = function(params, view) {
     try {
       return 'function' === typeof view ? view.apply(null, arguments) : view;
     } catch (e) {
-      throw new Error('Compilation error for ' + params.filename + ' (' + e.message + ')\n' + params.source);
+      throw new Error('Compilation error for ' + params.type + '-engine: ' + params.filename + ' (' + e.message + ')\n' + params.source + '\n' + params.stack);
     }
   };
 };
