@@ -18,9 +18,12 @@ describe 'foo.js.jade.js', ->
     expect(-> validateEngine('jade').pass foo_js_jade_js.compile(foo_js_jade.params)).not.toThrow()
     expect(-> validateEngine('jade').pass foo_js_jade_js.render(foo_js_jade.params)).not.toThrow()
 
-xdescribe 'foo.html.jade.js', ->
+describe 'foo.html.jade.js', ->
   foo_html_jade_js = foo_js_jade.partial.override('foo.html.jade.js')
 
-  it 'using compile() and render() would return html-markup (js-engine, jade into js, jade into html, ...)', ->
-    expect(-> validateEngine('html').pass foo_html_jade_js.compile(foo_js_jade.params)).not.toThrow()
-    expect(-> validateEngine('html').pass foo_html_jade_js.render(foo_js_jade.params)).not.toThrow()
+  it 'using render() would return html-markup (js-engine, jade into js, jade into html, ...)', ->
+    expect(foo_html_jade_js.render(foo_js_jade.params)).toBe '<h1></h1><p></p>'
+
+  it 'using compile() would return jade-code precompiled into js-code (js-engine, jade-engine, jade into js, ...)', ->
+    expect(-> validateEngine('jade').pass foo_html_jade_js.compile(foo_js_jade.params)).not.toThrow()
+    #expect(-> validateEngine('html').pass foo_html_jade_js.render(foo_js_jade.params)).not.toThrow()
