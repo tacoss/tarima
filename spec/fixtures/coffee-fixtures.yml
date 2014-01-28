@@ -1,35 +1,35 @@
 coffee:
-  dummy:
-  params:
-  source:
+  dummy: "function(locals_) {with(locals_||{}){return}}"
+  source: "-> x = y"
   contain:
+    - "function"
+    - "return"
 
 foo_coffee:
-  params:
-  source:
-  contain:
+  source: "-> x = y"
 
 foo_coffee_coffee:
-  params:
-  source:
-  contain:
+  source: "-> x = y"
 
 foo_coffee_coffee_coffee:
-  params:
-  source:
-  contain:
+  source: "-> x = y"
 
 foo_coffee_bar:
-  params:
-  source:
-  contain:
+  source: "-> x = y"
 
 tpl_foo_coffee:
-  params:
-  source:
+  source: "-> x = y"
   contain:
+    - "return x = y"
 
 tpl_foo_coffee_bar:
+  source: "-> x = y"
+
+foo_js_coffee:
+  source: "s = (i for i in [1..3])"
+  contain: "3"
+
+foo_coffee_js_coffee:
   params:
-  source:
-  contain:
+    a: "dummy"
+  source: "l = (a[i] for i in [1..3])"
