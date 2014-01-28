@@ -1,7 +1,5 @@
 
-register_engine('less', function(params) {
-  var less = require('less');
-
+register_engine('less', function(params, less) {
   var prepare = function(code, locals) {
     var out = [];
 
@@ -67,4 +65,4 @@ register_engine('less', function(params) {
   }
 
   return params.source;
-});
+}, require('less'));

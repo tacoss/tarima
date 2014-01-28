@@ -1,9 +1,9 @@
 
-register_engine('jade', function(params) {
+register_engine('jade', function(params, jade) {
   var compile = function(client) {
     params.options.client = client;
 
-    return require('jade').compile(params.source, defs_tpl('jade', params.options));
+    return jade.compile(params.source, defs_tpl('jade', params.options));
   };
 
 
@@ -21,4 +21,4 @@ register_engine('jade', function(params) {
   }
 
   return params.source;
-});
+}, require('jade'));

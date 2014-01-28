@@ -1,8 +1,8 @@
 
-register_engine('hbs', function(params) {
+register_engine('hbs', function(params, Handlebars) {
   var compile  = function(client) {
     var method = client ? 'precompile' : 'compile',
-        tpl = require('handlebars')[method](params.source, defs_tpl('handlebars', params.options));
+        tpl = Handlebars[method](params.source, defs_tpl('handlebars', params.options));
 
     if (client) {
       return 'Handlebars.template(' + tpl.toString() +')';
@@ -29,4 +29,4 @@ register_engine('hbs', function(params) {
   }
 
   return params.source;
-});
+}, require('handlebars'));

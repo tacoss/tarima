@@ -1,6 +1,6 @@
 
-register_engine('coffee', function(params) {
-  var tpl =  require('coffee-script').compile(params.source, defs_tpl('coffee', params.options)),
+register_engine('coffee', function(params, coffee) {
+  var tpl =  coffee.compile(params.source, defs_tpl('coffee', params.options)),
       compile = function(code) {
         /* jshint evil:true */
         return new Function('locals_', 'with(locals_||{}){' + code.toString() + '}');
@@ -19,4 +19,4 @@ register_engine('coffee', function(params) {
   }
 
   return params.source;
-});
+}, require('coffee-script'));
