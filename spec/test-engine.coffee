@@ -56,7 +56,6 @@ module.exports = (engine) ->
         expect(foo_engine_engine_engine.partial.compile()).toBe foo_engine_engine_engine.source
 
     describe "foo.js.#{engine}", ->
-
       it "compile() should return #{engine}-code precompiled to be called with tpl(locals)", ->
         expect(-> validateEngine(engine).pass(foo_js_engine.partial.compile(foo_js_engine.params))).not.toThrow()
         #expect(foo_js_engine.partial.compile(foo_js_engine.params)).toBe "#{engine}-compile"

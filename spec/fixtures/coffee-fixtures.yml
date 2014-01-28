@@ -2,6 +2,7 @@ coffee:
   dummy: "function(locals_) {with(locals_||{}){return}}"
   source: "-> x = y"
   contain:
+    - "locals_||{}"
     - "function"
     - "return"
 
@@ -33,3 +34,10 @@ foo_coffee_js_coffee:
   params:
     a: "dummy"
   source: "l = (a[i] for i in [1..3])"
+
+tpl_js_litcoffee:
+  source: |
+    Some code is here:
+
+        foo = ->
+          m = n

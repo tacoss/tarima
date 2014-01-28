@@ -8,6 +8,11 @@ var reduce_tpl = function(params, locals, call) {
   params.type = params.parts.pop();
   params.next = params.parts[0];
 
+  if (params.type === 'litcoffee') {
+    params.options.literate = true;
+    params.type = 'coffee';
+  }
+
   var engine = parsers[params.type];
 
   params.call = call;

@@ -6,7 +6,10 @@ var params_tpl = function(path) {
   fullpath = path.split('/');
   filename = fullpath.pop();
 
-  parts = filename.replace(/(\.[^.]+)\1{2,}/, '$1$1').split('.');
+  filename = filename.replace(/(\.[^.]+)\1{2,}/, '$1$1');
+  filename = filename.replace('coffee.md', 'litcoffee');
+
+  parts = filename.split('.');
   name = parts.shift();
   ext = parts.shift();
 

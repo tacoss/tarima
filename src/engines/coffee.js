@@ -3,7 +3,7 @@ register_engine('coffee', function(params) {
   var tpl =  require('coffee-script').compile(params.source, defs_tpl('coffee', params.options)),
       compile = function(code) {
         /* jshint evil:true */
-        return new Function('locals_', code.toString());
+        return new Function('locals_', 'with(locals_||{}){' + code.toString() + '}');
       };
 
 
