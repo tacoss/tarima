@@ -9,26 +9,19 @@ js:
 foo_js:
   source: |
     return '|{{#i}}' + n + "{{/i}}"
-  params:
-    n: "regular javascript"
 
 foo_js_js:
   source: |
     return '|{{#i}}' + n + "{{/i}}"
-  params:
-    n: "wrapped javascript"
 
 foo_js_js_js:
   source: |
     return '|{{#i}}' + n + "{{/i}}"
-  params:
-    n: "wrapped javascript (don't)"
 
 foo_js_bar:
   source: |
     return '|{{#i}}' + n + "{{/i}}"
-  contain: |
-    '|{{#i}}' + n + "{{/i}}"
+  contain: " + n + "
 
 tpl_foo_js:
   source: |
@@ -39,5 +32,4 @@ tpl_foo_js:
 tpl_foo_js_bar:
   source: |
     return '|{{#i}}' + n + "{{/i}}"
-  contain: |
-    '|{{#i}}' + n + "{{/i}}"
+  contain: " + n + "

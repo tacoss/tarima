@@ -1,20 +1,26 @@
 
 register_engine('js', function(params) {
-  var compile = function(exec) {
+  var compile = function() {
     var body, fn;
 
-    if (!/^\s*function\s*[\w\s]*(?=\(\s*[$a-zA-Z_])/g.test(params.source)) {
+    if (!/^\s*function\s*[\w\s]*(?=\(\s*[$a-zA-Z_])/.test(params.source)) {
       body = 'with(locals_||{}){' + params.source + '}';
     } else {
-      body = 'return (' + params.source + ')(locals_);';
+      body = 'return (' + params.source + ')(_locals)';
     }
 
     /* jshint evil:true */
-    fn = new Function('locals_', body);
-    fn = exec ? fn : fn.toString();
-
-    return fn;
+    return new Function('locals_', body);
   };
 
-  return compile(!params.next && params.call);
+
+  if (!params.next && !params.call) {
+    return compile();
+  }
+
+  if ('js' === params.next) {
+    return compile().toString();
+  }
+
+  return params.source;
 });
