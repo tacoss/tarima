@@ -17,3 +17,10 @@ describe 'foo.js.jade.js', ->
   it 'using compile() and render() would return precompiled js-code (js-engine, jade into js, ...)', ->
     expect(-> validateEngine('jade').pass foo_js_jade_js.compile(foo_js_jade.params)).not.toThrow()
     expect(-> validateEngine('jade').pass foo_js_jade_js.render(foo_js_jade.params)).not.toThrow()
+
+xdescribe 'foo.html.jade.js', ->
+  foo_html_jade_js = foo_js_jade.partial.override('foo.html.jade.js')
+
+  it 'using compile() and render() would return html-markup (js-engine, jade into js, jade into html, ...)', ->
+    expect(-> validateEngine('html').pass foo_html_jade_js.compile(foo_js_jade.params)).not.toThrow()
+    expect(-> validateEngine('html').pass foo_html_jade_js.render(foo_js_jade.params)).not.toThrow()
