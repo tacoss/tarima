@@ -17,14 +17,15 @@ tarimaFixtures = require('./tarima-fixtures')
 
 runTest = (source, invalidateEngine) ->
   (type) ->
-    unless fragments = tarimaFixtures(type).contain
-      throw "Engine '#{type}' not supported"
-    else
+    unless fragments = tarimaFixtures(type)
+      throw "Engine '#{type}' not supported?"
+
+    if fragments.contain?.length
       try
-        source.should.toContain(code) for code in fragments
+        for code in fragments.contain
+          source.should.toContain(code)
       catch e
         throw "Invalid source for engine '#{type}' (#{source.actual})"
-
 
 getExpect = (that, negative) ->
   srcTest = if negative

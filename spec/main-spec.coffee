@@ -21,6 +21,8 @@ describe 'Tarima will take care:', ->
       expect(-> validateEngine().pass()).toThrow()
 
     for engine in engines
+      continue unless tarimaFixtures(engine).dummy
+
       describe "#{engine}-engine", ->
         it "should validate plain #{engine}-code integrity", ->
           expect(-> validateEngine(engine).pass()).toThrow()
