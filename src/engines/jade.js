@@ -1,24 +1,23 @@
 
 register_engine('jade', function(params) {
-  var compile = function(exec) {
-    params.options.client = exec;
+  var compile = function(client) {
+    params.options.client = client;
 
     return require('jade').compile(params.source, defs_tpl('jade', params.options));
   };
 
 
-  switch (params.next) {
-    case 'jade':
-      return compile(true).toString();
-    case 'js':
-      return compile(true);
-    case 'html':
-      return compile();
-    default:
-      if (!params.next) {
-        return compile(true);
-      }
-
-      return params.source;
+  if ('js' === params.next) {
+    return compile(true).toString();
   }
+
+  if ('html' === params.next) {
+    return compile()(params.options.locals);
+  }
+
+  if (!params.next) {
+    return compile(!params.call);
+  }
+
+  return params.source;
 });
