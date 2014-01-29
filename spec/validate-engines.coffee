@@ -25,7 +25,11 @@ runTest = (source, invalidateEngine) ->
         for code in fragments.contain
           source.should.toContain(code)
       catch e
-        throw "Invalid source for engine '#{type}' (#{source.actual})"
+        throw """
+          Invalid source for #{type}-engine (#{source.actual})
+          #{e.message}
+          #{e.stack}
+        """
 
 getExpect = (that, negative) ->
   srcTest = if negative

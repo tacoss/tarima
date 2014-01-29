@@ -63,6 +63,7 @@ describe 'Tarima will take care:', ->
       I want to use this kind of black magic to automatize my source code.
       I want to produce my assets, configs, documents, etc. in a nice an cleaver way.
       I notice that last file's extension rule about it's content and has higher precedence.
+      I notice that first file's extension rule about how the file context will be saved, as is.
 
       Then, source code will produce source code.
 
