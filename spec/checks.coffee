@@ -19,7 +19,7 @@ module.exports = (from, source) ->
         #{JSON.stringify from, null, '  '}
       """
 
-    assertContain(source, from.contain) if from.contain
-    assertContain(source, from.missing, true) if from.missing
+    assertContain(source.toString(), from.contain) if from.contain
+    assertContain(source.toString(), from.missing, true) if from.missing
   catch e
     throw "Failed asserts for #{from.engine}-engine (#{e.message})"
