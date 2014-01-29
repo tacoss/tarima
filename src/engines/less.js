@@ -28,6 +28,12 @@ register_engine('less', function(params, less) {
     }
 
     return function(locals) {
+      if (params.filepath) {
+        params.options.syncImport = true;
+        params.options.relativeUrls = true;
+        params.options.paths = [params.filepath];
+      }
+
       var parser = new less.Parser(defs_tpl('less', params.options)),
           output, vars = _.defaults({}, params.options.locals);
 
