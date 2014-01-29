@@ -13,7 +13,7 @@
 
 ###
 
-tarimaFixtures = require('./tarima-fixtures')
+tarimaFixtures = require('./fixtures')
 
 runTest = (source, negative) ->
   (type) ->
