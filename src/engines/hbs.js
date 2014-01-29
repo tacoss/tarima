@@ -18,10 +18,13 @@ register_engine('hbs', function(params, Handlebars) {
     case 'md':
     case 'us':
     case 'jade':
-    case 'html':
     case 'less':
     case 'coffee':
       return compile()(params.options.locals);
+  }
+
+  if ('html' === params.next || 'html' === params.ext) {
+    return compile()(params.options.locals);
   }
 
   if (!params.next) {

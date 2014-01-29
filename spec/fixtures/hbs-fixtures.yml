@@ -64,6 +64,8 @@ tpl_foo_hbs_bar:
     {{/ok}}
 
 foo_js_hbs:
+  params:
+    ok: 1
   source: |
     ul {{#ok}}
       li

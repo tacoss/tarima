@@ -55,6 +55,8 @@ tpl_foo_jade_bar:
   contain: "p: span:"
 
 foo_js_jade:
+  params:
+    title: "OK"
   source: |
     h1= title
     p= subtitle

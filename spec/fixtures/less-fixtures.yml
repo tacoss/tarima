@@ -29,6 +29,8 @@ tpl_foo_less_bar:
   contain: "@does"
 
 foo_js_less:
+  params:
+    fg: "red"
   source: |
     body {
       color: @fg;

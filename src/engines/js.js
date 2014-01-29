@@ -14,9 +14,8 @@ register_engine('js', function(params) {
   };
 
 
-  switch (params.next) {
-    case 'js':
-      return compile().toString();
+  if ('js' === params.next) {
+    return compile().toString();
   }
 
   if (!params.next) {

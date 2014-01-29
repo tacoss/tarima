@@ -12,8 +12,11 @@ register_engine('jade', function(params, jade) {
       return compile(true).toString();
     case 'us':
     case 'hbs':
-    case 'html':
       return compile()(params.options.locals);
+  }
+
+  if ('html' === params.next || 'html' === params.ext) {
+    return compile()(params.options.locals);
   }
 
   if (!params.next) {

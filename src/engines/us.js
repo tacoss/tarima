@@ -8,10 +8,13 @@ register_engine('us', function(params) {
     case 'md':
     case 'hbs':
     case 'jade':
-    case 'html':
     case 'less':
     case 'coffee':
       return tpl(params.options.locals);
+  }
+
+  if ('html' === params.next || 'html' === params.ext) {
+    return tpl(params.options.locals);
   }
 
   if (!params.next) {
