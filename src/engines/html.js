@@ -5,7 +5,7 @@ register_engine('html', function(params) {
       fn = new Function('', body);
 
   if ('js' === params.next) {
-    return body;
+    return fn.toString();
   }
 
   if (params.call) {
