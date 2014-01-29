@@ -1,21 +1,25 @@
 
 validateEngine = require('./validate-engines')
 
-module.exports = (from, source, negative) ->
-  try
-    strings = if negative then from.missing else from.contain
-    strings = [strings] if 'object' isnt typeof strings
+assertContain = (source, strings, negative) ->
+  strings = [strings] if 'object' isnt typeof strings
 
-    if strings?.length
-      unless negative and from.params
-        strings.push(value) for value of from.params
-
-      for fragment in strings
-        unless negative
-          expect(source).toContain fragment
-        else
-          expect(source).not.toContain fragment
+  for fragment in strings
+    unless negative
+      expect(source).toContain fragment
     else
-      throw "Missing some asserts for #{from.engine}-engine?"
+      expect(source).not.toContain fragment
+
+
+module.exports = (from, source) ->
+  try
+    unless from.missing or from.contain
+      throw """
+        Missing some asserts for #{from.engine}-engine?
+        #{JSON.stringify from, null, '  '}
+      """
+
+    assertContain(source, from.contain) if from.contain
+    assertContain(source, from.missing, true) if from.missing
   catch e
-    throw e
+    throw "Failed asserts for #{from.engine}-engine (#{e.message})"

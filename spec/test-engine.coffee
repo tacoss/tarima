@@ -13,13 +13,13 @@ spec = (file, fixture) ->
 
     if fixture.validate
       expect(-> file_engine[callback](fixture.params)).not.toThrow()
-      expect(-> check(fixture, file_engine[callback](fixture.params))).not.toThrow()
       expect(-> validateEngine(fixture.engine).pass(file_engine[callback](fixture.params))).not.toThrow()
 
     if fixture.invalidate
       expect(-> file_engine[callback](fixture.params)).not.toThrow()
-      expect(-> check(fixture, file_engine[callback](fixture.params), true)).not.toThrow()
       expect(-> validateEngine(fixture.engine).notPass(file_engine[callback](fixture.params))).not.toThrow()
+
+    expect(-> check(fixture, file_engine[callback](fixture.params))).not.toThrow()
 
 
 module.exports = (engine) ->
