@@ -1,35 +1,16 @@
 js:
-  dummy: "function anonymous(locals_){with(locals_||{}){}}"
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
   contain:
     - "function anonymous(locals_)"
     - "with(locals_||{})"
 
-foo_js:
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
+  fixtures:
+    foo.js:
+      label: should return js-code as is
+      source: return 2 * 3
+      missing: 6
 
-foo_js_js:
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
-
-foo_js_js_js:
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
-
-foo_js_bar:
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
-  contain: " + n + "
-
-tpl_foo_js:
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
-  params:
-    n: "evaluated javascript"
-
-tpl_foo_js_bar:
-  source: |
-    return '|{{#i}}' + n + "{{/i}}"
-  contain: " + n + "
+    foo.bar.js:
+      label: should return the executed js-code
+      source: return 2 + 2
+      contain: 4
+      compiles: true

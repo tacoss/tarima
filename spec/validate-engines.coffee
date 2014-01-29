@@ -15,14 +15,19 @@
 
 tarimaFixtures = require('./tarima-fixtures')
 
-runTest = (source, invalidateEngine) ->
+runTest = (source, negative) ->
   (type) ->
     unless fragments = tarimaFixtures(type)
       throw "Engine '#{type}' not supported?"
 
-    if fragments.contain?.length
+    contains = fragments[if negative then 'missing' else 'contain']
+
+    if contains?.length
+      if source.actual is undefined
+        throw "Unrecognized output for #{type}-engine (#{source.actual})"
+
       try
-        for code in fragments.contain
+        for code in contains
           source.should.toContain(code) if code
       catch e
         throw """
@@ -46,11 +51,11 @@ getValidator = (type) ->
       getValidator(subtype).notPass(src)
 
   truthyEngine = (src) ->
-    runTest(getExpect(src), invalidate(src))(type)
+    runTest(getExpect(src))(type)
     getExpect(src)
 
   falsyEngine = (src) ->
-    runTest(getExpect(src, true), invalidate(src))(type)
+    runTest(getExpect(src, true), true)(type)
     getExpect(src)
 
   pass: (src) -> truthyEngine src

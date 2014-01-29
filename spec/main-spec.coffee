@@ -1,14 +1,12 @@
 
 engines = require('./engines')
 
-global.jade = require('jade').runtime
-
 validateEngine = require('./validate-engines')
-tarimaFixtures = require('./tarima-fixtures')
 testEngine = require('./test-engine')
+tarima = require('../lib/tarima')
 
 
-describe 'Tarima will take care:', ->
+describe 'Tarima will', ->
   xit 'should expose a reasonable version for debug', ->
     expect(tarima.version).not.toBeUndefined()
     expect(tarima.version.major).toMatch /^\d+$/
@@ -16,47 +14,18 @@ describe 'Tarima will take care:', ->
     expect(tarima.version.micro).toMatch /^\d+$/
     expect(tarima.version.date).toMatch /^\d{8}$/
 
-  describe 'validateEngine matcher', ->
+  describe 'validate engines', ->
     it 'would validate unsupported engines', ->
       expect(-> validateEngine().pass()).toThrow()
 
-    for engine in engines
-      continue unless tarimaFixtures(engine).dummy
-
-      describe "#{engine}-engine", ->
-        it "should validate plain #{engine}-code integrity", ->
-          expect(-> validateEngine(engine).pass()).toThrow()
-          expect(-> validateEngine(engine).pass(tarimaFixtures(engine).dummy)).not.toThrow()
-
-  ###
-
-    The idea: pipe out the result from one template to another.
-
-    So, the evaluation order is right to left, if there is no more extensions
-    or cannot be evaluated will return it's source code. Otherwise it will parse.
-
-  ###
-
-  describe 'testing escenario', ->
-    it 'foo will return as is (no-engine)', ->
-      foo = tarimaFixtures('foo')
-
-      expect(foo.partial.render()).toBe foo.result
-      expect(foo.partial.compile()).toBe foo.result
-
-    it 'foo.bar will return as is (unknown bar-engine)', ->
-      foo_bar = tarimaFixtures('foo_bar')
-
-      expect(foo_bar.partial.render()).toBe foo_bar.result
-      expect(foo_bar.partial.compile()).toBe foo_bar.result
-
-    # all-engines
-    for engine in engines
-      describe "#{engine}-engine", ->
-        testEngine(engine)
-
+    testEngine(engine) for engine in engines
 
     ###
+
+      The idea: pipe out the result from one template to another.
+
+      So, the evaluation order is right to left, if there is no more extensions
+      or cannot be evaluated will return it's source code. Otherwise it will parse.
 
       Here is my essay:
 
