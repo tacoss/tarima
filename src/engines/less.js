@@ -16,12 +16,12 @@ register_engine('less', function(params, less) {
     var css, source = [];
 
     if (client) {
-      less.render(prepare(params.source, params.options.locals), function(e, tree) {
+      less.render(prepare(params.source, params.options.locals), function(e, output) {
         if (e) {
           throw new Error(e.message);
         }
 
-        css = tree.toCSS();
+        css = output;
       });
 
       return css;
@@ -63,13 +63,7 @@ register_engine('less', function(params, less) {
     return source.join('');
   }
 
-  if ('css' === params.next || 'css' === params.ext) {
-    return compile()(params.options.locals);
+  if ('less' !== params.next) {
+    return !params.call ? compile()(params.options.locals) : compile();
   }
-
-  if (!params.next) {
-    return compile();
-  }
-
-  return params.source;
 }, require('less'));

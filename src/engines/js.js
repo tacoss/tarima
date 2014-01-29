@@ -13,14 +13,11 @@ register_engine('js', function(params) {
     return new Function('locals_', body);
   };
 
-
-  if ('js' === params.next) {
+  if ('js' === params.ext) {
     return compile().toString();
   }
 
-  if (!params.next) {
-    return compile(!params.call);
+  if (params.call) {
+    return compile();
   }
-
-  return params.source;
 });

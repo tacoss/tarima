@@ -1,35 +1,39 @@
 ract:
-  dummy:
-  params:
-  source:
+  dummy: "return []"
+  source: "<i>{{foo || 'bar'}}</i>"
   contain:
+    - "return"
+    - "["
+    - "]"
 
 foo_ract:
-  params:
-  source:
-  contain:
+  source: "<i>{{foo || 'bar'}}</i>"
 
 foo_ract_ract:
-  params:
-  source:
-  contain:
+  source: "<i>{{foo || 'bar'}}</i>"
 
 foo_ract_ract_ract:
-  params:
-  source:
-  contain:
+  source: "<i>{{foo || 'bar'}}</i>"
 
 foo_ract_bar:
   params:
-  source:
-  contain:
+    foo: "XD"
+  source: "<i>{{foo || 'bar'}}</i>"
 
 tpl_foo_ract:
   params:
-  source:
-  contain:
+    foo: "OK"
+  source: "<i>{{foo || 'bar'}}</i>"
 
 tpl_foo_ract_bar:
+  source: "<i>{{foo || 'bar'}}</i>"
+
+foo_js_ract:
   params:
-  source:
-  contain:
+    foo: "WUTZ"
+  source: "<i>{{foo || 'bar'}}</i>"
+
+foo_ract_js_ract:
+  params:
+    foo: "YEAH!"
+  source: "<i>{{foo || 'bar'}}</i>"

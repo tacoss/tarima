@@ -1,8 +1,7 @@
 coffee:
-  dummy: "function(locals_) {with(locals_||{}){return}}"
+  dummy: "function(){return}"
   source: "-> x = y"
   contain:
-    - "locals_||{}"
     - "function"
     - "return"
 
@@ -19,9 +18,9 @@ foo_coffee_bar:
   source: "-> x = y"
 
 tpl_foo_coffee:
-  source: "-> x = y"
-  contain:
-    - "return x = y"
+  params:
+    y: "OK"
+  source: "y"
 
 tpl_foo_coffee_bar:
   source: "-> x = y"

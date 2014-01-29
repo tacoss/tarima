@@ -63,6 +63,7 @@
   include('engines/ejs.js');
   include('engines/hbs.js');
   include('engines/html.js');
+  include('engines/css.js');
   include('engines/jade.js');
   include('engines/js.js');
   include('engines/json.js');

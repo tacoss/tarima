@@ -1,22 +1,18 @@
 
 register_engine('coffee', function(params, coffee) {
-  var tpl =  coffee.compile(params.source, defs_tpl('coffee', params.options)),
-      compile = function(code) {
-        /* jshint evil:true */
-        return new Function('locals_', 'with(locals_||{}){' + code.toString() + '}');
-      };
+  var body, tpl, fn;
 
+  tpl =  coffee.compile(params.source, defs_tpl('coffee', params.options));
+  body = 'with(locals_||{}){' + tpl.toString() + '} return "";';
 
-  switch (params.next) {
-    case 'js':
-      return compile(tpl).toString();
-    case 'html':
-      return compile(tpl)(params.options.locals);
+  /* jshint evil:true */
+  fn = new Function('locals_', body);
+
+  if ('js' === params.next) {
+    return tpl.toString();
   }
 
-  if (!params.next) {
-    return params.call ? compile(tpl).toString(): compile(tpl);
+  if ('coffee' !== params.next) {
+    return !params.call ? fn(params.options.locals) : fn;
   }
-
-  return params.source;
 }, require('coffee-script'));

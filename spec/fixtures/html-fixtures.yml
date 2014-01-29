@@ -1,35 +1,33 @@
 html:
-  dummy:
-  params:
-  source:
+  dummy: |
+    return "<i><\/i>"
+  source: "<i></i>"
   contain:
+    - "return"
 
 foo_html:
-  params:
-  source:
-  contain:
+  source: "<x />"
 
 foo_html_html:
-  params:
-  source:
-  contain:
+  source: "<x />"
 
 foo_html_html_html:
-  params:
-  source:
-  contain:
+  source: "<x />"
 
 foo_html_bar:
-  params:
-  source:
-  contain:
+  source: "<y></y>"
+  contan: "</y>"
 
 tpl_foo_html:
-  params:
-  source:
-  contain:
+  source: "<y></y>"
+  contain: "<y>"
 
 tpl_foo_html_bar:
-  params:
-  source:
-  contain:
+  source: "<y></y>"
+
+foo_js_html:
+  source: "<a></a>"
+  contain: "</"
+
+foo_html_js_html:
+  source: "<p><span>OK</span></p>"

@@ -1,1 +1,1 @@
-module.exports = ['js', 'jade', 'us', 'hbs', 'less', 'coffee']
+module.exports = ['js', 'html', 'css', 'us', 'jade', 'less', 'coffee', 'ract']
