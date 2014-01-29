@@ -4,13 +4,19 @@ js:
     - "with(locals_||{})"
 
   fixtures:
-    foo.js:
+    foo.js.js:
       label: should return js-code as is
       source: return 2 * 3
       missing: 6
+      validate: no
+
+    foo.js.js.js:
+      label: should return js-code as is
+      source: return 2 + 2
+      contain: 2 + 2
+      validate: no
 
     foo.bar.js:
       label: should return the executed js-code
       source: return 2 + 2
       contain: 4
-      compiles: true
