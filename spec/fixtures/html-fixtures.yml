@@ -1,33 +1,23 @@
 html:
-  dummy: |
-    return "<i><\/i>"
-  source: "<i></i>"
   contain:
-    - "return"
+    - function anonymous()
+    - return
 
-foo_html:
-  source: "<x />"
+  fixtures:
+    foo.html.html:
+      label: should return html-code as is
+      source: <label>text</label>
+      missing: function
+      invalidate: yes
 
-foo_html_html:
-  source: "<x />"
+    foo.html.html.html:
+      label: should return html-code as is
+      source: <b>plain text</b>
+      contain: </b>
+      invalidate: yes
 
-foo_html_html_html:
-  source: "<x />"
-
-foo_html_bar:
-  source: "<y></y>"
-  contan: "</y>"
-
-tpl_foo_html:
-  source: "<y></y>"
-  contain: "<y>"
-
-tpl_foo_html_bar:
-  source: "<y></y>"
-
-foo_js_html:
-  source: "<a></a>"
-  contain: "</"
-
-foo_html_js_html:
-  source: "<p><span>OK</span></p>"
+    foo.bar.html:
+      label: should return the executed html-code
+      source: <a name="top"></a>
+      contain: name="top"
+      invalidate: yes

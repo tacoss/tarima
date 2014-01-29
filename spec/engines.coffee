@@ -1,1 +1,1 @@
-module.exports = ['js']
+module.exports = ['js', 'css', 'html']

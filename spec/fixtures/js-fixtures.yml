@@ -8,15 +8,16 @@ js:
       label: should return js-code as is
       source: return 2 * 3
       missing: 6
-      validate: no
+      invalidate: yes
 
     foo.js.js.js:
       label: should return js-code as is
       source: return 2 + 2
       contain: 2 + 2
-      validate: no
+      invalidate: yes
 
     foo.bar.js:
       label: should return the executed js-code
       source: return 2 + 2
       contain: 4
+      invalidate: yes

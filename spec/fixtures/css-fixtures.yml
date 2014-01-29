@@ -1,33 +1,23 @@
 css:
-  dummy: |
-    return "a: hover { text-decoration: none; }"
-  source: "a:hover { text-decoration: none; } "
   contain:
-    - "return"
+    - function anonymous()
+    - return
 
-foo_css:
-  source: "[hidden] { display: none }"
+  fixtures:
+    foo.css.css:
+      label: should return css-code as is
+      source: "body { color: red }"
+      contain: "color: red"
+      invalidate: yes
 
-foo_css_css:
-  source: "[hidden] { display: none }"
+    foo.css.css.css:
+      label: should return css-code as is
+      source: "a { font-weight: bold }"
+      missing: return
+      invalidate: yes
 
-foo_css_css_css:
-  source: "[hidden] { display: none }"
-
-foo_css_bar:
-  source: "b { font-weight: bold }"
-  contain: "b "
-
-tpl_foo_css:
-  source: "b { font-weight: bold }"
-  contain: "bold"
-
-tpl_foo_css_bar:
-  source: "b { font-weight: bold }"
-
-foo_js_css:
-  source: ".hidden { display: none; }"
-  contain: ".hidden"
-
-foo_css_js_css:
-  source: ".foo .bar { candy: does nothing; }"
+    foo.bar.css:
+      label: should return the executed css-code
+      source: "body { color: red }"
+      missing: function
+      invalidate: yes
