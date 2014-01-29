@@ -23,7 +23,7 @@ runTest = (source, invalidateEngine) ->
     if fragments.contain?.length
       try
         for code in fragments.contain
-          source.should.toContain(code)
+          source.should.toContain(code) if code
       catch e
         throw """
           Invalid source for #{type}-engine (#{source.actual})

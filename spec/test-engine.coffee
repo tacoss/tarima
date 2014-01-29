@@ -78,7 +78,7 @@ module.exports = (engine) ->
         expect(-> validateEngine(engine).pass(foo_js_js_engine.render(foo_js_engine.params))).not.toThrow()
         expect(-> validateEngine(engine).pass(foo_js_js_engine.compile(foo_js_engine.params))).not.toThrow()
 
-    describe "foo.js.#{engine}.js", ->
+    xdescribe "foo.js.#{engine}.js", ->
       foo_js_engine_js = foo_js_engine.partial.override("foo.js.#{engine}.js")
 
       it "using compile() and render() would throw error due invalid valid js-code (js-engine, #{engine} into js, ...)", ->
@@ -114,7 +114,6 @@ module.exports = (engine) ->
     it "should execute and return from #{engine}-code (#{engine}-engine, unknown foo-engine)", ->
       tpl_foo_engine = tarimaFixtures("tpl_foo_#{engine}")
 
-      testParamsAndContains tpl_foo_engine
       expect(-> validateEngine(engine).notPass(tpl_foo_engine.partial.render(tpl_foo_engine.params))).not.toThrow()
       expect(-> validateEngine(engine).notPass(tpl_foo_engine.partial.compile(tpl_foo_engine.params))).not.toThrow()
 
