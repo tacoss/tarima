@@ -8,7 +8,5 @@ register_engine('css', function(params) {
     return fn.toString();
   }
 
-  if (!params.next) {
-    return params.call ? fn : fn.toString();
-  }
+  return fn;
 });

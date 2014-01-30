@@ -3,38 +3,40 @@ js:
     foo.js:
       label: should return js-code as is
       source: return 8 / 2
-      missing: 4
-      invalidate: true
+      sameinput: true
 
     foo.js.js:
       label: should return js-code as is
       source: return 2 * 3
-      missing: 6
-      invalidate: true
+      sameinput: true
 
     foo.js.js.js:
       label: should return js-code as is
       source: return 2 + 2
-      contain: 2 + 2
-      invalidate: true
+      sameinput: true
 
     foo.bar.js:
       label: should return the evaluated js-code
       source: return 2 + 2
-      contain: 4
       invalidate: true
+      contain: 4
 
     foo.baz.js:
-      label: should throws and error due invalid js-code
+      label: throws an error due invalid js-code
       source: foo candy
       throws: true
 
-    foo.bar.js.css:
-      label: should return precompiled css-code
+    foo.buzz.js.css:
+      label: should return css-code as is
       source: ".hidden { display: none }"
-      validate: true
+      sameinput: true
 
     foo.js.js.html:
       label: should return precompiled html-code
       source: <some><invalid><markup>
       validate: true
+
+    foo.buzz.js.html:
+      label: should return html-code as is
+      source: <candy /><bar />
+      sameinput: true

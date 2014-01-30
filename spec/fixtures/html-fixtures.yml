@@ -3,17 +3,14 @@ html:
     foo.html.html:
       label: should return html-code as is
       source: <label>text</label>
-      missing: function
-      invalidate: true
+      sameinput: true
 
     foo.html.html.html:
       label: should return html-code as is
       source: <b>plain text</b>
-      contain: </b>
-      invalidate: true
+      sameinput: true
 
-    foo.bar.html:
-      label: should return the evaluated html-code
-      source: <a name="top"></a>
-      contain: name="top"
-      invalidate: true
+    foo.baz.html:
+      label: should return html-code as is
+      source: invalid html-code
+      sameinput: true

@@ -3,7 +3,17 @@ css:
     foo.css:
       label: should return css-code as is
       source: "p { margin-top: 0 }"
-      novalidate: true
+      sameinput: true
+
+    foo.css.css:
+      label: should return css-code as is
+      source: "body { color: red }"
+      contain: "color: red"
+      sameinput: true
+
+    foo.css.css.css:
+      label: should return css-code as is
+      source: "a { font-weight: bold }"
       sameinput: true
 
     foo.js.css:
@@ -12,49 +22,23 @@ css:
       contain: margin-top
       validate: true
 
-    foo.css.js:
-      label: should return js-code as is
+    foo.bar.js:
+      label: throws an error due invalid js-code
       source: invalid js-code
-      missing: function
-      contain: js-code
-      invalidate: true
-      sameinput: true
+      throws: true
 
-    foo.css.html:
-      label: should return html-code as is
-      source: invalid html-code
-      contain: html-code
-      invalidate: true
-      sameinput: true
-
-    foo.css.css:
+    foo.baz.css:
       label: should return css-code as is
       source: "body { color: red }"
-      contain: "color: red"
-      invalidate: true
       sameinput: true
 
-    foo.css.css.css:
-      label: should return css-code as is
-      source: "a { font-weight: bold }"
-      invalidate: true
-      sameinput: true
-
-    foo.bar.css:
-      label: should return css-code as is
-      source: "body { color: red }"
-      invalidate: true
-      sameinput: true
-
-    foo.bar.css.js:
-      label: should return js-code as is
+    foo.buzz.css.js:
+      label: throws an error due invalid js-code
       source: foo candy bar
-      invalidate: true
-      sameinput: true
+      throws: true
 
-    foo.baz.css.html:
+    foo.buzz.css.html:
       label: should return html-code as is
       source: <some><invalid><markup>
       contain: <invalid>
-      invalidate: true
       sameinput: true
