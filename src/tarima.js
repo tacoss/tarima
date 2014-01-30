@@ -59,8 +59,6 @@
   */
 
   include('engines/coffee.js');
-  include('engines/eco.js');
-  include('engines/ejs.js');
   include('engines/hbs.js');
   include('engines/html.js');
   include('engines/css.js');
