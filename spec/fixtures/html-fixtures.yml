@@ -1,23 +1,19 @@
 html:
-  contain:
-    - function anonymous()
-    - return
-
   fixtures:
     foo.html.html:
       label: should return html-code as is
       source: <label>text</label>
       missing: function
-      invalidate: yes
+      invalidate: true
 
     foo.html.html.html:
       label: should return html-code as is
       source: <b>plain text</b>
       contain: </b>
-      invalidate: yes
+      invalidate: true
 
     foo.bar.html:
-      label: should return the executed html-code
+      label: should return the evaluated html-code
       source: <a name="top"></a>
       contain: name="top"
-      invalidate: yes
+      invalidate: true

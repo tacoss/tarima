@@ -1,23 +1,60 @@
 css:
-  contain:
-    - function anonymous()
-    - return
-
   fixtures:
+    foo.css:
+      label: should return css-code as is
+      source: "p { margin-top: 0 }"
+      novalidate: true
+      sameinput: true
+
+    foo.js.css:
+      label: should return precompiled css-code
+      source: "p { margin-top: 0 }"
+      contain: margin-top
+      validate: true
+
+    foo.css.js:
+      label: should return js-code as is
+      source: invalid js-code
+      missing: function
+      contain: js-code
+      invalidate: true
+      sameinput: true
+
+    foo.css.html:
+      label: should return html-code as is
+      source: invalid html-code
+      contain: html-code
+      invalidate: true
+      sameinput: true
+
     foo.css.css:
       label: should return css-code as is
       source: "body { color: red }"
       contain: "color: red"
-      invalidate: yes
+      invalidate: true
+      sameinput: true
 
     foo.css.css.css:
       label: should return css-code as is
       source: "a { font-weight: bold }"
-      missing: return
-      invalidate: yes
+      invalidate: true
+      sameinput: true
 
     foo.bar.css:
-      label: should return the executed css-code
+      label: should return css-code as is
       source: "body { color: red }"
-      missing: function
-      invalidate: yes
+      invalidate: true
+      sameinput: true
+
+    foo.bar.css.js:
+      label: should return js-code as is
+      source: foo candy bar
+      invalidate: true
+      sameinput: true
+
+    foo.baz.css.html:
+      label: should return html-code as is
+      source: <some><invalid><markup>
+      contain: <invalid>
+      invalidate: true
+      sameinput: true

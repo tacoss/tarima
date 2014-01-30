@@ -1,23 +1,40 @@
 js:
-  contain:
-    - "function anonymous(locals_)"
-    - "with(locals_||{})"
-
   fixtures:
+    foo.js:
+      label: should return js-code as is
+      source: return 8 / 2
+      missing: 4
+      invalidate: true
+
     foo.js.js:
       label: should return js-code as is
       source: return 2 * 3
       missing: 6
-      invalidate: yes
+      invalidate: true
 
     foo.js.js.js:
       label: should return js-code as is
       source: return 2 + 2
       contain: 2 + 2
-      invalidate: yes
+      invalidate: true
 
     foo.bar.js:
-      label: should return the executed js-code
+      label: should return the evaluated js-code
       source: return 2 + 2
       contain: 4
-      invalidate: yes
+      invalidate: true
+
+    foo.baz.js:
+      label: should throws and error due invalid js-code
+      source: foo candy
+      throws: true
+
+    foo.bar.js.css:
+      label: should return precompiled css-code
+      source: ".hidden { display: none }"
+      validate: true
+
+    foo.js.js.html:
+      label: should return precompiled html-code
+      source: <some><invalid><markup>
+      validate: true

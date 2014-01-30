@@ -3,21 +3,21 @@ register_engine('js', function(params) {
   var compile = function() {
     var body, fn;
 
-    if (!/^\s*function\s*[\w\s]*(?=\(\s*[$a-zA-Z_])/.test(params.source)) {
+    if (!/^\s*function\b/.test(params.source)) {
       body = 'with(locals_||{}){' + params.source + '}';
     } else {
-      body = 'return (' + params.source + ')(_locals)';
+      body = 'return (' + params.source + ')(locals_)';
     }
 
     /* jshint evil:true */
     return new Function('locals_', body);
   };
 
-  if ('js' === params.ext) {
-    return compile().toString();
+  if ('js' === params.ext || 'js' === params.next) {
+    return params.source;
   }
 
-  if (params.call) {
-    return compile();
+  if (!params.next) {
+    return params.call ? compile() : compile().toString();
   }
 });
