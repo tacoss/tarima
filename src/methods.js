@@ -1,16 +1,12 @@
 
-var util =  {},
-    parsers = {};
+var parsers = {};
 
 var from_source,
     register_engine;
 
-module.exports.add = register_engine = function(type, block, engine) {
-  util[type] = engine;
+module.exports.add = register_engine = function(type, block) {
   parsers[type] = block;
 };
-
-module.exports.util = util;
 
 module.exports.parse = from_source = function(path, source, options) {
   var params = params_tpl(path),
