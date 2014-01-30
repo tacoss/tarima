@@ -13,13 +13,10 @@ assertContain = (source, strings, negative) ->
 
 module.exports = (from, source) ->
   try
-    unless from.fixtures
-      unless from.missing or from.contain
-        unless from.validate or from.invalidate
-          throw """
-            Missing some asserts for #{from.engine}-engine?
-            #{JSON.stringify from, null, '  '}
-          """
+    throw """
+      Missing some asserts for #{from.engine}-engine?
+      #{JSON.stringify from, null, '  '}
+    """ unless from.source
 
     assertContain(source.toString(), from.contain) if from.contain
     assertContain(source.toString(), from.missing, true) if from.missing

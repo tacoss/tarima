@@ -21,13 +21,13 @@ runTest = (type, source, negative) ->
   if negative
     throw "Missing #{type}-code for notPass()" unless source
     throw """
-      False positive function for #{type}-engine
+      Unexpected function for #{type}-engine
       #{source}
     """ if check_function
   else
     throw "Missing #{type}-code for pass()" unless source
     throw """
-      Invalid function for #{type}-engine
+      Expected function for #{type}-engine
       #{source}
     """ unless check_function
 
