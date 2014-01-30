@@ -18,7 +18,10 @@ describe 'Tarima will', ->
     it 'would validate unsupported engines', ->
       expect(-> validateEngine().pass()).toThrow()
 
-    testEngine(engine) for engine in engines
+    for engine in engines
+      expect(-> validateEngine(engine).notPass()).toThrow()
+      expect(-> validateEngine(engine).pass()).toThrow()
+      testEngine(engine)
 
     ###
 

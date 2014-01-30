@@ -7,43 +7,32 @@ tarima = require('../lib/tarima')
 check = require('./checks')
 
 spec = (file, fixture) ->
-  it "#{fixture.label} (#{file})", ->
-    file_engine = tarima.parse file, fixture.source
+  it "#{file} -- #{fixture.label}", ->
     callback = if fixture.compiles then 'compile' else 'render'
+    fixture.partial = tarima.parse file, fixture.source
+    validate fixture, callback
 
-    if fixture.validate
-      expect(-> file_engine[callback](fixture.params)).not.toThrow()
-      expect(-> validateEngine(fixture.engine).pass(file_engine[callback](fixture.params))).not.toThrow()
+validate = (fixture, callback) ->
+  if fixture.validate
+    expect(-> fixture.partial[callback](fixture.params)).not.toThrow()
+    expect(-> validateEngine(fixture.engine).pass(fixture.partial[callback](fixture.params))).not.toThrow()
+  else if fixture.invalidate
+    expect(-> fixture.partial[callback](fixture.params)).not.toThrow()
+    expect(-> validateEngine(fixture.engine).notPass(fixture.partial[callback](fixture.params))).not.toThrow()
 
-    if fixture.invalidate
-      expect(-> file_engine[callback](fixture.params)).not.toThrow()
-      expect(-> validateEngine(fixture.engine).notPass(file_engine[callback](fixture.params))).not.toThrow()
+  unless fixture.throws
+    expect(-> check(fixture, fixture.partial[callback](fixture.params))).not.toThrow()
+  else
+    expect(-> fixture.partial[callback](fixture.params)).toThrow()
 
-    unless fixture.throws
-      expect(-> check(fixture, file_engine[callback](fixture.params))).not.toThrow()
-    else
-      expect(-> file_engine[callback](fixture.params)).toThrow()
+  if fixture.sameinput
+    expect(fixture.partial[callback](fixture.params)).toEqual fixture.source
 
 
 module.exports = (engine) ->
   return unless fixtures = tarimaFixtures(engine)
 
   describe "#{engine}-engine", ->
-    it "should validate plain #{engine}-to-js integrity (file.js.#{engine})", ->
-      fixtures.engine = engine
-      sample = tarima.parse "file.js.#{engine}", ''
-
-      expect(-> sample.render()).not.toThrow()
-      expect(-> sample.compile()).not.toThrow()
-
-      expect(-> validateEngine(engine).pass()).toThrow()
-      expect(-> validateEngine(engine).notPass()).not.toThrow()
-      expect(-> validateEngine(engine).pass(sample.render())).not.toThrow()
-      expect(-> validateEngine(engine).pass(sample.compile())).not.toThrow()
-
-      expect(-> check(fixtures, sample.render())).not.toThrow()
-      expect(-> check(fixtures, sample.compile())).not.toThrow()
-
     if fixtures.fixtures
       for file, fixture of fixtures.fixtures
         fixture.engine = engine

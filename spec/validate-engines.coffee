@@ -15,51 +15,23 @@
 
 tarimaFixtures = require('./fixtures')
 
-runTest = (source, negative) ->
-  (type) ->
-    unless fragments = tarimaFixtures(type)
-      throw "Engine '#{type}' not supported?"
+runTest = (type, source, negative) ->
+  check_function = /\bfunction\s+(anonymous)?\s*\(/.test(source)
 
-    contains = fragments[if negative then 'missing' else 'contain']
-
-    if contains?.length
-      if source.actual is undefined
-        throw "Unrecognized output for #{type}-engine (#{source.actual})"
-
-      try
-        for code in contains
-          source.should.toContain(code) if code
-      catch e
-        throw """
-          Invalid source for #{type}-engine (#{source.actual})
-          #{e.message}
-          #{e.stack}
-        """
-
-getExpect = (that, negative) ->
-  srcTest = if negative
-    expect(that).not
+  if negative
+    throw "Missing #{type}-code for notPass()" unless source
+    throw """
+      False positive function for #{type}-engine
+      #{source}
+    """ if check_function
   else
-    expect(that)
+    throw "Missing #{type}-code for pass()" unless source
+    throw """
+      Invalid function for #{type}-engine
+      #{source}
+    """ unless check_function
 
-  srcTest.should = srcTest
-  srcTest
-
-getValidator = (type) ->
-  invalidate = (src) ->
-    (subtype) ->
-      getValidator(subtype).notPass(src)
-
-  truthyEngine = (src) ->
-    runTest(getExpect(src))(type)
-    getExpect(src)
-
-  falsyEngine = (src) ->
-    runTest(getExpect(src, true), true)(type)
-    getExpect(src)
-
-  pass: (src) -> truthyEngine src
-  notPass: (src) -> falsyEngine src
 
 module.exports = (type) ->
-  getValidator type
+  pass: (src) -> runTest(type, src)
+  notPass: (src) -> runTest(type, src, true)
