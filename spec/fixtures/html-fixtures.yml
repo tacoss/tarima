@@ -1,16 +1,59 @@
 html:
   fixtures:
-    foo.html.html:
-      label: should return html-code as is
-      source: <label>text</label>
-      sameinput: true
+    foo.html.js:
+      label: render() should return the executed js-code
+      source: return '<markup>'
+      invalidate: true
+      contain: <markup>
 
-    foo.html.html.html:
-      label: should return html-code as is
-      source: <b>plain text</b>
-      sameinput: true
+    foo.html.jade:
+      label: render() should return the evaluated jade-code
+      source: "foo: bar"
+      invalidate: true
+      contain: </bar>
 
-    foo.baz.html:
-      label: should return html-code as is
-      source: invalid html-code
-      sameinput: true
+    # foo.html.less:
+    #   label: render() should return the evaluated less-code
+    #   source: "strong { color: lighten(#333, 13) }"
+    #   #invalidate: true
+    #   contain: "#545454"
+
+    # foo.html.coffee:
+    #   label: render() should throws an error (cannot compile coffee-to-html)
+    #   source: "-> 'string'"
+    #   #throws: true
+    #   contain: __
+
+    # foo.html.ract:
+    #   label: render() should throws an error (cannot compile ract-to-html)
+    #   source: "<tag>{{value}}</tag>"
+    #   #throws: true
+    #   contain: __
+
+    # foo.html.hbs:
+    #   params:
+    #     value: OK
+    #   label: render() should return the evaluated hbs-code
+    #   source: "{{value}}"
+    #   #invalidate: true
+    #   contain: __
+
+    # foo.html.us:
+    #   params:
+    #     x: y
+    #   label: render() should return the evaluated us-code
+    #   source: "<%= x %>"
+    #   #invalidate: true
+    #   contain: __
+
+    # foo.html.md:
+    #   label: render() should throws an error (cannot compile md-to-html)
+    #   source: "> markdown"
+    #   #throws: true
+    #   contain: __
+
+    # foo.html.json:
+    #   label: render() should throws an error (cannot compile json-to-html)
+    #   source: "{ foo: 'bar' }"
+    #   #throws: true
+    #   contain: __
