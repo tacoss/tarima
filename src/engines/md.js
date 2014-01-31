@@ -1,23 +1,20 @@
 
-register_engine('md', function(params, marked) {
+register_engine('md', function(params, next) {
   var opts = {},
-      html;
+      html, marked = require('marked');
 
   defaults(opts, defs_tpl('markdown', params.options));
 
   opts.renderer = new marked.Renderer();
-  marked.setOptions(opts);
 
-  html = marked(params.source);
+  html = marked(params.source, opts);
 
   /* jshint evil:true */
   var fn = new Function('', 'return ' + JSON.stringify(html) + ';');
 
-  if ('js' === params.next) {
+  if (next('js')) {
     return fn.toString();
   }
 
-  if ('md' !== params.next) {
-    return !params.call ? html : fn;
-  }
-}, require('marked'));
+  return fn;
+});
