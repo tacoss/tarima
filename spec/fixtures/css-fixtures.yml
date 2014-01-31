@@ -1,44 +1,59 @@
 css:
   fixtures:
-    foo.css:
-      label: should return css-code as is
-      source: "p { margin-top: 0 }"
-      sameinput: true
+    foo.css.js:
+      label: render() should return the executed js-code
+      source: return 'string'
+      invalidate: true
+      contain: string
 
-    foo.css.css:
-      label: should return css-code as is
-      source: "body { color: red }"
-      contain: "color: red"
-      sameinput: true
-
-    foo.css.css.css:
-      label: should return css-code as is
-      source: "a { font-weight: bold }"
-      sameinput: true
-
-    foo.js.css:
-      label: should return precompiled css-code
-      source: "p { margin-top: 0 }"
-      contain: margin-top
-      validate: true
-
-    foo.bar.js:
-      label: throws an error due invalid js-code
-      source: invalid js-code
+    foo.css.html:
+      label: render() should throws an error (cannot compile html-to-css)
+      source: "<div>OK</div>"
       throws: true
 
-    foo.baz.css:
-      label: should return css-code as is
-      source: "body { color: red }"
-      sameinput: true
-
-    foo.buzz.css.js:
-      label: throws an error due invalid js-code
-      source: foo candy bar
+    foo.css.jade:
+      label: render() should throws an error (cannot compile jade-to-css)
+      source: "foo: bar"
       throws: true
 
-    foo.buzz.css.html:
-      label: should return html-code as is
-      source: <some><invalid><markup>
-      contain: <invalid>
-      sameinput: true
+    foo.css.less:
+      label: render() should return the evaluated less-code
+      source: "strong { color: lighten(#333, 13) }"
+      invalidate: true
+      contain: "#545454"
+
+    foo.css.coffee:
+      label: render() should throws an error (cannot compile coffee-to-css)
+      source: "-> 'string'"
+      throws: true
+
+    foo.css.ract:
+      label: render() should throws an error (cannot compile ract-to-css)
+      source: "<tag>{{value}}</tag>"
+      throws: true
+
+    foo.css.hbs:
+      params:
+        value: OK
+      label: render() should return the evaluated hbs-code
+      source: "{{value}}"
+      invalidate: true
+      contain: OK
+
+    foo.css.us:
+      params:
+        x: y
+      label: render() should return the evaluated us-code
+      source: "<%= x %>"
+      invalidate: true
+      contain: y
+
+    foo.css.md:
+      label: render() should throws an error (cannot compile md-to-css)
+      source: "> markdown"
+      throws: true
+
+    foo.css.json:
+      label: render() should throws an error (cannot compile json-to-css)
+      source: "{ foo: 'bar' }"
+      throws: true
