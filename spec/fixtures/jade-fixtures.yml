@@ -1,67 +1,15 @@
 jade:
-  dummy: "function anonymous(locals){var buf = [];)}"
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-  contain:
-    - "function anonymous(locals)"
-    - "var buf = [];"
+  fixtures:
+    # foo.html.jade:
+    #   label: should return html-code from executing the jade-code
+    #   source: |
+    #     p.
+    #       OK
+    #   contain: <p>OK</p>
+    #   invalidate: true
 
-foo_jade:
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-
-foo_jade_jade:
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-
-foo_jade_jade_jade:
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-
-foo_jade_bar:
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-  contain: "p: span:"
-
-tpl_foo_jade:
-  params:
-    ok: '!?'
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-  contain:
-    - "</span>"
-    - "</h1>"
-    - "!?"
-
-tpl_foo_jade_bar:
-  params:
-    ok: '.'
-  source: |
-    h1 I'm {{a||'?'}} template
-    p: span: <%= WUT %>
-    span= ok
-  contain: "p: span:"
-
-foo_js_jade:
-  params:
-    title: "OK"
-  source: |
-    h1= title
-    p= subtitle
-
-foo_jade_js_jade:
-  source: |
-    h1= title
-    p= subtitle
+    # foo.js.jade:
+    #   label: should return html-code as is
+    #   source: "tag(attr, data={x:'y'})"
+    #   compiled: true
+    #   validate: true

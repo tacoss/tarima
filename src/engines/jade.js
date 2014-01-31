@@ -1,16 +1,20 @@
 
-register_engine('jade', function(params, jade) {
-  var compile = function(client) {
+register_engine('jade', function(params, next) {
+  var jade = require('jade');
+
+  var compile = function(client, render) {
     params.options.client = client;
 
-    return jade.compile(params.source, defs_tpl('jade', params.options));
+    return jade[render ? 'render' : 'compile'](params.source, defs_tpl('jade', params.options));
   };
 
-  if ('js' === params.next) {
+  if (!params.call || next('js', 'html')) {
+    if ([params.next, params.ext].indexOf('html') > 0) {
+      return compile(false, true);
+    }
+
     return compile(true).toString();
   }
 
-  if ('jade' !== params.next) {
-    return !params.call ? compile()(params.options.locals) : compile();
-  }
-}, require('jade'));
+  return compile();
+});
