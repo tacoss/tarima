@@ -1,5 +1,7 @@
 
-register_engine('hbs', function(params, Handlebars) {
+register_engine('hbs', function(params) {
+  var Handlebars = require('handlebars');
+
   var compile  = function(client) {
     var method = client ? 'precompile' : 'compile',
         tpl = Handlebars[method](params.source, defs_tpl('handlebars', params.options));
@@ -12,24 +14,9 @@ register_engine('hbs', function(params, Handlebars) {
   };
 
 
-  switch (params.next) {
-    case 'js':
-      return compile(true).toString();
-    case 'md':
-    case 'us':
-    case 'jade':
-    case 'less':
-    case 'coffee':
-      return compile()(params.options.locals);
+  if ([params.next, params.ext].indexOf('js') > 0) {
+    return compile(true).toString();
   }
 
-  if ('html' === params.next || 'html' === params.ext) {
-    return compile()(params.options.locals);
-  }
-
-  if (!params.next) {
-    return compile(!params.call);
-  }
-
-  return params.source;
-}, require('handlebars'));
+  return compile(!params.call);
+});
