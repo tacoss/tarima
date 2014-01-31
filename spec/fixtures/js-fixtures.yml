@@ -1,42 +1,71 @@
 js:
   fixtures:
     foo.js:
-      label: should return js-code as is
+      label: render() should return js-code as is
       source: return 8 / 2
       sameinput: true
 
     foo.js.js:
-      label: should return js-code as is
+      label: render() should return js-code as is
       source: return 2 * 3
       sameinput: true
 
-    foo.js.js.js:
-      label: should return js-code as is
-      source: return 2 + 2
-      sameinput: true
-
     foo.bar.js:
-      label: should return the evaluated js-code
+      label: render() should throws an error (unknown bar-engine)
       source: return 2 + 2
-      invalidate: true
-      contain: 4
-
-    foo.baz.js:
-      label: throws an error due invalid js-code
-      source: foo candy
       throws: true
 
-    foo.buzz.js.css:
-      label: should return css-code as is
+    foo.js.css:
+      label: render() should return the same css-code as function()
       source: ".hidden { display: none }"
-      sameinput: true
+      validate: true
 
-    foo.js.js.html:
-      label: should return precompiled html-code
+    foo.js.html:
+      label: render() should return the same html-code as function()
       source: <some><invalid><markup>
       validate: true
 
-    foo.buzz.js.html:
-      label: should return html-code as is
-      source: <candy /><bar />
-      sameinput: true
+    foo.js.jade:
+      label: render() should return the compiled jade-code as function()
+      source: "div: span OK"
+      contain: </div>
+      validate: true
+
+    foo.js.less:
+      label: render() should return the compiled less-code as function()
+      source: "a { &:hover { color: red } }"
+      contain: "&:hover"
+      validate: true
+
+    foo.js.coffee:
+      label: render() should return the transpiled coffee-code as function()
+      source: "return (-> 'str' + 'ing')()"
+      validate: true
+
+    foo.js.ract:
+      label: render() should return the compiled ract-code as function()
+      source: "<div>{{var}}</div>"
+      validate: true
+      contain: "[{"
+
+    foo.js.hbs:
+      label: render() should return the compiled hbs-code as function()
+      source: "{{#var}}OK{{/var}}"
+      contain: "Handlebars.template"
+
+    foo.js.us:
+      label: render() should return the compiled us-code as function()
+      source: "<p><%= foo %></p>"
+      validate: true
+      contain: __
+
+    foo.js.md:
+      label: render() should return the compiled md-code as function()
+      source: "# A title"
+      validate: true
+      contain: </h1>
+
+    foo.js.json:
+      label: render() should return the json-code as function()
+      source: "{ foo: 'bar' }"
+      validate: true

@@ -13,9 +13,5 @@ register_engine('js', function(params) {
     return new Function('locals_', body);
   };
 
-  if ([params.next, params.ext].indexOf('js') > -1) {
-    return params.source;
-  }
-
   return compile();
 });
