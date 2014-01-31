@@ -1,5 +1,7 @@
 
-register_engine('less', function(params, less) {
+register_engine('less', function(params, next) {
+  var less = require('less');
+
   var prepare = function(code, locals) {
     var out = [];
 
@@ -12,21 +14,7 @@ register_engine('less', function(params, less) {
     return out.concat([code]).join('\n');
   };
 
-  var compile = function(client) {
-    var css, source = [];
-
-    if (client) {
-      less.render(prepare(params.source, params.options.locals), function(e, output) {
-        if (e) {
-          throw new Error(e.message);
-        }
-
-        css = output;
-      });
-
-      return css;
-    }
-
+  var compile = function() {
     return function(locals) {
       if (params.filepath) {
         params.options.syncImport = true;
@@ -50,7 +38,21 @@ register_engine('less', function(params, less) {
   };
 
 
-  if ('js' === params.next) {
+  if (next('js', 'css')) {
+    if ([params.next, params.ext].indexOf('css') > 0) {
+      var css;
+
+      less.render(prepare(params.source, params.options.locals), function(e, output) {
+        if (e) {
+          throw new Error(e.message);
+        }
+
+        css = output;
+      });
+
+      return css;
+    }
+
     var source = [];
 
     source.push('function (locals, options) { var P = new less.Parser(options), L = [], s, k;');
@@ -62,8 +64,4 @@ register_engine('less', function(params, less) {
 
     return source.join('');
   }
-
-  if ('less' !== params.next) {
-    return !params.call ? compile()(params.options.locals) : compile();
-  }
-}, require('less'));
+});

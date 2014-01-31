@@ -1,40 +1,11 @@
 less:
-  dummy: "function (locals){var P = new less.Parser}"
-  source: ".foo { .bar { candy: @does nothing } }"
-  contain:
-    - "function (locals"
-    - "new less.Parser"
+  fixtures:
+    # foo.css.less:
+    #   label: should return html-code as is
+    #   source: "tag(attr, data={x:'y'})"
+    #   contain: ___
 
-foo_less:
-  source: ".foo { .bar { candy: @does nothing } }"
-
-foo_less_less:
-  source: ".foo { .bar { candy: @does nothing } }"
-
-foo_less_less_less:
-  source: ".foo { .bar { candy: @does nothing } }"
-
-foo_less_bar:
-  source: ".foo { .bar { candy: @does nothing } }"
-  contain: "@does"
-
-tpl_foo_less:
-  params:
-    does: 'lulz'
-  source: ".foo { .bar { candy: @does nothing } }"
-  contain: ".foo .bar"
-
-tpl_foo_less_bar:
-  source: ".foo { .bar { candy: @does nothing } }"
-  contain: "@does"
-
-foo_js_less:
-  params:
-    fg: "red"
-  source: |
-    body {
-      color: @fg;
-    }
-
-foo_less_js_less:
-  source: ".foo { .bar { candy: @does nothing } }"
+    # foo.js.less:
+    #   label: should return html-code as is
+    #   source: "tag(attr, data={x:'y'})"
+    #   contain: ___
