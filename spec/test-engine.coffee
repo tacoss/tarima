@@ -8,7 +8,7 @@ check = require('./checks')
 
 spec = (file, fixture) ->
   it "#{file} -- #{fixture.label}", ->
-    callback = if fixture.compiles then 'compile' else 'render'
+    callback = if fixture.compiled then 'compile' else 'render'
     fixture.partial = tarima.parse file, fixture.source
     validate fixture, callback
 
