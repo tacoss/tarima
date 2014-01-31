@@ -16,7 +16,10 @@
 tarimaFixtures = require('./fixtures')
 
 runTest = (type, source, negative) ->
-  check_function = /\bfunction\s+(anonymous)?\s*\(/.test(source)
+  try
+    check_function = 'function' is typeof eval("(#{source})")
+  catch e
+    check_function = false
 
   if negative
     throw "Missing #{type}-code for notPass()" unless source
