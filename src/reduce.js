@@ -3,11 +3,11 @@ var validate = function(next, current) {
   return function() {
     var types = Array.prototype.slice.call(arguments);
 
-    if (types.length && types.indexOf(next) === -1) {
-      throw '.' + current + ' files cannot compile to .' + types.join(', .');
+    if (types.indexOf(next) > -1) {
+      return true;
     }
 
-    return true;
+    throw new Error('.' + current + ' files compiles only to .' + types.join(', .'));
   };
 };
 
@@ -24,17 +24,23 @@ var reduce_tpl = function(params, locals, call) {
       engine;
 
   while (--key >= 0) {
-    engine = parsers[params.type = params.parts[key]];
+    params.type = params.parts[key];
+    engine = parsers[params.type];
 
     if ('function' !== typeof engine) {
-      throw 'Unknown ' + params.parts[key] + '-engine';
+      throw new Error('Unknown ' + params.parts[key] + '-engine');
     }
 
-    params.next = params.parts[key - 1];
-    params.next = parsers[params.next || params.ext] ? params.next || params.ext : false;
+    params.next = params.parts[key - 1] || false;
 
-    params.render = debug_tpl(params, engine)(params, validate(params.next, params.type));
-    params.source = debug_tpl(params, params.render)(locals);
+    if (!parsers[params.next || params.ext]) {
+      throw new Error('cannot resolve ' + params.type + '-to-' + (params.next || params.ext) + ' (' + params.filename + ')');
+    }
+
+    if ([params.next, params.ext].indexOf(params.type) === -1) {
+      params.render = debug_tpl(params, engine)(params, validate(params.next || params.ext, params.type));
+      params.source = debug_tpl(params, params.render)(locals);
+    }
   }
 
   return params;
