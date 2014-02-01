@@ -1,15 +1,37 @@
 jade:
   fixtures:
-    # foo.html.jade:
-    #   label: should return html-code from executing the jade-code
-    #   source: |
-    #     p.
-    #       OK
-    #   contain: <p>OK</p>
-    #   invalidate: true
+    foo.jade.js:
+      label: render() should return the executed js-code
+      source: "return 'foo: bar'"
+      invalidate: true
+      missing: </bar>
 
-    # foo.js.jade:
-    #   label: should return html-code as is
-    #   source: "tag(attr, data={x:'y'})"
-    #   compiled: true
-    #   validate: true
+    foo.jade.html:
+      label: render() should throws an error (cannot compile html-to-jade)
+      source: "foo: bar"
+      throws: true
+
+    foo.jade.less:
+      label: render() should throws an error (cannot compile less-to-jade)
+      source: "strong { color: lighten(#333, 13) }"
+      throws: true
+
+    foo.jade.coffee:
+      label: render() should throws an error (cannot compile coffee-to-jade)
+      source: "-> 'string'"
+      throws: true
+
+    foo.jade.ract:
+      label: render() should throws an error (cannot compile ract-to-jade)
+      source: "<tag>{{value}}</tag>"
+      throws: true
+
+    foo.jade.md:
+      label: render() should throws an error (cannot compile md-to-jade)
+      source: "> markdown"
+      throws: true
+
+    foo.jade.json:
+      label: render() should throws an error (cannot compile json-to-jade)
+      source: "{ foo: 'bar' }"
+      throws: true
