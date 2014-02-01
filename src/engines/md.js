@@ -12,7 +12,11 @@ register_engine('md', function(params, next) {
   /* jshint evil:true */
   var fn = new Function('', 'return ' + JSON.stringify(html) + ';');
 
-  if (next('js')) {
+  if (next('js', 'html')) {
+    if ([params.next, params.ext].indexOf('html') > 0) {
+      return html;
+    }
+
     return fn.toString();
   }
 
