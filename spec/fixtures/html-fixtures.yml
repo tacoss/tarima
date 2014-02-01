@@ -6,6 +6,11 @@ html:
       invalidate: true
       contain: <markup>
 
+    foo.html.css:
+      label: render() should throws an error (cannot compile css-to-html)
+      source: "body { color: #000 }"
+      throws: true
+
     foo.html.jade:
       label: render() should return the evaluated jade-code
       source: "foo: bar"

@@ -6,6 +6,11 @@ jade:
       invalidate: true
       missing: </bar>
 
+    foo.jade.css:
+      label: render() should throws an error (cannot compile css-to-jade)
+      source: "body { color: #000 }"
+      throws: true
+
     foo.jade.html:
       label: render() should throws an error (cannot compile html-to-jade)
       source: "foo: bar"

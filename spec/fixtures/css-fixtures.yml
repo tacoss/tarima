@@ -4,7 +4,7 @@ css:
       label: render() should return the executed js-code
       source: return 'string'
       invalidate: true
-      contain: string
+      mixxing: "'string'"
 
     foo.css.html:
       label: render() should throws an error (cannot compile html-to-css)
