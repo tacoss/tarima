@@ -32,22 +32,6 @@ css:
       source: "<tag>{{value}}</tag>"
       throws: true
 
-    foo.css.hbs:
-      params:
-        value: OK
-      label: render() should return the evaluated hbs-code
-      source: "{{value}}"
-      invalidate: true
-      contain: OK
-
-    foo.css.us:
-      params:
-        x: y
-      label: render() should return the evaluated us-code
-      source: "<%= x %>"
-      invalidate: true
-      contain: y
-
     foo.css.md:
       label: render() should throws an error (cannot compile md-to-css)
       source: "> markdown"

@@ -27,24 +27,8 @@ html:
       source: "<tag>{{value}}</tag>"
       throws: true
 
-    foo.html.hbs:
-      params:
-        value: OK
-      label: render() should return the evaluated hbs-code
-      source: "{{value}}"
-      invalidate: true
-      contain: OK
-
-    foo.html.us:
-      params:
-        x: y
-      label: render() should return the evaluated us-code
-      source: "<%= x %>"
-      invalidate: true
-      contain: y
-
     foo.html.md:
-      label: render() should return the genrated html-code
+      label: render() should return the generated html-code
       source: "> markdown"
       invalidate: true
       contain: </blockquote>
