@@ -5,7 +5,7 @@ register_engine('html', function(params, next) {
       fn = new Function('', body);
 
   if (next('js', 'ract')) {
-    if ([params.next, params.ext].indexOf('js') > 0) {
+    if ([params.next, params.ext].indexOf('js') > -1) {
       return fn.toString();
     }
 

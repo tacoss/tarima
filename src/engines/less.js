@@ -39,7 +39,7 @@ register_engine('less', function(params, next) {
 
 
   if (next('js', 'css')) {
-    if ([params.next, params.ext].indexOf('css') > 0) {
+    if ([params.next, params.ext].indexOf('css') > -1) {
       var css;
 
       less.render(prepare(params.source, params.options.locals), function(e, output) {

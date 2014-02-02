@@ -33,11 +33,11 @@ register_engine('md', function(params, next) {
   if (next('js', 'html', 'ract', 'coffee')) {
     var exts = [params.next, params.ext];
 
-    if (exts.indexOf('coffee') > 0) {
+    if (exts.indexOf('coffee') > -1) {
       return fixLiterate(params.source);
     }
 
-    if (exts.indexOf('js') > 0) {
+    if (exts.indexOf('js') > -1) {
       return fn.toString();
     }
 

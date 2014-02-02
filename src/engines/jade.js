@@ -9,7 +9,7 @@ register_engine('jade', function(params, next) {
   };
 
   if (!params.call || next('js', 'html', 'ract')) {
-    if ([params.next, params.ext].indexOf('js') > 0) {
+    if ([params.next, params.ext].indexOf('js') > -1) {
       return compile(true).toString();
     }
 

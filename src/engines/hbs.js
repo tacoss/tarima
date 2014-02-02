@@ -14,7 +14,7 @@ register_engine('hbs', function(params) {
   };
 
 
-  if ([params.next, params.ext].indexOf('js') > 0) {
+  if ([params.next, params.ext].indexOf('js') > -1) {
     return compile(true).toString();
   }
 
