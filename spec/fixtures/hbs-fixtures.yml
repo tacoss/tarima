@@ -1,2 +1,42 @@
 hbs:
   fixtures:
+    foo.hbs.js:
+      label: render() should return the executed js-code
+      source: "return '{{#foo}}bar{{/foo}}'"
+      invalidate: true
+      contain: bar
+
+    foo.hbs.css:
+      label: render() should throws an error (cannot compile css-to-hbs)
+      source: "body { color: #000 }"
+      throws: true
+
+    foo.hbs.html:
+      label: render() should throws an error (cannot compile html-to-hbs)
+      source: <markup>
+      throws: true
+
+    foo.hbs.jade:
+      label: render() should throws an error (cannot compile jade-to-hbs)
+      source: "foo: bar"
+      throws: true
+
+    foo.hbs.less:
+      label: render() should throws an error (cannot compile less-to-hbs)
+      source: "a { &:hover { color: red } }"
+      throws: true
+
+    foo.hbs.coffee:
+      label: render() should throws an error (cannot compile coffee-to-hbs)
+      source: "-> 'string'"
+      throws: true
+
+    foo.hbs.ract:
+      label: render() should throws an error (cannot compile ract-to-hbs)
+      source: "<tag>{{value}}</tag>"
+      throws: true
+
+    foo.hbs.md:
+      label: render() should throws an error (cannot compile md-to-hbs)
+      source: "> markdown"
+      throws: true

@@ -1,2 +1,42 @@
 us:
   fixtures:
+    foo.us.js:
+      label: render() should return the executed js-code
+      source: "return '<%= x %>'"
+      invalidate: true
+      contain: x
+
+    foo.us.css:
+      label: render() should throws an error (cannot compile css-to-us)
+      source: "body { color: #000 }"
+      throws: true
+
+    foo.us.html:
+      label: render() should throws an error (cannot compile html-to-us)
+      source: <markup>
+      throws: true
+
+    foo.us.jade:
+      label: render() should throws an error (cannot compile jade-to-us)
+      source: "foo: bar"
+      throws: true
+
+    foo.us.less:
+      label: render() should throws an error (cannot compile less-to-us)
+      source: "a { &:hover { color: red } }"
+      throws: true
+
+    foo.us.coffee:
+      label: render() should throws an error (cannot compile coffee-to-us)
+      source: "-> 'string'"
+      throws: true
+
+    foo.us.ract:
+      label: render() should throws an error (cannot compile ract-to-us)
+      source: "<tag>{{value}}</tag>"
+      throws: true
+
+    foo.us.md:
+      label: render() should throws an error (cannot compile md-to-us)
+      source: "> markdown"
+      throws: true
