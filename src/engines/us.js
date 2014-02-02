@@ -2,8 +2,12 @@
 register_engine('us', function(params) {
   var tpl = _.template(params.source, null, defs_tpl('lodash', params.options));
 
-  if (!params.next || 'js' === params.next) {
+  if ('js' === params.next || (!params.next && 'js' === params.ext)) {
     return tpl.toString();
+  }
+
+  if (!params.next) {
+    return tpl(params.options.locals);
   }
 
   return tpl;

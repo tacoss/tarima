@@ -14,8 +14,12 @@ register_engine('hbs', function(params, next) {
   };
 
 
-  if (!params.next || 'js' === params.next) {
+  if ('js' === params.next || (!params.next && 'js' === params.ext)) {
     return compile(true).toString();
+  }
+
+  if (!params.next) {
+    return compile()(params.options.locals);
   }
 
   return compile(!params.call);

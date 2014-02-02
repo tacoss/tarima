@@ -15,6 +15,8 @@ Precompile your templates with style:
 **script.js**
 
 ```javascript
+global.Handlebars = require('handlebars-runtime');
+
 var config = require('tarima').load('config.json.hbs.us');
 
 var data = {
@@ -29,12 +31,13 @@ var data = {
 
 var fs = require('fs');
 
-fs.writeFileSync('config.json.hbs', 'module.exports = ' + config.toSource(data) + ';');
-fs.writeFileSync('config.json', config.compile(data));
+fs.writeFileSync('config.json.hbs', 'module.exports = ' + config.compile(data) + ';');
+fs.writeFileSync('config.json', config.render(data));
 
 var test = JSON.parse(fs.readFileSync('config.json'));
 
 console.log(test.main.other == 'setting'); // true
+
 ```
 
 [![Build Status](https://travis-ci.org/pateketrueke/tarima.png)](https://travis-ci.org/pateketrueke/tarima)
