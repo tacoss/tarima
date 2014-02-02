@@ -42,6 +42,14 @@ js:
       source: "return (-> 'str' + 'ing')()"
       validate: true
 
+    foo.js.litcoffee:
+      label: render() should return the transpiled coffee-code as function()
+      source: |
+        # title
+            fun = ->
+      validate: true
+      contain: fun = function
+
     foo.js.ract:
       label: render() should return the compiled ract-code as function()
       source: "<div>{{var}}</div>"

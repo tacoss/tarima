@@ -37,7 +37,7 @@ coffee:
         # title
             fun = ->
       invalidate: true
-      contain: "# title"
+      contain: "# # title"
 
     foo.coffee.md:
       label: render() should return the coffee-code as is (with md-code as comments)
