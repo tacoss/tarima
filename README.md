@@ -15,7 +15,7 @@ Precompile your templates with style:
 **script.js**
 
 ```javascript
-global.Handlebars = require('handlebars-runtime');
+global.Handlebars = require('handlebars-runtime'); // required for hbs, jade and less
 
 var config = require('tarima').load('config.json.hbs.us');
 
