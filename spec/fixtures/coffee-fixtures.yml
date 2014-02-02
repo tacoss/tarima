@@ -1,2 +1,53 @@
 coffee:
   fixtures:
+    foo.coffee.js:
+      label: render() should return the executed js-code
+      source: "return '-> \\'string\\''"
+      invalidate: true
+      contain: string
+
+    foo.coffee.css:
+      label: render() should throws an error (cannot compile css-to-coffee)
+      source: "body { color: #000 }"
+      throws: true
+
+    foo.coffee.html:
+      label: render() should throws an error (cannot compile html-to-coffee)
+      source: <markup>
+      throws: true
+
+    foo.coffee.jade:
+      label: render() should throws an error (cannot compile jade-to-coffee)
+      source: "foo: bar"
+      throws: true
+
+    foo.coffee.less:
+      label: render() should throws an error (cannot compile less-to-coffee)
+      source: "a { &:hover { color: red } }"
+      throws: true
+
+    foo.coffee.ract:
+      label: render() should throws an error (cannot compile ract-to-coffee)
+      source: "<tag>{{value}}</tag>"
+      throws: true
+
+    foo.litcoffee:
+      label: render() should be treated as .coffee.md (see below)
+      source: |
+        # title
+            fun = ->
+      invalidate: true
+      contain: "# title"
+
+    foo.coffee.md:
+      label: render() should return the coffee-code as is (with md-code as comments)
+      source: |
+        # title
+            fun = ->
+      invalidate: true
+      contain: "# # title"
+
+    foo.coffee.json:
+      label: render() should throws an error (cannot compile json-to-coffee)
+      source: "-> 'string'"
+      throws: true

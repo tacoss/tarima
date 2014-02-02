@@ -4,8 +4,7 @@ var params_tpl = function(path) {
 
 
   fullpath = path.split('/');
-  filename = fullpath.pop();
-  filename = filename.replace('coffee.md', 'litcoffee');
+  filename = fullpath.pop().replace('.litcoffee', '.coffee.md');
 
   parts = filename.split('.');
   name = parts.shift();

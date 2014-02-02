@@ -15,11 +15,6 @@ var reduce_tpl = function(params, locals, call) {
   params.call = call;
   params.options.locals = locals || {};
 
-  if (params.type === 'litcoffee') {
-    params.options.literate = true;
-    params.type = 'coffee';
-  }
-
   var key = params.parts.length,
       engine;
 
@@ -28,7 +23,7 @@ var reduce_tpl = function(params, locals, call) {
     engine = parsers[params.type];
 
     if ('function' !== typeof engine) {
-      throw new Error('Unknown ' + params.parts[key] + '-engine');
+      throw new Error('Unknown ' + params.type + '-engine');
     }
 
     params.next = params.parts[key - 1] || false;
