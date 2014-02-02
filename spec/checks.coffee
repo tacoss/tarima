@@ -16,7 +16,7 @@ module.exports = (from, source) ->
     throw """
       Missing some asserts for #{from.engine}-engine?
       #{JSON.stringify from, null, '  '}
-    """ unless from.source
+    """ unless from.source or (from.validate or from.invalidate)
 
     assertContain(source.toString(), from.contain) if from.contain
     assertContain(source.toString(), from.missing, true) if from.missing
