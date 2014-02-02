@@ -106,12 +106,12 @@ describe 'Tarima will', ->
       '''
 
       expect(foo_litcoffee_hbs_us.render(title: off)).toContain 'class Klass'
-      expect(foo_litcoffee_hbs_us.compile(title: off)).toContain 'Handlebars.template'
+      expect(foo_litcoffee_hbs_us.compile(title: off)).not.toContain 'Handlebars.template'
 
-      expect(foo_litcoffee_hbs_us.render(title: 'FTW')).toContain '# # FTW'
       expect(foo_litcoffee_hbs_us.render(title: 'FTW')).toContain 'class Klass'
+      expect(foo_litcoffee_hbs_us.render(title: 'FTW')).not.toContain '# # FTW'
       expect(foo_litcoffee_hbs_us.render(title: 'FTW')).not.toContain 'fun = ->'
 
       expect(foo_litcoffee_hbs_us.render(option: on, title: off)).toContain 'fun = ->'
-      expect(foo_litcoffee_hbs_us.render(option: on, title: off)).toContain '# # Untitled'
+      expect(foo_litcoffee_hbs_us.render(option: on, title: off)).not.toContain '# # Untitled'
       expect(foo_litcoffee_hbs_us.render(option: on, title: off)).not.toContain 'class Klass'

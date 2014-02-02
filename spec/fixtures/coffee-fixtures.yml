@@ -37,15 +37,15 @@ coffee:
         # title
             fun = ->
       invalidate: true
-      contain: "# # title"
+      missing: "# # title"
 
     foo.coffee.md:
-      label: render() should return the coffee-code as is (with md-code as comments)
+      label: render() should return the coffee-code as is (strips md-code)
       source: |
         # title
             fun = ->
       invalidate: true
-      contain: "# # title"
+      missing: "# # title"
 
     foo.coffee.json:
       label: render() should throws an error (cannot compile json-to-coffee)
