@@ -92,3 +92,26 @@ describe 'Tarima will', ->
       Look at src/tarima.js for more info.
 
     ###
+
+  describe 'piping engines', ->
+    it 'foo.litcoffee.hbs.us -- render() should produce modified coffee-code as is', ->
+      foo_litcoffee_hbs_us = tarima.parse 'foo.litcoffee.hbs.us', '''
+        # <%= title || 'Untitled' %>
+
+        {{#option}}
+            fun = ->
+        {{/option}}{{^option}}
+            class Klass; fun = new Klass
+        {{/option}}
+      '''
+
+      expect(foo_litcoffee_hbs_us.render(title: off)).toContain 'class Klass'
+      expect(foo_litcoffee_hbs_us.compile(title: off)).toContain 'Handlebars.template'
+
+      expect(foo_litcoffee_hbs_us.render(title: 'FTW')).toContain '# # FTW'
+      expect(foo_litcoffee_hbs_us.render(title: 'FTW')).toContain 'class Klass'
+      expect(foo_litcoffee_hbs_us.render(title: 'FTW')).not.toContain 'fun = ->'
+
+      expect(foo_litcoffee_hbs_us.render(option: on, title: off)).toContain 'fun = ->'
+      expect(foo_litcoffee_hbs_us.render(option: on, title: off)).toContain '# # Untitled'
+      expect(foo_litcoffee_hbs_us.render(option: on, title: off)).not.toContain 'class Klass'

@@ -1,5 +1,5 @@
 
-register_engine('hbs', function(params) {
+register_engine('hbs', function(params, next) {
   var Handlebars = require('handlebars');
 
   var compile  = function(client) {
@@ -14,7 +14,7 @@ register_engine('hbs', function(params) {
   };
 
 
-  if ([params.next, params.ext].indexOf('js') > -1) {
+  if (!params.next || 'js' === params.next) {
     return compile(true).toString();
   }
 
