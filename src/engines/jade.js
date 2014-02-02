@@ -8,12 +8,12 @@ register_engine('jade', function(params, next) {
     return jade[render ? 'render' : 'compile'](params.source, defs_tpl('jade', params.options));
   };
 
-  if (!params.call || next('js', 'html')) {
-    if ([params.next, params.ext].indexOf('html') > 0) {
-      return compile(false, true);
+  if (!params.call || next('js', 'html', 'ract')) {
+    if ([params.next, params.ext].indexOf('js') > 0) {
+      return compile(true).toString();
     }
 
-    return compile(true).toString();
+    return compile(false, true);
   }
 
   return compile();

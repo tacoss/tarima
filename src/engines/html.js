@@ -4,8 +4,12 @@ register_engine('html', function(params, next) {
   var body = 'return ' + JSON.stringify(params.source) + ';',
       fn = new Function('', body);
 
-  if (next('js')) {
-    return fn.toString();
+  if (next('js', 'ract')) {
+    if ([params.next, params.ext].indexOf('js') > 0) {
+      return fn.toString();
+    }
+
+    return params.source;
   }
 
   return fn;
