@@ -9,6 +9,8 @@ var fixLiterate = function(code) {
 
     if (match && match[1]) {
       out.push(line.substr(match[1].length));
+    } else if (/^\s*$/.test(line)) {
+      out.push('');
     }
   }
 
