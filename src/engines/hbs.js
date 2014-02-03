@@ -18,9 +18,5 @@ register_engine('hbs', function(params, next) {
     return compile(true).toString();
   }
 
-  if (!params.next) {
-    return compile()(params.options.locals);
-  }
-
-  return compile(!params.call);
+  return compile()(params.options.locals);
 });

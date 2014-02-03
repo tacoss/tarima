@@ -6,9 +6,5 @@ register_engine('us', function(params) {
     return tpl.toString();
   }
 
-  if (!params.next) {
-    return tpl(params.options.locals);
-  }
-
-  return tpl;
+  return tpl(params.options.locals);
 });
