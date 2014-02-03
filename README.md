@@ -15,8 +15,7 @@ Precompile your templates with style:
 **script.js**
 
 ```javascript
-global.Handlebars = require('handlebars-runtime'); // required for hbs, jade and less
-
+// runtime-jade, handlebars-runtime and less MUST be included to run at client-side
 var config = require('tarima').load('config.json.hbs.us');
 
 var data = {
@@ -37,7 +36,6 @@ fs.writeFileSync('config.json', config.render(data));
 var test = JSON.parse(fs.readFileSync('config.json'));
 
 console.log(test.main.other == 'setting'); // true
-
 ```
 
 [![Build Status](https://travis-ci.org/pateketrueke/tarima.png)](https://travis-ci.org/pateketrueke/tarima)
