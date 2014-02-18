@@ -3,10 +3,6 @@
   "version": "0.3.1",
   "description": "Multi-templating for NodeJS",
   "main": "lib/tarima.js",
-  "scripts": {
-    "test": "node_modules/.bin/grunt",
-    "prepublish": "node_modules/.bin/grunt expand-include"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/pateketrueke/tarima.git"
