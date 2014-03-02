@@ -4,7 +4,7 @@ function Partial(params) {
 }
 
 Partial.prototype.override = function(path, source) {
-  var params = _.merge(_.cloneDeep(this.params), params_tpl(path));
+  var params = _.extend({}, _.cloneDeep(this.params), params_tpl(path));
 
   if (source) {
     params.source = source;
