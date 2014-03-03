@@ -6,10 +6,6 @@ var options = {
   jade: {
     compileDebug: false
   },
-  ejs: {
-    client: true,
-    compileDebug: false
-  },
   marked: {
     gfm: true,
     tables: true,
