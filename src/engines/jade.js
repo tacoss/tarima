@@ -3,9 +3,15 @@ register_engine('jade', function(params, next) {
   var jade = require('jade');
 
   var compile = function(client) {
+    var prefix = '';
+
+    if (params.options.includes && params.options.includes.jade) {
+      prefix = params.options.includes.jade.join('\n');
+    }
+
     params.options.client = client;
 
-    return jade.compile(params.source, defs_tpl('jade', params.options));
+    return jade.compile((prefix ? prefix + '\n' : '') + params.source, defs_tpl('jade', params.options));
   };
 
   if (!params.call || next('js', 'html', 'ract')) {

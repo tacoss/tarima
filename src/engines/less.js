@@ -3,7 +3,12 @@ register_engine('less', function(params, next) {
   var less = require('less');
 
   var prepare = function(code, locals) {
-    var out = [];
+    var out = [],
+        prefix = '';
+
+    if (params.options.includes && params.options.includes.less) {
+      prefix = params.options.includes.less.join('\n');
+    }
 
     for (var key in locals) {
       if (/boolean|number|string/.test(typeof locals[key])) {
@@ -11,7 +16,7 @@ register_engine('less', function(params, next) {
       }
     }
 
-    return out.concat([code]).join('\n');
+    return out.concat([prefix, code]).join('\n');
   };
 
   var compile = function() {
