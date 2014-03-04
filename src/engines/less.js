@@ -1,14 +1,14 @@
 
 register_engine('less', function(params, next) {
-  var less = require('less');
+  var less = require('less'),
+      prefix = '';
+
+  if (params.options.includes && params.options.includes.less) {
+    prefix = params.options.includes.less.join('\n');
+  }
 
   var prepare = function(code, locals) {
-    var out = [],
-        prefix = '';
-
-    if (params.options.includes && params.options.includes.less) {
-      prefix = params.options.includes.less.join('\n');
-    }
+    var out = [];
 
     for (var key in locals) {
       if (/boolean|number|string/.test(typeof locals[key])) {
@@ -53,7 +53,7 @@ register_engine('less', function(params, next) {
     source.push('function (locals, options) { var P = new less.Parser(options), L = [], s, k;');
     source.push('for (k in locals) if (/boolean|number|string/.test(typeof locals[k]))');
     source.push('L.push("@" + k + ": ~" + JSON.stringify(locals[k].toString()) + ";");');
-    source.push('P.parse(L.join("\\n") + ' + JSON.stringify(params.source));
+    source.push('P.parse(L.join("\\n") + ' + JSON.stringify(prefix + '\n' + params.source));
     source.push(', function(e, T) { s = T.toCSS(); });');
     source.push('return s;}');
 
