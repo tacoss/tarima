@@ -2,6 +2,10 @@
 register_engine('jade', function(params, next) {
   var jade = require('jade');
 
+  if (params.filepath) {
+    params.options.filename = params.filepath + '/' + params.filename;
+  }
+
   var compile = function(client) {
     var prefix = '';
 
