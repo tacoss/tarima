@@ -23,7 +23,6 @@ register_engine('less', function(params, next) {
     return function(locals) {
       if (params.filepath) {
         params.options.syncImport = true;
-        params.options.relativeUrls = true;
         params.options.paths = [params.filepath];
       }
 
