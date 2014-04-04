@@ -11,9 +11,11 @@ module.exports = function(grunt) {
       all: ['lib/**/*.js']
     },
     jasmine_node: {
-      useCoffee: true,
-      extensions: 'coffee',
-      projectRoot: __dirname
+      all: ['spec'],
+      options: {
+        coffee: true,
+        extensions: 'coffee'
+      }
     },
     'expand-include': {
       build: {
