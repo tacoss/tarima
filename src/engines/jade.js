@@ -14,11 +14,9 @@ register_engine('jade', function(params, next) {
       prefix = params.options.includes.jade.join('\n');
     }
 
-    params.options.client = client;
-
     source = (prefix ? prefix + '\n' : '') + params.source;
 
-    var partial = jade.compile(source, defs_tpl('jade', params.options));
+    var partial = jade[client ? 'compileClient' : 'compile'](source, defs_tpl('jade', params.options));
 
     return render ? partial(params.options.locals) : partial;
   };
