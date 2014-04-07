@@ -15,7 +15,7 @@ Precompile your templates with style:
 **script.js**
 
 ```javascript
-// runtime-jade, handlebars-runtime and less MUST be included to run at client-side
+// jade-lib-runtime, handlebars-runtime and less MUST be included to run at client-side
 var config = require('tarima').load('config.json.hbs.us');
 
 var data = {
