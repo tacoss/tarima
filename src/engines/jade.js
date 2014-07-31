@@ -21,12 +21,14 @@ register_engine('jade', function(params, next) {
     return render ? partial(params.options.locals) : partial;
   };
 
-  if (!params.call || next('js', 'html', 'ract')) {
+  if (next('js', 'us', 'hbs', 'html', 'ract')) {
+    if (params.call) {
+      return compile(false, true);
+    }
+
     if (!params.next && 'js' === params.ext) {
       return compile(true).toString();
     }
-
-    return compile(false, true);
   }
 
   return compile();
