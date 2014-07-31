@@ -13,8 +13,7 @@ module.exports = function(grunt) {
     jasmine_node: {
       all: ['spec'],
       options: {
-        coffee: true,
-        extensions: 'coffee'
+        coffee: true
       }
     },
     'expand-include': {
