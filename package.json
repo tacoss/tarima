@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "Multi-templating for NodeJS",
   "main": "lib/tarima.js",
   "repository": {
