@@ -38,4 +38,4 @@ var test = JSON.parse(fs.readFileSync('config.json'));
 console.log(test.main.other == 'setting'); // true
 ```
 
-[![Build Status](https://travis-ci.org/pateketrueke/tarima.png)](https://travis-ci.org/pateketrueke/tarima)
+[![Build Status](https://travis-ci.org/gextech/tarima.png)](https://travis-ci.org/gextech/tarima)
