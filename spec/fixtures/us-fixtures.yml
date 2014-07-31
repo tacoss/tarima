@@ -17,9 +17,11 @@ us:
       throws: true
 
     foo.us.jade:
-      label: render() should throws an error (cannot compile jade-to-us)
+      label: render() should return the executed jade-code as markup for us-engine
       source: "foo: bar"
-      throws: true
+      contain: </foo>
+      throws: false
+      invalidate: true
 
     foo.us.less:
       label: render() should throws an error (cannot compile less-to-us)

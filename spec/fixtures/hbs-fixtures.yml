@@ -17,9 +17,11 @@ hbs:
       throws: true
 
     foo.hbs.jade:
-      label: render() should throws an error (cannot compile jade-to-hbs)
+      label: render() should return the executed jade-code as markup for hbs-engine
       source: "foo: bar"
-      throws: true
+      contain: </foo>
+      throws: false
+      invalidate: true
 
     foo.hbs.less:
       label: render() should throws an error (cannot compile less-to-hbs)

@@ -26,10 +26,10 @@ js:
       validate: true
 
     foo.js.jade:
-      label: render() should return the compiled jade-code as function()
+      label: render() should return the executed jade-code as markup
       source: "div: span OK"
       contain: </div>
-      validate: true
+      validate: false
 
     foo.js.less:
       label: render() should return the compiled less-code as function()
