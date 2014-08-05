@@ -4,7 +4,6 @@ ract:
       label: render() should return the executed js-code
       source: "return '<tag>{{value}}</tag>'"
       invalidate: true
-      contain: </tag>
 
     foo.ract.css:
       label: render() should throws an error (cannot compile css-to-ract)

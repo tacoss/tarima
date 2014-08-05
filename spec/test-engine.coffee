@@ -6,6 +6,9 @@ tarimaFixtures = require('./fixtures')
 tarima = require('../lib/tarima')
 check = require('./checks')
 
+type = (obj) ->
+  Object.prototype.toString.call(obj).match(/object (\w+)/)[1].toLowerCase()
+
 spec = (file, fixture) ->
   it "#{file} -- #{fixture.label}", ->
     callback = if fixture.compiled then 'compile' else 'render'
@@ -27,6 +30,9 @@ validate = (fixture, callback) ->
 
   if fixture.sameinput
     expect(fixture.partial[callback](fixture.params)).toEqual fixture.source
+
+  if fixture.typeof
+    expect(type(fixture.partial[callback](fixture.params))).toBe fixture.typeof
 
 
 module.exports = (engine) ->

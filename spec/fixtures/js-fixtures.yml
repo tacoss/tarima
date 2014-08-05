@@ -16,14 +16,14 @@ js:
       throws: true
 
     foo.js.css:
-      label: render() should return the same css-code as function()
+      label: render() should return the same css-code as is
       source: ".hidden { display: none }"
-      validate: true
+      sameinput: true
 
     foo.js.html:
-      label: render() should return the same html-code as function()
+      label: render() should return the same html-code as is
       source: <some><invalid><markup>
-      validate: true
+      sameinput: true
 
     foo.js.jade:
       label: render() should return the executed jade-code as markup
@@ -32,48 +32,53 @@ js:
       validate: false
 
     foo.js.less:
-      label: render() should return the compiled less-code as function()
+      label: render() should return the executed less-code as css-code
       source: "a { &:hover { color: red } }"
-      contain: "&:hover"
-      validate: true
+      contain: "a:hover"
+      missing: function
+      validate: false
 
     foo.js.coffee:
-      label: render() should return the transpiled coffee-code as function()
+      label: render() should return the executed coffee-code as output
       source: "return (-> 'str' + 'ing')()"
-      validate: true
+      contain: string
+      missing: function
+      validate: false
 
     foo.js.litcoffee:
-      label: render() should return the transpiled coffee-code as function()
+      label: render() should return the executed coffee-code as output
       source: |
         # title
-            fun = ->
-      validate: true
-      contain: fun = function
+            fun = -> {}
+            return typeof fun()
+      contain: object
+      missing: function
+      validate: false
 
     foo.js.ract:
-      label: render() should return the compiled ract-code as function()
+      label: render() should return the compiled ract-code as array
       source: "<div>{{var}}</div>"
-      validate: true
-      contain: "[{"
+      typeof: object
 
     foo.js.hbs:
-      label: render() should return the compiled hbs-code as function()
+      label: render() should return the executed hbs-code as output
       source: "{{#var}}OK{{/var}}"
-      contain: "Handlebars.template"
+      missing: "Handlebars.template"
+      validate: false
 
     foo.js.us:
-      label: render() should return the compiled us-code as function()
+      label: render() should return the executed us-code as output
       source: "<p><%= foo %></p>"
-      validate: true
-      contain: __
+      contain: <p>bar</p>
+      params:
+        foo: bar
 
     foo.js.md:
-      label: render() should return the compiled md-code as function()
+      label: render() should return the compiled md-code as markup
       source: "# A title"
-      validate: true
       contain: </h1>
 
     foo.js.json:
-      label: render() should return the json-code as function()
+      label: render() should return the json-code as object
       source: "{ foo: 'bar' }"
-      validate: true
+      typeof: object

@@ -7,14 +7,14 @@ hbs:
       contain: bar
 
     foo.hbs.css:
-      label: render() should throws an error (cannot compile css-to-hbs)
+      label: render() should return the css-code as is
       source: "body { color: #000 }"
-      throws: true
+      sameinput: true
 
     foo.hbs.html:
-      label: render() should throws an error (cannot compile html-to-hbs)
+      label: render() should return the html-code as is
       source: <markup>
-      throws: true
+      sameinput: true
 
     foo.hbs.jade:
       label: render() should return the executed jade-code as markup for hbs-engine
@@ -24,9 +24,9 @@ hbs:
       invalidate: true
 
     foo.hbs.less:
-      label: render() should throws an error (cannot compile less-to-hbs)
+      label: render() should the executed less-code as css-code for hbs-engine
       source: "a { &:hover { color: red } }"
-      throws: true
+      contain: a:hover
 
     foo.hbs.coffee:
       label: render() should throws an error (cannot compile coffee-to-hbs)
@@ -34,11 +34,15 @@ hbs:
       throws: true
 
     foo.hbs.ract:
-      label: render() should throws an error (cannot compile ract-to-hbs)
+      label: render() should return the generated html-code from ract-engine as markup for hbs-engine
       source: "<tag>{{value}}</tag>"
-      throws: true
+      invalidate: true
+      contain: candy
+      params:
+        value: candy
 
     foo.hbs.md:
-      label: render() should throws an error (cannot compile md-to-hbs)
+      label: render() should return the generated html-code from md-engine as markup for hbs-engine
       source: "> markdown"
-      throws: true
+      contain: </blockquote>
+      invalidate: true

@@ -28,9 +28,11 @@ html:
       throws: true
 
     foo.html.ract:
-      label: render() should throws an error (cannot compile ract-to-html)
+      label: render() should return the generated html-code
       source: "<tag>{{value}}</tag>"
-      throws: true
+      contain: candy
+      params:
+        value: candy
 
     foo.html.md:
       label: render() should return the generated html-code

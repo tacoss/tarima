@@ -7,14 +7,14 @@ us:
       contain: x
 
     foo.us.css:
-      label: render() should throws an error (cannot compile css-to-us)
+      label: render() should return the css-code as is
       source: "body { color: #000 }"
-      throws: true
+      sameinput: true
 
     foo.us.html:
-      label: render() should throws an error (cannot compile html-to-us)
+      label: render() should return the html-code as is
       source: <markup>
-      throws: true
+      sameinput: true
 
     foo.us.jade:
       label: render() should return the executed jade-code as markup for us-engine
@@ -24,9 +24,9 @@ us:
       invalidate: true
 
     foo.us.less:
-      label: render() should throws an error (cannot compile less-to-us)
+      label: render() should return the executed less-code as css-code for us-engine
       source: "a { &:hover { color: red } }"
-      throws: true
+      contain: a:hover
 
     foo.us.coffee:
       label: render() should throws an error (cannot compile coffee-to-us)
@@ -34,11 +34,15 @@ us:
       throws: true
 
     foo.us.ract:
-      label: render() should throws an error (cannot compile ract-to-us)
+      label: render() should return the generated html-code from ract-engine as markup for us-engine
       source: "<tag>{{value}}</tag>"
-      throws: true
+      invalidate: true
+      contain: candy
+      params:
+        value: candy
 
     foo.us.md:
-      label: render() should throws an error (cannot compile md-to-us)
+      label: render() should return the generated html-code from md-engine as markup for us-engine
       source: "> markdown"
-      throws: true
+      contain: </blockquote>
+      invalidate: true

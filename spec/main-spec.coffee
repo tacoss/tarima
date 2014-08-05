@@ -105,7 +105,7 @@ describe 'Tarima will', ->
       '''
 
       expect(foo_litcoffee_hbs_us.render(title: off)).toContain 'class Klass'
-      expect(foo_litcoffee_hbs_us.compile(title: off)).not.toContain 'Handlebars.template'
+      expect(foo_litcoffee_hbs_us.compile(title: off)).toContain 'Handlebars.template'
 
       expect(foo_litcoffee_hbs_us.render(title: 'FTW')).toContain 'class Klass'
       expect(foo_litcoffee_hbs_us.render(title: 'FTW')).not.toContain '# # FTW'
@@ -114,3 +114,17 @@ describe 'Tarima will', ->
       expect(foo_litcoffee_hbs_us.render(option: on, title: off)).toContain 'fun = ->'
       expect(foo_litcoffee_hbs_us.render(option: on, title: off)).not.toContain '# # Untitled'
       expect(foo_litcoffee_hbs_us.render(option: on, title: off)).not.toContain 'class Klass'
+
+    it 'foo.js.hbs.jade.us -- render() should produce modified jade-code as markup', ->
+      foo_js_hbs_jade_us = tarima.parse 'foo.js.hbs.jade.us', '''
+        h1 <%= title || 'Untitled' %>
+
+        |{{#option}}
+        div I am a div
+        |{{/option}}{{^option}}
+        span I am a span
+        |{{/option}}
+      '''
+
+      expect(foo_js_hbs_jade_us.render(title: off, option: off)).toBe '<h1>Untitled</h1><span>I am a span</span>'
+      expect(foo_js_hbs_jade_us.compile(title: off, option: off)).toContain 'Handlebars.template'
