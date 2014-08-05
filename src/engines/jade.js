@@ -23,7 +23,7 @@ register_engine('jade', function(params, next) {
 
   if (next('js', 'us', 'hbs', 'html', 'ract')) {
     if (!params.chain) {
-      return compile(true).toString();
+      return compile(true).toString().replace(/\n{2,}/g, '\n');
     }
 
     return compile();
