@@ -4,6 +4,12 @@ register_engine('coffee', function(params, next) {
 
   if (next('js')) {
     /* jshint evil:true */
-    return new Function('', coffee.compile(params.source, defs_tpl('coffee', params)));
+    var tpl = new Function('', coffee.compile(params.source, defs_tpl('coffee', params)));
+
+    if (!params.chain) {
+      return tpl.toString();
+    }
+
+    return tpl;
   }
 });

@@ -1,7 +1,7 @@
 
 register_engine('js', function(params) {
   var compile = function() {
-    var body, fn;
+    var body, tpl;
 
     if (!/^\s*function\b/.test(params.source)) {
       body = params.source;
@@ -10,7 +10,13 @@ register_engine('js', function(params) {
     }
 
     /* jshint evil:true */
-    return new Function('', body);
+    tpl = new Function('', body);
+
+    if (!params.chain) {
+      return tpl.toString();
+    }
+
+    return tpl;
   };
 
   return compile();

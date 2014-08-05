@@ -22,12 +22,14 @@ register_engine('litcoffee', function(params, next) {
     var coffee = require('coffee-script'),
         code = coffee.compile(fixLiterate(params.source), defs_tpl('coffee', params));
 
+    /* jshint evil:true */
+    var tpl = new Function('', code);
+
     if (!params.chain) {
-      return code;
+      return tpl.toString();
     }
 
-    /* jshint evil:true */
-    return new Function('', code);
+    return tpl;
   }
 });
 

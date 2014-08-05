@@ -4,9 +4,13 @@ register_engine('html', function(params, next) {
     case 'js':
       /* jshint evil:true */
       var body = 'return ' + JSON.stringify(params.source) + ';',
-          fn = new Function('', body);
+          tpl = new Function('', body);
 
-      return fn;
+      if (!params.chain) {
+        return tpl.toString();
+      }
+
+      return tpl;
 
     default:
       return params.source;
