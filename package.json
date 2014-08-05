@@ -31,8 +31,7 @@
     "less": "^1.7.4",
     "lodash": "~2.4.1",
     "marked": "~0.3.2",
-    "ractive": "^0.3.9",
-    "tosource": "~0.1.1"
+    "ractive": "^0.5.5"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
