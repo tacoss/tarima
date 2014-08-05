@@ -14,7 +14,7 @@ register_engine('hbs', function(params) {
   };
 
   if (!params.chain) {
-    return compile(true).toString();
+    return compile(true);
   }
 
   return compile();
