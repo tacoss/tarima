@@ -4,15 +4,14 @@ var validate = function(next, current) {
     var types = Array.prototype.slice.call(arguments);
 
     if (types.indexOf(next) > -1) {
-      return true;
+      return next;
     }
 
     throw new Error('.' + current + ' files compiles only to .' + types.join(', .'));
   };
 };
 
-var reduce_tpl = function(params, locals, call) {
-  params.call = call;
+var reduce_tpl = function(params, locals, raw) {
   params.options.locals = locals || {};
 
   var key = params.parts.length,
@@ -27,6 +26,7 @@ var reduce_tpl = function(params, locals, call) {
     }
 
     params.next = params.parts[key - 1] || false;
+    params.chain = raw ? ('js' !== params.next && false !== params.next) : true;
 
     if (!parsers[params.next || params.ext]) {
       throw new Error('cannot resolve ' + params.type + '-to-' + (params.next || params.ext) + ' (' + params.filename + ')');

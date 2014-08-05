@@ -9,52 +9,37 @@
 
   /*
 
-  The rules about interacting between engines are simple (?):
+  Basic behavior:
 
-  - Return a runtime-callable function that produces another output given the engine by itself.
-  - Return a the javascript source code representation for that code in form of a callable template.
-. - Every engine receive context options to determine what output: a callable function, or source code.
+      render(partial.js.hbs) => render(hbs), run(js)
+      render(partial.js.jade.hbs) => render(hbs), render(jade), run(js)
+      render(partial.litcoffee.us) => render(us), compile(coffee)
+
+      compile(partial.js.hbs) => compile(hbs)
+      compile(partial.js.jade.hbs) => render(hbs), compile(jade)
+      compile(partial.litcoffee.us) => compile(us)
 
   Defining engines:
 
-  # fun.js
-  tarima.add('fun', function(params) {
-    var compile = function(exec) {
-      var fun = require('fun-template-engine'),
-          parser = fun.parser(params.source);
+      # fun.js
+      tarima.add('fun', function(params, next) {
+        var compile = function(client) {
+          var fun = require('fun-template-engine'),
+              parser = fun.parser(params.source);
 
-      return exec ? function(locals) { return parser.render(locals); } : fun.precompile();
-    };
+          if (client) {
+            return parser.precompile();
+          }
 
-    return compile(!params.next && params.call);
-  });
+          return function(locals) {
+            return parser.render(locals);
+          };
+        };
 
-  Other task to accomplish is testing our engines are working properly.
-
-  # fun-fixtures.yml
-  file_fun:
-    key: value
-    source: |
-      [{ foo -> bar }]
-
-  Testing engines:
-
-  # fun-specs.coffee
-  validateEngine = require('../validate-engines')
-  tarimaFixtures = require('../tarima-fixtures')
-
-  xdescribe 'file_fun', ->
-    xit 'test', ->
-      # load required fixtures
-      file_fun = tarimaFixtures('file_fun')
-
-      # validate the output?
-      expect(file_fun.partial.compile(file_fun.params)).toBe file_fun.source
-      expect(file_fun.partial.render(file_fun.params)).toBe file_fun.source
-
-      # validate fun-engine if needed
-      expect(-> validatefun('fun').notPass(file_fixture_fun.partial.render(file_fixture_fun.params))).toThrow()
-      expect(-> validatefun('fun').pass(file_fixture_fun.partial.compile(file_fixture_fun.params))).not.toThrow()
+        if (next('js', 'or', 'any', 'allowed', 'extension')) {
+          return compile(!params.chain);
+        }
+      });
 
   */
 

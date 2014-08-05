@@ -14,15 +14,17 @@ Partial.prototype.override = function(path, source) {
 };
 
 Partial.prototype.compile = function(locals) {
-  var partial = reduce_tpl(_.cloneDeep(this.params), locals),
-      view = partial.render || partial.source;
+  var view = reduce_tpl(_.cloneDeep(this.params), locals, true);
 
-  return 'string' !== typeof view ? toSource(view, null, 0) : view;
+  return view.source;
 };
 
 Partial.prototype.render = function(locals) {
-  var partial = reduce_tpl(_.cloneDeep(this.params), locals, true),
-      view = 'function' === typeof partial.render ? partial.render(locals) : partial.source;
+  var view = reduce_tpl(_.cloneDeep(this.params), locals);
 
-  return view;
+  if ('function' === typeof view.render) {
+    return view.render(locals);
+  }
+
+  return view.source;
 };

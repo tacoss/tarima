@@ -2,14 +2,12 @@
 var params_tpl = function(path) {
   var ext, name, parts, fullpath, filename;
 
-
   fullpath = path.split('/');
-  filename = fullpath.pop().replace('.litcoffee', '.coffee.md');
+  filename = fullpath.pop();
 
   parts = filename.split('.');
   name = parts.shift();
   ext = parts.shift();
-
 
   return {
     filepath: fullpath.join('/'),
