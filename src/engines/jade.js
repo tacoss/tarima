@@ -6,7 +6,7 @@ register_engine('jade', function(params, next) {
     params.options.filename = params.filepath + '/' + params.filename;
   }
 
-  var compile = function(client, render) {
+  var compile = function(client) {
     var prefix = '',
         source;
 
@@ -16,20 +16,16 @@ register_engine('jade', function(params, next) {
 
     source = (prefix ? prefix + '\n' : '') + params.source;
 
-    var partial = jade[client ? 'compileClient' : 'compile'](source, defs_tpl('jade', params.options));
+    var partial = jade[client ? 'compileClient' : 'compile'](source, defs_tpl('jade', params));
 
-    return render ? partial(params.options.locals) : partial;
+    return partial;
   };
 
   if (next('js', 'us', 'hbs', 'html', 'ract')) {
-    if (params.call) {
-      return compile(false, true);
-    }
-
-    if (!params.next && 'js' === params.ext) {
+    if (!params.chain) {
       return compile(true).toString();
     }
-  }
 
-  return compile();
+    return compile();
+  }
 });

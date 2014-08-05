@@ -26,7 +26,7 @@ register_engine('less', function(params, next) {
         params.options.paths = [params.filepath];
       }
 
-      var parser = new less.Parser(defs_tpl('less', params.options)),
+      var parser = new less.Parser(defs_tpl('less', params)),
           output, vars = _.defaults({}, params.options.locals);
 
       parser.parse(prepare(params.source, _.defaults(vars, locals)), function(e, tree) {
@@ -41,21 +41,24 @@ register_engine('less', function(params, next) {
     };
   };
 
+  switch (next('js', 'us', 'hbs', 'css')) {
+    case 'js':
+      if (params.chain) {
+        return compile();
+      }
 
-  if (next('js', 'css')) {
-    if ([params.next, params.ext].indexOf('css') > -1) {
-      return compile()(params.options.locals);
-    }
+      var source = [];
 
-    var source = [];
+      source.push('function (locals, options) { var P = new less.Parser(options), L = [], s, k;');
+      source.push('for (k in locals) if (/boolean|number|string/.test(typeof locals[k]))');
+      source.push('L.push("@" + k + ": ~" + JSON.stringify(locals[k].toString()) + ";");');
+      source.push('P.parse(L.join("\\n") + ' + JSON.stringify(prefix + '\n' + params.source));
+      source.push(', function(e, T) { s = T.toCSS(); });');
+      source.push('return s;}');
 
-    source.push('function (locals, options) { var P = new less.Parser(options), L = [], s, k;');
-    source.push('for (k in locals) if (/boolean|number|string/.test(typeof locals[k]))');
-    source.push('L.push("@" + k + ": ~" + JSON.stringify(locals[k].toString()) + ";");');
-    source.push('P.parse(L.join("\\n") + ' + JSON.stringify(prefix + '\n' + params.source));
-    source.push(', function(e, T) { s = T.toCSS(); });');
-    source.push('return s;}');
+      return source.join('');
 
-    return source.join('');
+    default:
+      return compile();
   }
 });

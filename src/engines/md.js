@@ -17,32 +17,43 @@ var fixLiterate = function(code) {
   return out.join('\n');
 };
 
-register_engine('md', function(params, next) {
-  var opts = {},
-      html, marked = require('marked');
+register_engine('litcoffee', function(params, next) {
+  if (next('js')) {
+    var coffee = require('coffee-script'),
+        code = coffee.compile(fixLiterate(params.source), defs_tpl('coffee', params));
 
-  defaults(opts, defs_tpl('markdown', params.options));
-
-  opts.renderer = new marked.Renderer();
-
-  html = marked(params.source, opts);
-
-  /* jshint evil:true */
-  var fn = new Function('', 'return ' + JSON.stringify(html) + ';');
-
-  if (next('js', 'html', 'ract', 'coffee')) {
-    var exts = [params.next, params.ext];
-
-    if (exts.indexOf('coffee') > -1) {
-      return fixLiterate(params.source);
+    if (!params.chain) {
+      return code;
     }
 
-    if (exts.indexOf('js') > -1) {
-      return fn.toString();
-    }
-
-    return html;
+    /* jshint evil:true */
+    return new Function('', code);
   }
+});
 
-  return fn;
+register_engine('md', function(params, next) {
+  var marked = require('marked'),
+      type = next('js', 'us', 'hbs', 'html', 'ract', 'coffee');
+
+  switch (type) {
+    case 'coffee':
+      return fixLiterate(params.source);
+
+    default:
+      var html,
+          opts = {};
+
+      defaults(opts, defs_tpl('marked', params));
+
+      opts.renderer = new marked.Renderer();
+
+      html = marked(params.source, opts);
+
+      if ('js' === type) {
+        /* jshint evil:true */
+        return new Function('', 'return ' + JSON.stringify(html) + ';');
+      }
+
+      return html;
+  }
 });

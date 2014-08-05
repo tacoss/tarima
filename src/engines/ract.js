@@ -2,16 +2,26 @@
 register_engine('ract', function(params, next) {
   var Ractive = require('ractive');
 
-  var tpl = Ractive.parse(params.source, defs_tpl('ractive', params.options)),
-      body = 'return ' + ('string' === typeof tpl ? tpl : JSON.stringify(tpl)) + ';',
-      fn;
+  switch (next('js', 'us', 'hbs', 'html')) {
+    case 'js':
+      var tpl = Ractive.parse(params.source, defs_tpl('ractive', params)),
+          body = 'return ' + JSON.stringify(tpl) + ';';
 
-  /* jshint evil:true */
-  fn = new Function('', body);
+      if (!params.chain) {
+        return 'function(){' + body + '}';
+      }
 
-  if (next('js')) {
-    return fn.toString();
+      /* jshint evil:true */
+      return new Function('', body);
+
+    default:
+      return function(locals) {
+        var tpl = new Ractive({
+          template: params.source,
+          data: locals
+        });
+
+        return tpl.toHTML();
+      };
   }
-
-  return fn;
 });

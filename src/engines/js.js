@@ -4,13 +4,13 @@ register_engine('js', function(params) {
     var body, fn;
 
     if (!/^\s*function\b/.test(params.source)) {
-      body = 'with(locals_||{}){' + params.source + '}';
+      body = params.source;
     } else {
-      body = 'return (' + params.source + ')(locals_)';
+      body = 'return (' + params.source + ')()';
     }
 
     /* jshint evil:true */
-    return new Function('locals_', body);
+    return new Function('', body);
   };
 
   return compile();

@@ -1,16 +1,14 @@
 
 register_engine('html', function(params, next) {
-  /* jshint evil:true */
-  var body = 'return ' + JSON.stringify(params.source) + ';',
-      fn = new Function('', body);
+  switch (next('js', 'us', 'hbs', 'ract')) {
+    case 'js':
+      /* jshint evil:true */
+      var body = 'return ' + JSON.stringify(params.source) + ';',
+          fn = new Function('', body);
 
-  if (next('js', 'ract')) {
-    if ([params.next, params.ext].indexOf('js') > -1) {
-      return fn.toString();
-    }
+      return fn;
 
-    return params.source;
+    default:
+      return params.source;
   }
-
-  return fn;
 });
