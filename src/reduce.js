@@ -26,7 +26,7 @@ var reduce_tpl = function(params, locals, raw) {
     }
 
     params.next = params.parts[key - 1] || false;
-    params.chain = raw ? ('js' !== params.next && false !== params.next) : true;
+    params.chain = raw ? (params.next ? key > -1 : 'js' !== params.ext) : true;
 
     if (!parsers[params.next || params.ext]) {
       throw new Error('cannot resolve ' + params.type + '-to-' + (params.next || params.ext) + ' (' + params.filename + ')');
