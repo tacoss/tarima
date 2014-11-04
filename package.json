@@ -2,7 +2,7 @@
   "name": "tarima",
   "version": "0.4.4",
   "description": "Multi-templating for NodeJS",
-  "main": "lib/tarima.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/gextech/tarima.git"
