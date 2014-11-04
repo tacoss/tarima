@@ -2,6 +2,6 @@
 .DS_Store
 
 .grunt
-node_modules
-lib
 /tmp
+/coverage
+/node_modules

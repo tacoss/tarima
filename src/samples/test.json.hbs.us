@@ -1,7 +1,0 @@
-{
-  "<%= object %>": {
-    {{#items}}
-    "{{key}}": "{{value}}"{{#unless @last}},{{/unless}}
-    {{/items}}
-  }
-}

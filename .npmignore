@@ -6,6 +6,7 @@
 .gitignore
 
 Gruntfile.js
-node_modules
-spec
-src
+/node_modules
+/coverage
+/spec
+/src
