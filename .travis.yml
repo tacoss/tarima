@@ -5,5 +5,5 @@ branches:
 node_js:
   - 0.10
 script:
-  - npm install -g grunt-cli
-  - grunt test:parts
+  - 'npm install -g grunt-cli coveralls'
+  - 'grunt test:parts && cat coverage/lcov.info | coveralls'
