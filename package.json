@@ -5,10 +5,10 @@
   "main": "lib/tarima.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pateketrueke/tarima.git"
+    "url": "https://github.com/gextech/tarima.git"
   },
   "bugs": {
-    "url": "https://github.com/pateketrueke/tarima/issues"
+    "url": "https://github.com/gextech/tarima/issues"
   },
   "keywords": [
     "templating",
