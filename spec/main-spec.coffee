@@ -1,4 +1,4 @@
-tarima = require('./tarima')
+tarima = require('../lib')
 engines = require('./engines')
 testEngine = require('./test-engine')
 validateEngine = require('./validate-engines')

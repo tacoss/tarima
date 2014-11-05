@@ -2,7 +2,7 @@
 engines = require('./engines')
 
 grunt = require('grunt')
-tarima = require('./tarima')
+tarima = require('../lib')
 
 # dummies
 template = {}

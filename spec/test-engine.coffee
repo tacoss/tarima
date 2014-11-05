@@ -3,7 +3,7 @@ engines = require('./engines')
 
 validateEngine = require('./validate-engines')
 tarimaFixtures = require('./fixtures')
-tarima = require('./tarima')
+tarima = require('../lib')
 check = require('./checks')
 
 type = (obj) ->
