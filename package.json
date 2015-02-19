@@ -25,16 +25,16 @@
     "node": "~>0.10.21"
   },
   "dependencies": {
-    "coffee-script": "^1.8.0",
+    "coffee-script": "^1.9.1",
     "handlebars": "^2.0.0",
-    "jade": "^1.7.0",
-    "less": "^1.7.4",
+    "jade": "^1.9.2",
+    "less": "^1.7.5",
     "lodash": "^2.4.1",
-    "marked": "~0.3.2",
+    "marked": "^0.3.3",
     "ractive": "^0.6.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-parts": "^0.2.2"
+    "grunt": "^0.4.5",
+    "grunt-parts": "^0.4.0"
   }
 }
