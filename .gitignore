@@ -4,4 +4,5 @@
 .grunt
 /tmp
 /coverage
+/generated
 /node_modules
