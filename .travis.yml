@@ -6,4 +6,4 @@ node_js:
   - 0.10
 script:
   - 'npm install -g grunt-cli coveralls'
-  - 'grunt test:parts && cat coverage/lcov.info | coveralls'
+  - 'grunt test:parts && cat generated/lcov.info | coveralls'
