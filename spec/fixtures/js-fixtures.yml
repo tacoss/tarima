@@ -57,7 +57,7 @@ js:
 
     foo.js.ract:
       label: render() should return the compiled ract-code as array
-      source: "<div>{{var}}</div>"
+      source: "<div>{{x}}</div>"
       typeof: object
 
     foo.js.hbs:
