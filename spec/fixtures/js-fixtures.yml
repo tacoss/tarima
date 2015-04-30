@@ -57,12 +57,12 @@ js:
 
     foo.js.ract:
       label: render() should return the compiled ract-code as array
-      source: "<div>{{var}}</div>"
+      source: "<div>{{stub}}</div>"
       typeof: object
 
     foo.js.hbs:
       label: render() should return the executed hbs-code as output
-      source: "{{#var}}OK{{/var}}"
+      source: "{{#stub}}OK{{/stub}}"
       missing: "Handlebars.template"
       validate: false
 

@@ -25,13 +25,13 @@
     "node": "~>0.10.21"
   },
   "dependencies": {
-    "coffee-script": "^1.9.1",
-    "handlebars": "^2.0.0",
+    "coffee-script": "^1.9.2",
+    "handlebars": "^3.0.3",
     "jade": "^1.9.2",
-    "less": "^1.7.5",
-    "lodash": "^2.4.1",
+    "less": "^2.5.0",
+    "lodash": "^3.7.0",
     "marked": "^0.3.3",
-    "ractive": "^0.6.1"
+    "ractive": "^0.7.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
