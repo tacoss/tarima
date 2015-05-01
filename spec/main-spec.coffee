@@ -51,7 +51,7 @@ describe 'Tarima will', ->
         {{/option}}
     '''
 
-    xit 'foo.js.hbs.jade.us -- render() should apply a hack for those-ugly-pipes', ->
+    it 'foo.js.hbs.jade.us -- render() should apply a hack for those-ugly-pipes', ->
       expect(foo_js_hbs_jade_us.render(title: off, option: on)).toContain '<div class="nested"><span>true</span></div>'
 
     it 'foo.js.hbs.jade.us -- render() should produce modified jade-code as markup', ->
