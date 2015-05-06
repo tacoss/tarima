@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="Tarima will" errors="0" tests="0" failures="0" time="0" timestamp="2015-05-06T11:11:39">
+</testsuite>
+<testsuite name="Tarima will.validate engines" errors="0" tests="1" failures="0" time="0.508" timestamp="2015-05-06T11:11:38">
+  <testcase classname="Tarima will.validate engines" name="would validate unsupported engines" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.js-engine" errors="0" tests="14" failures="0" time="0.465" timestamp="2015-05-06T11:11:38">
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js -- render() should return js-code as is" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.js -- render() should return js-code as is" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.bar.js -- render() should throws an error (unknown bar-engine)" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.css -- render() should return the same css-code as is" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.html -- render() should return the same html-code as is" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.jade -- render() should return the executed jade-code as markup" time="0.163"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.less -- render() should return the executed less-code as css-code" time="0.123"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.coffee -- render() should return the executed coffee-code as output" time="0.046"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.litcoffee -- render() should return the executed coffee-code as output" time="0.003"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.ract -- render() should return the compiled ract-code as array" time="0.056"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.hbs -- render() should return the executed hbs-code as output" time="0.062"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.us -- render() should return the executed us-code as output" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.md -- render() should return the compiled md-code as markup" time="0.007"></testcase>
+  <testcase classname="Tarima will.validate engines.js-engine" name="foo.js.json -- render() should return the json-code as object" time="0.001"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.css-engine" errors="0" tests="8" failures="0" time="0.007" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.js -- render() should return the executed js-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.html -- render() should throws an error (cannot compile html-to-css)" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.jade -- render() should throws an error (cannot compile jade-to-css)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.less -- render() should return the evaluated less-code" time="0.005"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.coffee -- render() should throws an error (cannot compile coffee-to-css)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.ract -- render() should throws an error (cannot compile ract-to-css)" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.md -- render() should throws an error (cannot compile md-to-css)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.css-engine" name="foo.css.json -- render() should throws an error (cannot compile json-to-css)" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.html-engine" errors="0" tests="8" failures="0" time="0.011" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.js -- render() should return the executed js-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.css -- render() should throws an error (cannot compile css-to-html)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.jade -- render() should return the evaluated jade-code" time="0.003"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.less -- render() should throws an error (cannot compile less-to-html)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.coffee -- render() should throws an error (cannot compile coffee-to-html)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.ract -- render() should return the generated html-code" time="0.006"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.md -- render() should return the generated html-code" time="0.002"></testcase>
+  <testcase classname="Tarima will.validate engines.html-engine" name="foo.html.json -- render() should throws an error (cannot compile json-to-html)" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.jade-engine" errors="0" tests="8" failures="0" time="0.002" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.js -- render() should return the executed js-code" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.css -- render() should throws an error (cannot compile css-to-jade)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.html -- render() should throws an error (cannot compile html-to-jade)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.less -- render() should throws an error (cannot compile less-to-jade)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.coffee -- render() should throws an error (cannot compile coffee-to-jade)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.ract -- render() should throws an error (cannot compile ract-to-jade)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.md -- render() should throws an error (cannot compile md-to-jade)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.jade-engine" name="foo.jade.json -- render() should throws an error (cannot compile json-to-jade)" time="0.001"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.md-engine" errors="0" tests="7" failures="0" time="0.001" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.js -- render() should return the executed js-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.css -- render() should throws an error (cannot compile css-to-md)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.html -- render() should throws an error (cannot compile html-to-md)" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.less -- render() should throws an error (cannot compile less-to-md)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.coffee -- render() should throws an error (cannot compile coffee-to-md)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.ract -- render() should throws an error (cannot compile ract-to-md)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.md-engine" name="foo.md.json -- render() should throws an error (cannot compile json-to-md)" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.less-engine" errors="0" tests="8" failures="0" time="0.002" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.js -- render() should return the executed js-code" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.css -- render() should throws an error (cannot compile css-to-less)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.html -- render() should throws an error (cannot compile html-to-less)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.jade -- render() should throws an error (cannot compile jade-to-less)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.coffee -- render() should throws an error (cannot compile coffee-to-less)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.ract -- render() should throws an error (cannot compile ract-to-less)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.md -- render() should return the generated less-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.less-engine" name="foo.less.json -- render() should throws an error (cannot compile json-to-less)" time="0.001"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.ract-engine" errors="0" tests="8" failures="0" time="0.001" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.js -- render() should return the executed js-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.css -- render() should throws an error (cannot compile css-to-ract)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.html -- render() should return html-code as is" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.jade -- render() should return the evaluated jade-code" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.less -- render() should throws an error (cannot compile less-to-ract)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.coffee -- render() should throws an error (cannot compile coffee-to-ract)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.md -- render() should return the generated html-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.ract-engine" name="foo.ract.json -- render() should throws an error (cannot compile json-to-ract)" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.json-engine" errors="0" tests="8" failures="0" time="0.003" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.js -- render() should return the executed js-code" time="0.002"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.css -- render() should throws an error (cannot compile css-to-json)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.html -- render() should throws an error (cannot compile html-to-json)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.jade -- render() should throws an error (cannot compile jade-to-json)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.less -- render() should throws an error (cannot compile less-to-json)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.coffee -- render() should throws an error (cannot compile coffee-to-json)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.ract -- render() should throws an error (cannot compile ract-to-json)" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.json-engine" name="foo.json.md -- render() should throws an error (cannot compile md-to-json)" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.hbs-engine" errors="0" tests="8" failures="0" time="0.006" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.js -- render() should return the executed js-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.css -- render() should return the css-code as is" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.html -- render() should return the html-code as is" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.jade -- render() should return the executed jade-code as markup for hbs-engine" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.less -- render() should the executed less-code as css-code for hbs-engine" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.coffee -- render() should throws an error (cannot compile coffee-to-hbs)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.ract -- render() should return the generated html-code from ract-engine as markup for hbs-engine" time="0.002"></testcase>
+  <testcase classname="Tarima will.validate engines.hbs-engine" name="foo.hbs.md -- render() should return the generated html-code from md-engine as markup for hbs-engine" time="0.001"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.us-engine" errors="0" tests="8" failures="0" time="0.007" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.js -- render() should return the executed js-code" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.css -- render() should return the css-code as is" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.html -- render() should return the html-code as is" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.jade -- render() should return the executed jade-code as markup for us-engine" time="0.003"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.less -- render() should return the executed less-code as css-code for us-engine" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.coffee -- render() should throws an error (cannot compile coffee-to-us)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.ract -- render() should return the generated html-code from ract-engine as markup for us-engine" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.us-engine" name="foo.us.md -- render() should return the generated html-code from md-engine as markup for us-engine" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.validate engines.coffee-engine" errors="0" tests="9" failures="0" time="0.002" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.js -- render() should return the executed js-code" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.css -- render() should throws an error (cannot compile css-to-coffee)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.html -- render() should throws an error (cannot compile html-to-coffee)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.jade -- render() should throws an error (cannot compile jade-to-coffee)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.less -- render() should throws an error (cannot compile less-to-coffee)" time="0.001"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.ract -- render() should throws an error (cannot compile ract-to-coffee)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.litcoffee -- render() should be treated as .coffee.md (see below)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.md -- render() should return the coffee-code as is (strips md-code)" time="0"></testcase>
+  <testcase classname="Tarima will.validate engines.coffee-engine" name="foo.coffee.json -- render() should throws an error (cannot compile json-to-coffee)" time="0"></testcase>
+</testsuite>
+<testsuite name="Tarima will.piping engines" errors="0" tests="6" failures="0" time="0.313" timestamp="2015-05-06T11:11:39">
+  <testcase classname="Tarima will.piping engines" name="foo.litcoffee.hbs.us -- render() should produce modified coffee-code as is" time="0.023"></testcase>
+  <testcase classname="Tarima will.piping engines" name="foo.js.hbs.jade.us -- render() should apply a hack for those-ugly-pipes" time="0.277"></testcase>
+  <testcase classname="Tarima will.piping engines" name="foo.js.hbs.jade.us -- render() should produce modified jade-code as markup" time="0.005"></testcase>
+  <testcase classname="Tarima will.piping engines" name="foo.js.hbs.jade.us -- compile() should produce executable javascript from hbs-code" time="0.004"></testcase>
+  <testcase classname="Tarima will.piping engines" name="foo.html.jade.us -- render() should produce modified jade-code as markup" time="0.001"></testcase>
+  <testcase classname="Tarima will.piping engines" name="foo.html.jade.us -- compile() should produce modified jade-code as markup" time="0.001"></testcase>
+</testsuite>
+</testsuites>
