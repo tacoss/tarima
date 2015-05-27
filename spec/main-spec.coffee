@@ -44,18 +44,10 @@ describe 'Tarima will', ->
       |{{/option}}{{^option}}
       span I am a span
       |{{/option}}
-
-      div.nested
-        {{#option}}
-        span {{option}}
-        {{/option}}
     '''
 
-    it 'foo.js.hbs.jade.us -- render() should apply a hack for those-ugly-pipes', ->
-      expect(foo_js_hbs_jade_us.render(title: off, option: on)).toContain '<div class="nested"><span>true</span></div>'
-
     it 'foo.js.hbs.jade.us -- render() should produce modified jade-code as markup', ->
-      expect(foo_js_hbs_jade_us.render(title: off, option: off)).toContain '<h1>Untitled</h1><span>I am a span</span>'
+      expect(foo_js_hbs_jade_us.render(title: off, option: off)).toBe '<h1>Untitled</h1><span>I am a span</span>'
 
     it 'foo.js.hbs.jade.us -- compile() should produce executable javascript from hbs-code', ->
       expect(foo_js_hbs_jade_us.compile(title: off, option: off)).toContain 'Handlebars.template'
