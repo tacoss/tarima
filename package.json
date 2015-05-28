@@ -25,16 +25,21 @@
     "node": "~>0.10.21"
   },
   "dependencies": {
-    "coffee-script": "^1.9.1",
-    "handlebars": "^2.0.0",
+    "coffee-script": "^1.9.2",
+    "gulp-util": "^3.0.4",
+    "handlebars": "^3.0.3",
     "jade": "^1.9.2",
-    "less": "^1.7.5",
-    "lodash": "^2.4.1",
+    "less": "^2.5.0",
+    "lodash": "^3.7.0",
     "marked": "^0.3.3",
-    "ractive": "^0.7.0"
+    "ractive": "^0.7.3",
+    "through2": "^0.6.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-parts": "^0.4.0"
+    "grunt-parts": "^0.4.0",
+    "gulp": "^3.8.11",
+    "gulp-debug": "^2.0.1",
+    "rimraf": "^2.3.3"
   }
 }
