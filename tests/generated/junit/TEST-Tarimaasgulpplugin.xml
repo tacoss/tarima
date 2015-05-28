@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites>
-<testsuite name="Tarima as gulp-plugin" errors="0" tests="3" failures="0" time="1.698" timestamp="2015-05-06T11:11:37">
-  <testcase classname="Tarima as gulp-plugin" name="should exit with 0" time="0.656"></testcase>
-  <testcase classname="Tarima as gulp-plugin" name="should write raw files" time="0.526"></testcase>
-  <testcase classname="Tarima as gulp-plugin" name="should concatenate many files" time="0.516"></testcase>
-</testsuite>
-</testsuites>

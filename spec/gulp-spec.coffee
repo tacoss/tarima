@@ -5,7 +5,7 @@ rmrf = require('rimraf')
 cmdexec = require('./cmdexec')
 
 describe 'Tarima as gulp-plugin', ->
-  tmp_dir = path.resolve(__dirname, '../tests/tmp')
+  tmp_dir = path.resolve(__dirname, '../tmp')
 
   read = (file) ->
     fs.readFileSync(path.join(tmp_dir, file)).toString()
@@ -14,7 +14,7 @@ describe 'Tarima as gulp-plugin', ->
     require(path.join(tmp_dir, file))
 
   beforeEach (done) ->
-    process.chdir(path.resolve(__dirname, '../tests'))
+    process.chdir(path.resolve(__dirname, '..'))
     cmdexec([path.resolve(__dirname, '../node_modules/gulp/bin/gulp.js')], done)
 
   afterEach (done) ->
