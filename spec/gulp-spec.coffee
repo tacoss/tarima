@@ -27,6 +27,4 @@ describe 'Tarima as gulp-plugin', ->
     expect(read('raw/subpath/test.html')).toContain '<so><many><markup>'
 
   it 'should concatenate many files', ->
-    views = include('foo/bar/views.js')
-    # expect(is_file()).toBeTruthy()
-    console.log views
+    expect(include('foo/bar/views.js').foo().v).toBe(3)
