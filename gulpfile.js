@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 var tarima = require('./lib');
 
 gulp.task('raw', function() {
-  return gulp.src('src/**/*.*')
+  return gulp.src('spec/views/**/*.*')
     .pipe(debug({ title: 'BEFORE_RAW' }))
     .pipe(tarima())
     .pipe(debug({ title: 'AFTER_RAW' }))
@@ -12,7 +12,7 @@ gulp.task('raw', function() {
 });
 
 gulp.task('join', function() {
-  return gulp.src('src/**/*.js.*')
+  return gulp.src('spec/views/**/*.js.*')
     .pipe(debug({ title: 'BEFORE_JOIN' }))
     .pipe(tarima('foo/bar/views.js'))
     .pipe(debug({ title: 'AFTER_JOIN' }))
