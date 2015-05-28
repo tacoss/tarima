@@ -7,16 +7,16 @@ gulp.task('raw', function() {
   return gulp.src('spec/views/**/*.*')
     .pipe(debug({ title: 'BEFORE_RAW' }))
     .pipe(tarima())
-    .pipe(debug({ title: 'AFTER_RAW' }))
-    .pipe(gulp.dest('tmp/raw'));
+    .pipe(gulp.dest('tmp/raw'))
+    .pipe(debug({ title: 'AFTER_RAW' }));
 });
 
 gulp.task('join', function() {
   return gulp.src('spec/views/**/*.js.*')
     .pipe(debug({ title: 'BEFORE_JOIN' }))
     .pipe(tarima('foo/bar/views.js'))
-    .pipe(debug({ title: 'AFTER_JOIN' }))
-    .pipe(gulp.dest('tmp'));
+    .pipe(gulp.dest('tmp'))
+    .pipe(debug({ title: 'AFTER_JOIN' }));
 });
 
 gulp.task('default', ['join', 'raw']);
