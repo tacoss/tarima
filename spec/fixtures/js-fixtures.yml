@@ -66,8 +66,8 @@ js:
       missing: "Handlebars.template"
       validate: false
 
-    foo.js.us:
-      label: render() should return the executed us-code as output
+    foo.js.ejs:
+      label: render() should return the executed ejs-code as output
       source: "<p><%= foo %></p>"
       contain: <p>bar</p>
       params:

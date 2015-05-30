@@ -1,39 +1,39 @@
 us:
   fixtures:
-    foo.us.js:
+    foo.ejs.js:
       label: render() should return the executed js-code
       source: "return '<%= x %>'"
       invalidate: true
       contain: x
 
-    foo.us.css:
+    foo.ejs.css:
       label: render() should return the css-code as is
       source: "body { color: #000 }"
       sameinput: true
 
-    foo.us.html:
+    foo.ejs.html:
       label: render() should return the html-code as is
       source: <markup>
       sameinput: true
 
-    foo.us.jade:
+    foo.ejs.jade:
       label: render() should return the executed jade-code as markup for us-engine
       source: "foo: bar"
       contain: </foo>
       throws: false
       invalidate: true
 
-    foo.us.less:
+    foo.ejs.less:
       label: render() should return the executed less-code as css-code for us-engine
       source: "a { &:hover { color: red } }"
       contain: a:hover
 
-    foo.us.coffee:
+    foo.ejs.coffee:
       label: render() should throws an error (cannot compile coffee-to-us)
       source: "-> 'string'"
       throws: true
 
-    foo.us.ract:
+    foo.ejs.ract:
       label: render() should return the generated html-code from ract-engine as markup for us-engine
       source: "<tag>{{value}}</tag>"
       invalidate: true
@@ -41,7 +41,7 @@ us:
       params:
         value: candy
 
-    foo.us.md:
+    foo.ejs.md:
       label: render() should return the generated html-code from md-engine as markup for us-engine
       source: "> markdown"
       contain: </blockquote>

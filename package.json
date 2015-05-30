@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "coffee-script": "^1.9.3",
+    "ejs": "^2.3.1",
     "handlebars": "^3.0.3",
     "jade": "^1.10.0",
-    "less": "^2.5.1",
     "lodash": "^3.9.3",
     "marked": "^0.3.3",
     "ractive": "^0.7.3"
