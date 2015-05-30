@@ -121,9 +121,8 @@ var view = tarima.load('/path/to/foo.js.jade');
 - [gulp-tarima](https://github.com/gextech/tarima) support for Gulp
 - [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
 
-## Issues?
+## Having issues?
 
-Please open a ticket. ;-)
+Please open a ticket or send a PR. ;-)
 
 [![Build Status](https://travis-ci.org/gextech/tarima.png?branch=master)](https://travis-ci.org/gextech/tarima) [![NPM version](https://badge.fury.io/js/tarima.png)](http://badge.fury.io/js/tarima) [![Coverage Status](https://coveralls.io/repos/gextech/tarima/badge.png?branch=master)](https://coveralls.io/r/gextech/tarima?branch=master)
-
