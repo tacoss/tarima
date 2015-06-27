@@ -82,3 +82,4 @@ describe 'Tarima will', ->
         """
 
         expect(view_tpl.render()).toContain set.r
+        expect(view_tpl.params.options.data).toEqual x: 'y'
