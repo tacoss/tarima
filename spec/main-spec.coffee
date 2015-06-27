@@ -62,3 +62,23 @@ describe 'Tarima will', ->
 
     it 'foo.html.jade.ejs -- compile() should produce modified jade-code as markup', ->
       expect(foo_html_jade_ejs.compile(value: 'OK')).toBe '<body>OK</body>'
+
+  describe 'front-matter integration', ->
+    matrix =
+      '.js.jade': v: '#{x}', r: '<y></y>'
+      '.html.ract': v: '{{x}}', r: 'y'
+      '.html.hbs.md': v: '{{x}}', r: '<p>y</p>'
+      '.html.ejs': v: '<%=x%>', r: 'y'
+
+    Object.keys(matrix).forEach (key) ->
+      set = matrix[key]
+
+      it "should provide data from #{key}", ->
+        view_tpl = tarima.parse "view_tpl#{key}", """
+          ---
+          x: y
+          ---
+          #{set.v}
+        """
+
+        expect(view_tpl.render()).toContain set.r
