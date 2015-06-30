@@ -5,6 +5,12 @@ js:
       source: return 8 / 2
       sameinput: true
 
+    foo.es6.js:
+      label: render() should return the transpiled es6-code as output
+      source: "const foo = () => 'bar'"
+      contain: "return 'bar';"
+      validate: false
+
     foo.bar.js:
       label: render() should throws an error (unknown bar-engine)
       source: return 2 + 2
