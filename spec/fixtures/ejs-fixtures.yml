@@ -1,4 +1,4 @@
-us:
+ejs:
   fixtures:
     foo.ejs.js:
       label: render() should throws an error (cannot compile js-to-ejs)
@@ -16,24 +16,24 @@ us:
       sameinput: true
 
     foo.ejs.jade:
-      label: render() should return the executed jade-code as markup for us-engine
+      label: render() should return the executed jade-code as markup for ejs-engine
       source: "foo: bar"
       contain: </foo>
       throws: false
       invalidate: true
 
     foo.ejs.less:
-      label: render() should return the executed less-code as css-code for us-engine
+      label: render() should return the executed less-code as css-code for ejs-engine
       source: "a { &:hover { color: red } }"
       contain: a:hover
 
     foo.ejs.coffee:
-      label: render() should throws an error (cannot compile coffee-to-us)
+      label: render() should throws an error (cannot compile coffee-to-ejs)
       source: "-> 'string'"
       throws: true
 
     foo.ejs.ract:
-      label: render() should return the generated html-code from ract-engine as markup for us-engine
+      label: render() should return the generated html-code from ract-engine as markup for ejs-engine
       source: "<tag>{{value}}</tag>"
       invalidate: true
       contain: candy
@@ -41,7 +41,7 @@ us:
         value: candy
 
     foo.ejs.md:
-      label: render() should return the generated html-code from md-engine as markup for us-engine
+      label: render() should return the generated html-code from md-engine as markup for ejs-engine
       source: "> markdown"
       contain: </blockquote>
       invalidate: true
