@@ -9,7 +9,6 @@ js:
       label: render() should return the transpiled es6-code as output
       source: "const foo = () => 'bar'"
       contain: "return 'bar';"
-      validate: false
 
     foo.bar.js:
       label: render() should throws an error (unknown bar-engine)
@@ -40,24 +39,19 @@ js:
       validate: false
 
     foo.js.coffee:
-      label: render() should return the executed coffee-code as output
-      source: "return (-> 'str' + 'ing')()"
-      contain: string
-      missing: function
-      validate: false
+      label: render() should return the transpiled coffee-code as output
+      source: "test = -> 'str' + 'ing'"
+      contain: "var test;"
 
     foo.js.litcoffee:
-      label: render() should return the executed coffee-code as output
+      label: render() should return the transpiled litcoffee-code as output
       source: |
         # title
-            fun = -> {}
-            return typeof fun()
-      contain: object
-      missing: function
-      validate: false
+            fun = ->
+      contain: 'var fun;'
 
     foo.js.ract:
-      label: render() should return the compiled ract-code as array
+      label: render() should return the compiled ract-code as object
       source: "<div>{{stub}}</div>"
       typeof: object
 
@@ -75,9 +69,9 @@ js:
         foo: bar
 
     foo.js.md:
-      label: render() should return the compiled md-code as markup
+      label: render() should throws an error (cannot compile md-to-js)
       source: "# A title"
-      contain: </h1>
+      throws: true
 
     foo.js.json:
       label: render() should return the json-code as object
