@@ -47,7 +47,7 @@ describe 'Tarima will', ->
     '''
 
     it 'foo.js.hbs.jade.ejs -- render() should produce modified jade-code as markup', ->
-      expect(foo_js_hbs_jade_ejs.render(title: off, option: off)).toBe '<h1>Untitled</h1><span>I am a span</span>'
+      expect(foo_js_hbs_jade_ejs.render(title: off, option: off)).toContain '<h1>Untitled</h1><span>I am a span</span>'
 
     it 'foo.js.hbs.jade.ejs -- compile() should produce executable javascript from hbs-code', ->
       expect(foo_js_hbs_jade_ejs.compile(title: off, option: off)).toContain 'Handlebars.template'
@@ -58,10 +58,10 @@ describe 'Tarima will', ->
     '''
 
     it 'foo.html.jade.ejs -- render() should produce modified jade-code as markup', ->
-      expect(foo_html_jade_ejs.render(value: 'OK')).toBe '<body>OK</body>'
+      expect(foo_html_jade_ejs.render(value: 'OK')).toContain '<body>OK</body>'
 
     it 'foo.html.jade.ejs -- compile() should produce modified jade-code as markup', ->
-      expect(foo_html_jade_ejs.compile(value: 'OK')).toBe '<body>OK</body>'
+      expect(foo_html_jade_ejs.compile(value: 'OK')).toContain '<body>OK</body>'
 
   describe 'front-matter integration', ->
     matrix =
