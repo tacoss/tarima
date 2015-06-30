@@ -1,10 +1,9 @@
 less:
   fixtures:
     foo.less.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-less)
       source: "return 'a { &:hover { color: red } }'"
-      invalidate: true
-      missing: "a:hover"
+      throws: true
 
     foo.less.css:
       label: render() should throws an error (cannot compile css-to-less)

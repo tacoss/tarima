@@ -1,10 +1,9 @@
 md:
   fixtures:
     foo.md.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-md)
       source: "return '> a quote'"
-      invalidate: true
-      missing: </blockquote>
+      throws: true
 
     foo.md.css:
       label: render() should throws an error (cannot compile css-to-md)

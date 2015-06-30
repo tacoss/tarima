@@ -1,10 +1,9 @@
 html:
   fixtures:
     foo.html.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-html)
       source: return '<markup>'
-      invalidate: true
-      contain: <markup>
+      throws: true
 
     foo.html.css:
       label: render() should throws an error (cannot compile css-to-html)

@@ -1,9 +1,9 @@
 ract:
   fixtures:
     foo.ract.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-ract)
       source: "return '<tag>{{value}}</tag>'"
-      invalidate: true
+      throws: true
 
     foo.ract.css:
       label: render() should throws an error (cannot compile css-to-ract)

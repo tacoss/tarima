@@ -1,10 +1,9 @@
 coffee:
   fixtures:
     foo.coffee.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-coffee)
       source: "return '-> \\'string\\''"
-      invalidate: true
-      contain: string
+      throws: true
 
     foo.coffee.css:
       label: render() should throws an error (cannot compile css-to-coffee)

@@ -5,11 +5,6 @@ js:
       source: return 8 / 2
       sameinput: true
 
-    foo.js.js:
-      label: render() should return js-code as is
-      source: return 2 * 3
-      sameinput: true
-
     foo.bar.js:
       label: render() should throws an error (unknown bar-engine)
       source: return 2 + 2

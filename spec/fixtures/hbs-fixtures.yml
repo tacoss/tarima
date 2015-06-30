@@ -1,10 +1,9 @@
 hbs:
   fixtures:
     foo.hbs.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-hbs)
       source: "return '{{#foo}}bar{{/foo}}'"
-      invalidate: true
-      contain: bar
+      throws: true
 
     foo.hbs.css:
       label: render() should return the css-code as is

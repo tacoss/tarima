@@ -1,10 +1,9 @@
 jade:
   fixtures:
     foo.jade.js:
-      label: render() should return the executed js-code
+      label: render() should throws an error (cannot compile js-to-jade)
       source: "return 'foo: bar'"
-      invalidate: true
-      missing: </bar>
+      throws: true
 
     foo.jade.css:
       label: render() should throws an error (cannot compile css-to-jade)
