@@ -8,18 +8,20 @@ describe 'common behavior', ->
   it 'x.y has an empty pipe', ->
     expect($('x.y').params.parts).toEqual []
 
-  it 'x.y.z has a pipe with one engine', ->
+  it 'x.y.z has one engine', ->
     expect($('x.y.z').params.parts).toEqual ['z']
 
-  describe 'engines behavior', ->
-    describe 'unknown' , ->
-      it 'x.y.z should return as is', ->
-        expect($('x.y.z', 'a').render()).toBe 'a'
-        expect($('x.y.z', 'b').compile()).toBe 'b'
+  it 'x.y.z should return as is', ->
+    expect($('x.y.z', 'a').render()).toBe 'a'
+    expect($('x.y.z', 'b').compile()).toBe 'b'
 
-    describe 'known -- render()', ->
+  describe 'known engines behavior', ->
+    describe 'render()', ->
       it 'x.y.js should return as is', ->
         expect($('x.y.js', 'var x;').render()).toBe 'var x;'
+
+      it 'x.es6.js should return transpiled ES6', ->
+        expect($('x.es6.js', 'const x = "y"').render()).toContain 'var x = "y";'
 
       it 'x.js.hbs should return rendered Handlebars', ->
         expect($('x.js.hbs', 'x{{y}}').render(y: 'D')).toBe 'xD'
@@ -49,10 +51,10 @@ describe 'common behavior', ->
       it 'x.js.md should fail, or not?', ->
         expect(-> $('x.js.md', '# OK').render()).toThrow()
 
-      it 'x.json.ejs should return raw JSON', ->
+      it 'x.json.ejs should return raw JSON from rendered EJS', ->
         expect($('x.json.ejs', '{"x":"<%=y%>"}').render(y: 'D')).toBe '{"x":"D"}'
 
-    describe 'known -- compile()', ->
+    describe 'compile()', ->
       it 'x.js.hbs should return a pre-compiled Handlebars template', ->
         expect($('x.js.hbs', '{{#x}}y{{/x}}').compile(x: 1)).toContain 'Handlebars.template'
 
