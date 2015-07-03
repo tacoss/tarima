@@ -64,20 +64,17 @@ describe 'known engines behavior', ->
 
       view = $('x.litcoffee.hbs.ejs', tpl)
 
-      it 'should return modified CoffeeScript calling render()', ->
+      it 'should return modified CoffeeScript calling render() and compile()', ->
         code = view.render(title: off)
 
         expect(code).toContain '# Untitled'
         expect(code).toContain 'class Klass'
         expect(code).not.toContain 'fun = ->'
 
-      it 'should return a Handlebars template calling compile()', ->
-        code = view.compile(title: 'OK')
+        params =
+          title: (new Date()).toString()
 
-        expect(code).toContain '# OK'
-        expect(code).toContain 'fun = ->'
-        expect(code).toContain 'class Klass'
-        expect(code).toContain 'Handlebars.template'
+        expect(view.compile(params)).toBe view.render(params)
 
     describe 'x.js.ract.jade.ejs', ->
       tpl = '''
@@ -104,8 +101,9 @@ describe 'known engines behavior', ->
         expect(code).toContain 'function anonymous'
 
     describe 'x.y.js.coffee', ->
-      it 'should return transpiled CoffeeScript calling render()', ->
-        expect($('x.y.js.coffee', 'foo bar').render()).toContain 'foo(bar);'
+      it 'should return transpiled CoffeeScript calling render() and compile()', ->
+        view = $('x.y.js.coffee', 'foo bar')
+        code = view.render()
 
-      it 'should return transpiled CoffeeScript calling compile()', ->
-        expect($('x.y.js.coffee', 'foo bar').compile()).toContain 'foo(bar);'
+        expect(code).toContain 'foo(bar);'
+        expect(code).toBe view.compile()
