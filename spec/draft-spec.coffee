@@ -4,119 +4,108 @@ $ = (filename, params, code) ->
   [code, params] = [params, {}] if typeof params is 'string'
   tarima.parse filename, code, params
 
-describe 'common behavior', ->
-  it 'x.y has an empty pipe', ->
-    expect($('x.y').params.parts).toEqual []
+describe 'known engines behavior', ->
+  describe 'render()', ->
+    it 'x.y.js should return as is', ->
+      expect($('x.y.js', 'var x;').render()).toBe 'var x;'
 
-  it 'x.y.z has one engine', ->
-    expect($('x.y.z').params.parts).toEqual ['z']
+    it 'x.es6.js should return transpiled ES6', ->
+      expect($('x.es6.js', 'const x = "y"').render()).toContain 'var x = "y";'
 
-  it 'x.y.z should return as is', ->
-    expect($('x.y.z', 'a').render()).toBe 'a'
-    expect($('x.y.z', 'b').compile()).toBe 'b'
+    it 'x.js.hbs should return rendered Handlebars', ->
+      expect($('x.js.hbs', 'x{{y}}').render(y: 'D')).toBe 'xD'
 
-  describe 'known engines behavior', ->
-    describe 'render()', ->
-      it 'x.y.js should return as is', ->
-        expect($('x.y.js', 'var x;').render()).toBe 'var x;'
+    it 'x.js.ejs should return rendered Embedded JavaScript', ->
+      expect($('x.js.ejs', 'a<%=b%>').render(b: '!')).toBe 'a!'
 
-      it 'x.es6.js should return transpiled ES6', ->
-        expect($('x.es6.js', 'const x = "y"').render()).toContain 'var x = "y";'
+    it 'x.js.coffee should return transpiled CoffeeScript', ->
+      expect($('x.js.coffee', 'foo bar').render()).toContain 'foo(bar);'
 
-      it 'x.js.hbs should return rendered Handlebars', ->
-        expect($('x.js.hbs', 'x{{y}}').render(y: 'D')).toBe 'xD'
+    it 'x.js.ract should return a plain object (Ractive.js templating)', ->
+      expect($('x.js.ract', '{{x}}').render()).toEqual { v: 3, t: [ { t: 2, r: 'x' } ] }
 
-      it 'x.js.ejs should return rendered Embedded JavaScript', ->
-        expect($('x.js.ejs', 'a<%=b%>').render(b: '!')).toBe 'a!'
+    it 'x.js.jade should return rendered Jade', ->
+      expect($('x.js.jade', '|#[#{x}]').render(x: 'y')).toContain '<y></y>'
 
-      it 'x.js.coffee should return transpiled CoffeeScript', ->
-        expect($('x.js.coffee', 'foo bar').render()).toContain 'foo(bar);'
+    it 'x.js.json should return parsed JSON', ->
+      expect($('x.js.json', '{"x":"y"}').render()).toEqual { x: 'y' }
 
-      it 'x.js.ract should return a plain object (Ractive.js templating)', ->
-        expect($('x.js.ract', '{{x}}').render()).toEqual { v: 3, t: [ { t: 2, r: 'x' } ] }
+    it 'x.js.less should return rendered LESS', ->
+      expect($('x.js.less', '*{&:_{x:@y}}').render(y: 'z')).toContain '''
+        *:_ {
+          x: z;
+        }
+      '''
 
-      it 'x.js.jade should return rendered Jade', ->
-        expect($('x.js.jade', '|#[#{x}]').render(x: 'y')).toContain '<y></y>'
+    it 'x.js.md should return rendered Markdown', ->
+      expect($('x.js.md', '# OK').render()).toMatch /<h1[^<>]*>OK<\/h1>/
 
-      it 'x.js.json should return parsed JSON', ->
-        expect($('x.js.json', '{"x":"y"}').render()).toEqual { x: 'y' }
+    it 'x.json.ejs should return raw JSON from rendered EJS', ->
+      expect($('x.json.ejs', '{"x":"<%=y%>"}').render(y: 'D')).toBe '{"x":"D"}'
 
-      it 'x.js.less should return rendered LESS', ->
-        expect($('x.js.less', '*{&:_{x:@y}}').render(y: 'z')).toContain '''
-          *:_ {
-            x: z;
-          }
-        '''
+  describe 'compile()', ->
+    it 'x.js.hbs should return a pre-compiled Handlebars template', ->
+      expect($('x.js.hbs', '{{#x}}y{{/x}}').compile(x: 1)).toContain 'Handlebars.template'
 
-      it 'x.js.md should fail, or not?', ->
-        expect(-> $('x.js.md', '# OK').render()).toThrow()
+    it 'x.js.jade should return a pre-compiled Jade template', ->
+      expect($('x.js.jade', 'x=y').compile(y: 'z')).toContain 'function template(locals)'
 
-      it 'x.json.ejs should return raw JSON from rendered EJS', ->
-        expect($('x.json.ejs', '{"x":"<%=y%>"}').render(y: 'D')).toBe '{"x":"D"}'
+  describe 'mixed engines', ->
+    describe 'x.litcoffee.hbs.ejs', ->
+      tpl = '''
+        # <%= title || 'Untitled' %>
 
-    describe 'compile()', ->
-      it 'x.js.hbs should return a pre-compiled Handlebars template', ->
-        expect($('x.js.hbs', '{{#x}}y{{/x}}').compile(x: 1)).toContain 'Handlebars.template'
+        {{#option}}
+            fun = ->
+        {{/option}}{{^option}}
+            class Klass; fun = new Klass
+        {{/option}}
+      '''
 
-      it 'x.js.jade should return a pre-compiled Jade template', ->
-        expect($('x.js.jade', 'x=y').compile(y: 'z')).toContain 'function template(locals)'
+      view = $('x.litcoffee.hbs.ejs', tpl)
 
-    describe 'mixed engines', ->
-      describe 'x.litcoffee.hbs.ejs', ->
-        tpl = '''
-          # <%= title || 'Untitled' %>
+      it 'should return modified CoffeeScript calling render()', ->
+        code = view.render(title: off)
 
-          {{#option}}
-              fun = ->
-          {{/option}}{{^option}}
-              class Klass; fun = new Klass
-          {{/option}}
-        '''
+        expect(code).toContain '# Untitled'
+        expect(code).toContain 'class Klass'
+        expect(code).not.toContain 'fun = ->'
 
-        view = $('x.litcoffee.hbs.ejs', tpl)
+      it 'should return a Handlebars template calling compile()', ->
+        code = view.compile(title: 'OK')
 
-        it 'should return modified CoffeeScript calling render()', ->
-          code = view.render(title: off)
+        expect(code).toContain '# OK'
+        expect(code).toContain 'fun = ->'
+        expect(code).toContain 'class Klass'
+        expect(code).toContain 'Handlebars.template'
 
-          expect(code).toContain '# Untitled'
-          expect(code).toContain 'class Klass'
-          expect(code).not.toContain 'fun = ->'
+    describe 'x.js.ract.jade.ejs', ->
+      tpl = '''
+        h1 <%= title || 'Untitled' %>
 
-        it 'should return a Handlebars template calling compile()', ->
-          code = view.compile(title: 'OK')
+        |{{#option}}
+        div I am a div
+        |{{/option}}{{^option}}
+        span I am a span
+        |{{/option}}
+      '''
 
-          expect(code).toContain '# OK'
-          expect(code).toContain 'fun = ->'
-          expect(code).toContain 'class Klass'
-          expect(code).toContain 'Handlebars.template'
+      view = $('x.js.ract.jade.ejs', tpl)
 
-      describe 'x.js.ract.jade.ejs', ->
-        tpl = '''
-          h1 <%= title || 'Untitled' %>
+      it 'should return a plain object calling render()', ->
+        expect(view.render(title: off).v).toBe 3
 
-          |{{#option}}
-          div I am a div
-          |{{/option}}{{^option}}
-          span I am a span
-          |{{/option}}
-        '''
+      it 'should return a Ractive.js template calling compile()', ->
+        code = view.compile(title: 'OK')
 
-        view = $('x.js.ract.jade.ejs', tpl)
+        expect(code).toContain '["OK"]'
+        expect(code).toContain '"r":"option"'
+        expect(code).toContain '"I am a span"'
+        expect(code).toContain 'function anonymous()'
 
-        it 'should return a plain object calling render()', ->
-          expect(view.render(title: off).v).toBe 3
+    describe 'x.y.js.coffee', ->
+      it 'should return transpiled CoffeeScript calling render()', ->
+        expect($('x.y.js.coffee', 'foo bar').render()).toContain 'foo(bar);'
 
-        it 'should return a Ractive.js template calling compile()', ->
-          code = view.compile(title: 'OK')
-
-          expect(code).toContain '["OK"]'
-          expect(code).toContain '"r":"option"'
-          expect(code).toContain '"I am a span"'
-          expect(code).toContain 'function anonymous()'
-
-      describe 'x.y.js.coffee', ->
-        it 'should return transpiled CoffeeScript calling render()', ->
-          expect($('x.y.js.coffee', 'foo bar').render()).toContain 'foo(bar);'
-
-        it 'should return transpiled CoffeeScript calling compile()', ->
-          expect($('x.y.js.coffee', 'foo bar').compile()).toContain 'foo(bar);'
+      it 'should return transpiled CoffeeScript calling compile()', ->
+        expect($('x.y.js.coffee', 'foo bar').compile()).toContain 'foo(bar);'
