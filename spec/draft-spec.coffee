@@ -101,7 +101,7 @@ describe 'known engines behavior', ->
         expect(code).toContain '["OK"]'
         expect(code).toContain '"r":"option"'
         expect(code).toContain '"I am a span"'
-        expect(code).toContain 'function anonymous()'
+        expect(code).toContain 'function anonymous'
 
     describe 'x.y.js.coffee', ->
       it 'should return transpiled CoffeeScript calling render()', ->
