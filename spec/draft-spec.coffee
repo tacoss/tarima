@@ -1,8 +1,4 @@
-tarima = require('../lib')
-
-$ = (filename, params, code) ->
-  [code, params] = [params, {}] if typeof params is 'string'
-  tarima.parse filename, code, params
+$ = require('./tarima')
 
 describe 'known engines behavior', ->
   describe 'render()', ->
