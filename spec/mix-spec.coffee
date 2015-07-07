@@ -72,3 +72,11 @@ describe 'mixing engines', ->
 
       expect(code).toContain 'escape(x)'
       expect(code).toContain 'function anonymous'
+
+  describe 'x.js.coffee.md / y.js.litcoffee', ->
+    it 'should return transpiled CoffeeScript calling render() and compile()', ->
+      coffee_md = $('x.js.coffee.md', '    x y\n')
+      litcoffee = $('x.js.litcoffee', '    x y\n')
+
+      expect(coffee_md.render()).toBe litcoffee.compile()
+      expect(litcoffee.render()).toBe coffee_md.compile()
