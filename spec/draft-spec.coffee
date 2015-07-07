@@ -103,3 +103,18 @@ describe 'known engines behavior', ->
 
         expect(code).toContain 'foo(bar);'
         expect(code).toBe view.compile()
+
+    describe 'x.js.ejs.jade', ->
+      view = $('x.js.ejs.jade', 'h1 <%= x %>')
+
+      it 'should return a rendered EJS template calling render()', ->
+        code = view.render(x: 'OK')
+
+        expect(code).toContain '<h1>OK</h1>'
+        expect(code).not.toContain 'function'
+
+      it 'should return a EJS template calling compile()', ->
+        code = view.compile()
+
+        expect(code).toContain 'escape(x)'
+        expect(code).toContain 'function anonymous'
