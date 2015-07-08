@@ -13,7 +13,7 @@ describe 'bundling behavior', ->
 
   describe 'calling bundle()', ->
     params =
-      bundle: (code) ->
+      wrapper: (code) ->
         "#{code}\nviews = JST"
 
     views = null
