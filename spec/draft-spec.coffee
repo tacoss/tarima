@@ -39,9 +39,15 @@ describe 'engines behavior', ->
     it 'x.json.ejs should return raw JSON from rendered EJS', ->
       expect($('x.json.ejs', '{"x":"<%=y%>"}').render(y: 'D')).toBe '{"x":"D"}'
 
+    it 'x.y.ract.jade should return raw HTML from rendered Ractive', ->
+      expect($('x.y.ract.jade', 'h1 OK').render()).toContain '<h1>OK</h1>'
+
   describe 'compile()', ->
     it 'x.js.hbs should return a pre-compiled Handlebars template', ->
       expect($('x.js.hbs', '{{#x}}y{{/x}}').compile(x: 1)).toContain 'Handlebars.template'
 
     it 'x.js.jade should return a pre-compiled Jade template', ->
       expect($('x.js.jade', 'x=y').compile(y: 'z')).toContain 'function template(locals)'
+
+    it 'x.js.json should return a pre-compiled function', ->
+      expect($('x.js.json', '{"x":"y"}').compile()).toContain 'return {"x":"y"};'
