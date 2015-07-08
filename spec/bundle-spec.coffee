@@ -12,6 +12,10 @@ describe 'bundling behavior', ->
       expect($('x.js.less').params.dependencies).toContain 'require("less")'
 
   describe 'calling bundle()', ->
+    params =
+      bundle: (code) ->
+        "#{code}\nviews = JST"
+
     views = null
 
     code = $([
@@ -20,9 +24,9 @@ describe 'bundling behavior', ->
       $('c.js.less', '* { color: @value }')
       $('d.js.hbs', '{{ value }}')
       $('e.js.ejs', '<%= value %>')
-    ])
+    ], null, params)
 
-    try eval(code + '; views = JST')
+    try eval(code)
     catch e
 
     it 'should return a JST object', ->
