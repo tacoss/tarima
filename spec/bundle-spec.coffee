@@ -25,7 +25,7 @@ describe 'bundling behavior', ->
     try eval(code + '; views = JST')
     catch e
 
-    it 'should return a CommonJS module object', ->
+    it 'should return a JST object', ->
       expect(Object::toString.call(views)).toBe '[object Object]'
 
     it 'should return callable functions', ->
