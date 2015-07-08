@@ -6,8 +6,8 @@
   "rules": {
     "quotes": [1, "single", "avoid-escape"],
     "global-strict": [1, "always"],
-    "no-extra-strict": true,
-    "no-new-func": false,
-    "camelcase": false
+    "no-extra-strict": 1,
+    "no-new-func": 0,
+    "camelcase": 0
   }
 }
