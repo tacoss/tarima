@@ -24,7 +24,7 @@ describe 'bundling behavior', ->
       $('c.js.less', '* { color: @value }')
       $('d.js.hbs', '{{ value }}')
       $('e.js.ejs', '<%= value %>')
-    ], null, params)
+    ], params)
 
     try eval(code)
     catch e
