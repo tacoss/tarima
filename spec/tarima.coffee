@@ -3,9 +3,9 @@ path = require('path')
 tarima = require('../lib')
 
 module.exports = (filename, params, code) ->
-  [code, params] = [params, {}] if typeof params is 'string'
+  return tarima.bundle(arguments...) if Array.isArray(filename)
 
-  return tarima.bundle(filename) if Array.isArray(filename)
+  [code, params] = [params, {}] if typeof params is 'string'
 
   test_file = path.join(__dirname, 'fixtures', filename)
 
