@@ -1,0 +1,30 @@
+{
+  "cyclomatic_complexity": {
+    "value": 11,
+    "level": "warn"
+  },
+  "line_endings": {
+    "value": "unix",
+    "level": "error"
+  },
+  "arrow_spacing": {
+    "level": "error"
+  },
+  "indentation": {
+    "value": 2,
+    "level": "error"
+  },
+  "space_operators": {
+    "level": "error"
+  },
+  "no_unnecessary_fat_arrows": {
+    "level": "error"
+  },
+  "no_plusplus": {
+    "level": "error"
+  },
+  "max_line_length": {
+    "value": 120,
+    "level": "error"
+  }
+}
