@@ -1,7 +1,9 @@
+# Tarima
+
 ![Tarima](https://dl.dropboxusercontent.com/u/2726997/img/tarima_small.png)
 
 ```bash
-$ npm install tarima --save-dev
+$ npm install tarima
 ```
 
 **Tarima** is a pipeline library for templating  based on the filename extensions.
@@ -23,27 +25,52 @@ Now rename your template into `tpl.html.jade` and the output will be the same.
 
 ## How the pipeline works
 
-Tarima understands the `.html.jade` extension as: _render_ **jade** into markup since it can't _compile_ into **html**.
+If a filename called `tpl.x.y` have two extensions, each extension will invoke a particular engine from right to left respectively.
 
-While `.js.ract.jade` means: _render_ **jade** into markup, then _compile_ **ract** into javascript.
+When a extension has no registered engine, the pipeline will continue with the next engine in the chain.
 
-You can use `.css.less` to _render_ **css**, or `.js.less` to _compile_ into a **js** function, etc.
+Each engine in the chain will receive `params.client ` as `true` if was invoked with `compile()`.
+
+Also `params.next` will be passed with the next engine-extension in the chain.
+
+If the engine returns nothing, the same `params.source` will be passed.
+
+How hard is implement [Hogan](http://twitter.github.io/hogan.js/) as engine for `.mustache` support?
+
+```js
+var Hogan = require('hogan.js');
+
+tarima.add('mustache', function(params) {
+  if (params.next === 'js' && params.client) {
+    // .mustache "can" pre-compile into .js
+    return Hogan.compile(params.source, { asString: true });
+  }
+
+  // Hogan must be compiled first!
+  var tpl = Hogan.compile(params.source);
+
+  // next render() callback
+  return tpl.render.bind(tpl);
+});
+
+// TODO: new Hogan.Template(), render.bind() again, etc.
+```
+
+Obviously isn't as easy, but you get the picture.
 
 ### Available engines
 
-Although not all filename extensions are chainable you can mix them on several and useful ways.
+Currently tarima supports:
 
-- **CoffeeScript** can compile only into `.js`
-- **CSS** can be _compiled_ into `.js`; render `.ejs` and `.hbs`
-- **EJS** can compile and render from anything (?)
-- **Handlebars** can compile and render from anything (?)
-- **HTML** can be _compiled_ into `.js`; render `.ejs`, `.hbs`; render from `.ract`
-- **Jade** can compile into `.js`; render `.ejs`, `.hbs` and `.html`
-- **Javascript** anything can compile into this (?)
-- **JSON** can compile only into `.js`
-- **LESS** can compile into `.js`; render `.ejs`, `.hbs` and `.css`
-- **Markdown** can compile into `.js`; render `.ejs`, `.hbs` and `.html`; render from `.ract`; `.coffee` _render_ as Literate CoffeeScript
-- **Ractive** can compile into `.js`; render `.ejs`, `.hbs` and `.html`
+- **CoffeeScript** for `.coffee`
+- **EJS** for `.ejs`
+- **Handlebars** for `.hbs`
+- **Jade** for `.jade`
+- **Javascript** for `.js` and `.es6.js`
+- **JSON** for `.json`
+- **LESS** for `.less`
+- **Markdown** for `.md`, `.coffee.md` and `.litcoffee`
+- **Ractive** for `.ract`
 
 ### Available methods
 
@@ -51,36 +78,28 @@ Although not all filename extensions are chainable you can mix them on several a
 
 Register a custom extension and callback.
 
-The callback receive the partial parameters and a `next()` callback for validating supported target extensions:
-
 ```javascript
-tarima.add('foo', function(params, next) {
-  if (next('baz', 'bar')) {
-    // ...
+tarima.add('foo', function(params) {
+  if (params.next === 'baz') {
+    return 'bazzinga';
   }
 });
-
-// tpl.bar.foo => OK
-// tpl.baz.foo => OK
-// tpl.buzz.foo => EROR
 ```
-
-If the target extension is not allowed an exception will be thrown.
 
 The `params` object looks like:
 
 ```javascript
 {
+  next: undefined,
+  client: false,
   filepath: '',
   filename: 'foo.js.coffee',
-  parts: [ 'coffee' ],
+  parts: [ 'js', 'coffee' ],
   name: 'foo',
   ext: 'js',
   options: { locals: {} },
   source: '-> "string"',
-  keypath: 'foo',
-  type: 'coffee',
-  client: false
+  keypath: 'foo'
 }
 ```
 
@@ -98,7 +117,7 @@ if (params.client) {
 return tpl.compile();
 ```
 
-In the browser is required to provide a runtime for some engines.
+Note that in the browser a runtime is required for some engines.
 
 #### `parse(filepath, source, options)`
 
