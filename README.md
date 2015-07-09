@@ -1,6 +1,6 @@
-# Tarima
-
 [![Build Status](https://travis-ci.org/gextech/tarima.png?branch=master)](https://travis-ci.org/gextech/tarima) [![NPM version](https://badge.fury.io/js/tarima.png)](http://badge.fury.io/js/tarima) [![Coverage Status](https://coveralls.io/repos/gextech/tarima/badge.png?branch=master)](https://coveralls.io/r/gextech/tarima?branch=master)
+
+# Tarima
 
 ![Tarima](https://dl.dropboxusercontent.com/u/2726997/img/tarima_small.png)
 
