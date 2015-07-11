@@ -6,6 +6,15 @@ describe 'defined api', ->
       expect($.engines).not.toThrow()
 
   describe 'common options', ->
+    it 'should be allowed to alter partials if options.filter is given', ->
+      options =
+        filter: (params) ->
+          params.source = '@value: cyan;\n' + params.source
+
+      view = $('x.y.less', '.test { color: @value; }', options)
+
+      expect(view.render()).toContain 'color: cyan'
+
     it 'should return relative keypaths if options.cwd is given', ->
       expect($('foo/bar/baz.buzz').params.keypath).toBe 'baz'
       expect($('foo/bar/baz.buzz', cwd: 'foo').params.keypath).toBe 'bar/baz'
@@ -23,4 +32,3 @@ describe 'defined api', ->
   describe 'handling exceptions', ->
     it 'should not shallow thrown exceptions', ->
       expect(-> $('x.js.less', '*{color red}').render()).toThrow()
-
