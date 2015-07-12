@@ -29,38 +29,11 @@ Now rename your template into `tpl.html.jade` and the output will be the same.
 
 If a filename called `tpl.x.y` have two extensions, each extension will invoke a particular engine from right to left respectively.
 
-When a extension has no registered engine, the pipeline will continue with the next engine in the chain.
+When a extension has no registered engine, the pipeline will continue with the next engine in the chain loop.
 
-Each engine in the chain will receive `params.client ` as `true` if was invoked with `compile()`.
-
-Also `params.next` will be passed with the next engine-extension in the chain.
-
-If the engine returns nothing, the same `params.source` will be passed.
-
-How hard is implement [Hogan](http://twitter.github.io/hogan.js/) as engine for `.mustache` support?
-
-```js
-var Hogan = require('hogan.js');
-
-tarima.add('mustache', function(params) {
-  if (params.next === 'js' && params.client) {
-    // .mustache "can" pre-compile into .js
-    return Hogan.compile(params.source, { asString: true });
-  }
-
-  // Hogan must be compiled first!
-  var tpl = Hogan.compile(params.source);
-
-  // next render() callback
-  return tpl.render.bind(tpl);
-});
-
-// TODO: new Hogan.Template(), render.bind() again, etc.
-```
-
-Obviously isn't as easy, but you get the picture.
-
-### Available engines
+- `params.next` will be passed with the name of the next file-extension
+- `params.client ` will be `true` if was invoked with `compile()`
+- `params.source` is used if the engine returns nothing
 
 Currently tarima supports:
 
@@ -73,6 +46,8 @@ Currently tarima supports:
 - **LESS** for `.less`
 - **Markdown** for `.md`, `.coffee.md` and `.litcoffee`
 - **Ractive** for `.ract`
+
+Some engines can compile to `.js` but most will `render()` only.
 
 ### Available methods
 
@@ -137,12 +112,19 @@ Same as parse but reading from filesystem instead.
 var view = tarima.load('/path/to/foo.js.jade');
 ```
 
+#### `bundle(array, options)`
+
+Will bundle the array of templates into a stringified JST variable.
+
+```javascript
+var code = tarima.bundle([tarima.parse('bar.js.ejs', '<%= value %>')]);
+```
+
 ## Dependant tools
 
 - [gulp-tarima](https://github.com/gextech/tarima) support for Gulp
 - [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
 
-## Having issues?
+## Issues?
 
-You're welcome. ;-)
-
+You're welcome to open a ticket or submit a PR. ;-)
