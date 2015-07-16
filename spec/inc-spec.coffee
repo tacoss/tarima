@@ -9,3 +9,7 @@ describe 'include/import support', ->
 
   it 'should resolve imports from style.css.less', ->
     expect($('style.css.less').render()).toContain 'color: red'
+
+  it 'should track dependencies for .jade and .less', ->
+    expect($('home.html.jade').view().required).toEqual [__dirname + '/fixtures/partial.jade']
+    expect($('style.css.less').view().required).toEqual [__dirname + '/fixtures/config.less']
