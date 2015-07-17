@@ -120,6 +120,44 @@ Will bundle the array of templates into a stringified JST variable.
 var code = tarima.bundle([tarima.parse('bar.js.ejs', '<%= value %>')]);
 ```
 
+### Calling the pipeline
+
+Once you've parsed or loaded a template you can get its output or data, or both.
+
+#### compile(locals)
+
+Return the pre-compiled version if possible, otherwise return the same source.
+
+```javascript
+var js = tarima.parse('tpl.js.jade', 'h1 ok').compile();
+
+console.log(js); // function template(locals) ...
+```
+
+#### render(locals)
+
+Render and return as string, most template-engines do this.
+
+```javascript
+var html = tarima.parse('tpl.html.jade', 'h1 ok').render();
+
+console.log(html); // <h1>ok</h1> ...
+```
+
+#### data(locals, raw)
+
+Will `render()` and return the resulting view-params as is.
+
+- If `raw` is **true** `compile()` will be called instead
+- If `locals` is boolean it will be used as `raw` and `locals` will be empty
+
+```javascript
+var tpl = tarima.parse('tpl.js.jade', 'h1 ok');
+
+console.log(tpl.data().source); // <h1>ok</h1> ...
+console.log(tpl.data(true).source); // function template(locals) ...
+```
+
 ## Dependant tools
 
 - [gulp-tarima](https://github.com/gextech/tarima) support for Gulp
