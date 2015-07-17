@@ -29,7 +29,7 @@ Now rename your template into `tpl.html.jade` and the output will be the same.
 
 If a filename called `tpl.x.y` have two extensions, each extension will invoke a particular engine from right to left respectively.
 
-When a extension has no registered engine, the pipeline will continue with the next engine in the chain loop.
+When a extension has no registered engine, the pipeline will stop and return the current chain params.
 
 - `params.next` will be passed with the name of the next file-extension
 - `params.client ` will be `true` if was invoked with `compile()`
