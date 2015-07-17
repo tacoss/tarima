@@ -120,6 +120,14 @@ Will bundle the array of templates into a stringified JST variable.
 var code = tarima.bundle([tarima.parse('bar.js.ejs', '<%= value %>')]);
 ```
 
+#### `engines()`
+
+Return all the registered extensions.
+
+```javascript
+console.log(tarima.engines()); // ['coffee', 'ejs', ...]
+```
+
 ### Options
 
 - `cwd` --- Set relative keys on `bundle()`
