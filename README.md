@@ -120,6 +120,22 @@ Will bundle the array of templates into a stringified JST variable.
 var code = tarima.bundle([tarima.parse('bar.js.ejs', '<%= value %>')]);
 ```
 
+### Options
+
+- `cwd` --- Set relative keys on `bundle()`
+- `locals` --- Local variables on `bundle()`
+- `filter` --- Execute this callback after `parse()`
+- `wrapper` --- Execute this callback after `bundle()`
+
+If you want to override certain options for any engine:
+
+```javascript
+var view = tarima.load('/path/to/view.js.coffee', {
+  // custom settings for coffee-engine
+  coffee: { bare: true }
+});
+```
+
 ### Calling the pipeline
 
 Once you've parsed or loaded a template you can get its output or data, or both.
