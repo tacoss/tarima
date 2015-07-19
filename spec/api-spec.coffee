@@ -29,6 +29,12 @@ describe 'defined api', ->
       expect(code).toContain 'foo(bar)'
       expect(code).toContain '.call(this)'
 
+    it 'should allow multiple extensions if options.offset s given', ->
+      view = $('x.webpack.js.coffee', offset: 1)
+
+      expect(view.params.ext).toBe 'webpack.js'
+      expect(view.params.parts).toEqual ['js', 'coffee']
+
   describe 'handling exceptions', ->
     it 'should not shallow thrown exceptions', ->
       expect(-> $('x.js.less', '*{color red}').render()).toThrow()
