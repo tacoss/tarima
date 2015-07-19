@@ -29,8 +29,8 @@ describe 'defined api', ->
       expect(code).toContain 'foo(bar)'
       expect(code).toContain '.call(this)'
 
-    it 'should allow multiple extensions if options.offset s given', ->
-      view = $('x.webpack.js.coffee', offset: 1)
+    it 'should allow mixed extensions when options.raw is given', ->
+      view = $('x.webpack.js.coffee', raw: ['js'])
 
       expect(view.params.ext).toBe 'webpack.js'
       expect(view.params.parts).toEqual ['js', 'coffee']
