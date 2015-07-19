@@ -32,3 +32,16 @@ describe 'defined api', ->
   describe 'handling exceptions', ->
     it 'should not shallow thrown exceptions', ->
       expect(-> $('x.js.less', '*{color red}').render()).toThrow()
+
+  describe 'front-matter support', ->
+    it 'should allow front-matter on any template', ->
+      view = $ 'x.y.z', '''
+        <!--
+          ---
+          foo:
+            candy: bar
+          ---
+        -->
+      '''
+
+      expect(view.params.options.data).toEqual foo: candy: 'bar'
