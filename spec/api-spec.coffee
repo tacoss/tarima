@@ -35,6 +35,15 @@ describe 'defined api', ->
       expect(view.params.ext).toBe 'webpack.js'
       expect(view.params.parts).toEqual ['js', 'coffee']
 
+    it 'should allow custom front-matter blocks using options.marker', ->
+      view = $ 'a.b.c', '''
+        __DATA__
+        x: y
+        __DATA__
+      ''', marker: '__DATA__'
+
+      expect(view.params.options.data).toEqual x: 'y'
+
   describe 'handling exceptions', ->
     it 'should not shallow thrown exceptions', ->
       expect(-> $('x.js.less', '*{color red}').render()).toThrow()
