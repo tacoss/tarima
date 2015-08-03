@@ -130,10 +130,11 @@ console.log(tarima.engines()); // ['coffee', 'ejs', ...]
 
 ### Options
 
-- `cwd` --- Set relative keys on `bundle()`
-- `locals` --- Local variables on `bundle()`
-- `filter` --- Execute this callback after `parse()`
-- `wrapper` --- Execute this callback after `bundle()`
+- `cwd` &mdash; Set relative keys on `bundle()`
+- `locals` &mdash; Local variables on `bundle()`
+- `filter` &mdash; Execute this callback after `parse()`
+- `wrapper` &mdash; Execute this callback after `bundle()`
+- `marker` &mdash; Custom marker for extracting front-matter
 
 If you want to override certain options for any engine:
 
@@ -182,9 +183,22 @@ console.log(tpl.data().source); // <h1>ok</h1> ...
 console.log(tpl.data(true).source); // function template(locals) ...
 ```
 
+## Front-matter
+
+All parsed files can use a front-matter block for local data.
+
+```jade
+//-
+  ---
+  title: Untitled
+  ---
+
+h1= title
+```
+
 ## Dependant tools
 
-- [gulp-tarima](https://github.com/gextech/tarima) support for Gulp
+- [gulp-tarima](https://github.com/gextech/gulp-tarima) support for Gulp
 - [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
 
 ## Issues?
