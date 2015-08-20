@@ -80,3 +80,9 @@ describe 'mixing engines', ->
 
       expect(coffee_md.render()).toBe litcoffee.compile()
       expect(litcoffee.render()).toBe coffee_md.compile()
+
+  describe 'x.js.imba', ->
+    it 'should return transpiled Imba calling render() and compile()', ->
+      imba = $('x.js.imba', 'foo bar')
+
+      expect(imba.render()).toBe imba.compile()
