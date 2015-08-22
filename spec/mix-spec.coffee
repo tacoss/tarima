@@ -90,9 +90,7 @@ describe 'mixing engines', ->
 
   describe 'x.js.idom', ->
     it 'should return compiled IncrementalDOM calling render() and compile()', ->
-      idom = $('x.js.idom', '<h1><%= value %></h1>')
+      idom = $('x.js.idom', '<h1><%= data.value %></h1>')
 
       expect(idom.render()).toBe idom.compile()
       expect(idom.render()).toContain 'lib=IncrementalDOM'
-
-      console.log idom.render()
