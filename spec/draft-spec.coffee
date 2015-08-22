@@ -23,9 +23,6 @@ describe 'engines behavior', ->
     it 'x.js.jade should return rendered Jade', ->
       expect($('x.js.jade', '|#[#{x}]').render(x: 'y')).toContain '<y></y>'
 
-    it 'x.js.json should return parsed JSON', ->
-      expect($('x.js.json', '{"x":"y"}').render()).toEqual { x: 'y' }
-
     it 'x.js.less should return rendered LESS', ->
       expect($('x.js.less', '*{&:_{x:@y}}').render(y: 'z')).toContain '''
         *:_ {
@@ -48,6 +45,3 @@ describe 'engines behavior', ->
 
     it 'x.js.jade should return a pre-compiled Jade template', ->
       expect($('x.js.jade', 'x=y').compile(y: 'z')).toContain 'function template(locals)'
-
-    it 'x.js.json should return a pre-compiled function', ->
-      expect($('x.js.json', '{"x":"y"}').compile()).toContain 'return {"x":"y"};'
