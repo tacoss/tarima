@@ -86,3 +86,13 @@ describe 'mixing engines', ->
       imba = $('x.js.imba', 'foo bar')
 
       expect(imba.render()).toBe imba.compile()
+      expect(imba.render()).toContain 'this.foo'
+
+  describe 'x.js.idom', ->
+    it 'should return compiled IncrementalDOM calling render() and compile()', ->
+      idom = $('x.js.idom', '<h1><%= value %></h1>')
+
+      expect(idom.render()).toBe idom.compile()
+      expect(idom.render()).toContain 'lib=IncrementalDOM'
+
+      console.log idom.render()
