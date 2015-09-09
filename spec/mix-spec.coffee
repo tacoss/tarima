@@ -94,3 +94,10 @@ describe 'mixing engines', ->
 
       expect(idom.render()).toBe idom.compile()
       expect(idom.render()).toContain 'lib=IncrementalDOM'
+
+  describe 'x.js.jisp', ->
+    it 'should return compiled JISP calling render() and compile()', ->
+      jisp = $('x.js.jisp', '(console.log "OK")')
+
+      expect(jisp.render()).toBe jisp.compile()
+      expect(jisp.render()).toContain 'console.log("OK")'

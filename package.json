@@ -32,6 +32,7 @@
     "imba": "^0.11.5",
     "itemplate": "git://github.com/Rapid-Application-Development-JS/itemplate.git",
     "jade": "^1.11.0",
+    "jisp": "^0.3.3",
     "js-yaml": "^3.3.1",
     "less": "^2.5.1",
     "lodash": "^3.10.0",
