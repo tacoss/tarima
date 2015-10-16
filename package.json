@@ -1,7 +1,7 @@
 {
   "name": "tarima",
-  "version": "0.7.2",
-  "description": "Multi-templating for NodeJS",
+  "version": "0.7.3",
+  "description": "Templating madness!",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
