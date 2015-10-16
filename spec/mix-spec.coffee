@@ -101,3 +101,10 @@ describe 'mixing engines', ->
 
       expect(jisp.render()).toBe jisp.compile()
       expect(jisp.render()).toContain 'console.log("OK")'
+
+  describe 'x.css.styl', ->
+    it 'should return compiled Style calling render() and compile()', ->
+      styl = $('x.css.styl', 'body\n  color: blue')
+
+      expect(styl.render()).toBe styl.compile()
+      expect(styl.render()).toContain 'color: blue;'

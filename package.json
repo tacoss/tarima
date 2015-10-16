@@ -37,7 +37,8 @@
     "less": "^2.5.3",
     "lodash": "^3.10.0",
     "marked": "^0.3.3",
-    "ractive": "^0.7.3"
+    "ractive": "^0.7.3",
+    "styl": "^0.2.9"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
