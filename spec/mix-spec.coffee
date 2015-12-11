@@ -45,8 +45,8 @@ describe 'mixing engines', ->
     it 'should return a Ractive.js template calling compile()', ->
       code = view.compile(title: 'OK')
 
-      expect(code).toContain '["OK"]'
-      expect(code).toContain '"r":"option"'
+      expect(code).toContain '"OK"'
+      expect(code).toContain '"option"'
       expect(code).toContain '"I am a span"'
       expect(code).toContain 'function anonymous'
 

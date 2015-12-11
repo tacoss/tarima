@@ -38,7 +38,8 @@
     "lodash": "^3.10.0",
     "marked": "^0.3.3",
     "ractive": "^0.7.3",
-    "styl": "^0.2.9"
+    "styl": "^0.2.9",
+    "tosource": "^1.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
