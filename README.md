@@ -198,6 +198,7 @@ h1= title
 
 ## Dependant tools
 
+- [tarima-cli](https://github.com/gextech/tarima-cli) support for CLI
 - [gulp-tarima](https://github.com/gextech/gulp-tarima) support for Gulp
 - [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
 
