@@ -3,13 +3,13 @@ $ = require('./tarima')
 describe 'bundling behavior', ->
   describe 'known dependencies', ->
     it 'should expose dependencies from x.js.jade', ->
-      expect($('x.js.jade').params.dependencies).toContain 'jade/runtime'
+      expect($('x.js.jade').params.dependencies).toContain '"jade" + "/runtime"'
 
     it 'should expose dependencies from x.js.hbs', ->
-      expect($('x.js.hbs').params.dependencies).toContain 'handlebars/runtime'
+      expect($('x.js.hbs').params.dependencies).toContain '"handlebars" + "/runtime"'
 
     it 'should expose dependencies from x.js.less', ->
-      expect($('x.js.less').params.dependencies).toContain 'require("less")'
+      expect($('x.js.less').params.dependencies).toContain 'require("l" + "ess")'
 
   describe 'calling bundle()', ->
     params =
