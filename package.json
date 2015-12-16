@@ -29,7 +29,7 @@
     "coffee-script": "^1.9.3",
     "ejs": "^2.3.2",
     "handlebars": "^3.0.3",
-    "idom-template": "git://github.com/Rapid-Application-Development-JS/itemplate.git",
+    "idom-template": "^0.1.1",
     "imba": "^0.11.5",
     "jade": "^1.11.0",
     "jisp": "^0.3.3",
