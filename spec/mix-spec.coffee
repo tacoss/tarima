@@ -111,7 +111,7 @@ describe 'mixing engines', ->
 
   describe 'x.jsx', ->
     it 'should return compiled JSX (es6) calling render() and compile()', ->
-      jsx = $('x.jsx', 'let x = <y/>')
+      jsx = $('x.jsx', '/** @jsx dom */ let x = <y/>')
 
       expect(jsx.render()).toBe jsx.compile()
-      expect(jsx.render()).toContain 'React.createElement'
+      expect(jsx.render()).toContain 'var x = dom'
