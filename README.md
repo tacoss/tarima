@@ -37,15 +37,18 @@ When a extension has no registered engine, the pipeline will stop and return the
 
 Currently tarima supports:
 
-- **CoffeeScript** for `.coffee`
-- **EJS** for `.ejs`
-- **Handlebars** for `.hbs`
-- **Jade** for `.jade`
-- **Javascript** for `.js` and `.es6.js`
-- **JSON** for `.json`
-- **LESS** for `.less`
-- **Markdown** for `.md`, `.coffee.md` and `.litcoffee`
-- **Ractive** for `.ract`
+- [CoffeeScript](http://coffeescript.org/) for `.{coffee,litcoffe,coffee.md}`
+- [EJS](http://ejs.co/) for `.ejs`
+- [Handlebars](http://handlebarsjs.com/) for `.hbs`
+- [idom-template](https://github.com/Rapid-Application-Development-JS/itemplate) for `.idom`
+- [imba](http://imba.io/) for `.imba`
+- [Jade](http://jade-lang.com/) for `.jade`
+- [jisp](http://jisp.io/) for `.jisp`
+- [ES6](https://babeljs.io/) for `.es6.js`
+- [LESS](http://lesscss.org/) for `.less`
+- [Kramed](https://github.com/GitbookIO/kramed) for `.md`
+- [Ractive](http://www.ractivejs.org/) for `.ract`
+- [Style](https://github.com/tj/styl) for `.styl`
 
 Some engines can compile to `.js` but most will `render()` only.
 
