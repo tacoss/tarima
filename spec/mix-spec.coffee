@@ -108,3 +108,10 @@ describe 'mixing engines', ->
 
       expect(styl.render()).toBe styl.compile()
       expect(styl.render()).toContain 'color: blue;'
+
+  describe 'x.jsx', ->
+    it 'should return compiled JSX (es6) calling render() and compile()', ->
+      jsx = $('x.jsx', 'let x = <y/>')
+
+      expect(jsx.render()).toBe jsx.compile()
+      expect(jsx.render()).toContain 'React.createElement'
