@@ -41,3 +41,11 @@ describe 'bundling behavior', ->
       expect(views.c(value: 'red')).toContain 'color: red'
       expect(views.d(value: 'OSOM')).toContain 'OSOM'
       expect(views.e(value: '__xD')).toContain '__xD'
+
+  describe 'module.exports', ->
+    it 'should be prepended if options.exports is set', ->
+      view = $('x.js.jade', 'h1 OK', exports: true)
+      code = view.compile()
+
+      expect(code).toContain 'runtime'
+      expect(code).toContain 'module.exports'

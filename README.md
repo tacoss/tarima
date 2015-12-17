@@ -135,6 +135,7 @@ console.log(tarima.engines()); // ['coffee', 'ejs', ...]
 - `filter` &mdash; Execute this callback after `parse()`
 - `wrapper` &mdash; Execute this callback after `bundle()`
 - `marker` &mdash; Custom marker for extracting front-matter
+- `exports` &mdash; If true prepends `module.exports` on fn-views
 
 If you want to override certain options for any engine:
 
