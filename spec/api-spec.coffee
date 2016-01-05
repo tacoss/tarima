@@ -60,3 +60,28 @@ describe 'defined api', ->
       '''
 
       expect(view.params.options.data).toEqual foo: candy: 'bar'
+
+  describe 'util helpers', ->
+    it 'should validate know views', ->
+      expect($.util.isView('x.js')).toBeFalsy()
+      expect($.util.isView('x.md')).toBeTruthy()
+      expect($.util.isView('x.hbs')).toBeTruthy()
+      expect($.util.isView('x.jisp')).toBeFalsy()
+      expect($.util.isView('x.litcoffee')).toBeFalsy()
+      expect($.util.isView('x.coffee.md')).toBeFalsy()
+      expect($.util.isView('x.ract.jade')).toBeTruthy()
+
+    it 'should validate know scripts', ->
+      expect($.util.isScript('x.js')).toBeTruthy()
+      expect($.util.isScript('x.md')).toBeFalsy()
+      expect($.util.isScript('x.hbs')).toBeFalsy()
+      expect($.util.isScript('x.jisp')).toBeTruthy()
+      expect($.util.isScript('x.litcoffee')).toBeTruthy()
+      expect($.util.isScript('x.coffee.md')).toBeTruthy()
+      expect($.util.isScript('x.ract.jade')).toBeFalsy()
+
+    it 'should validate know templates', ->
+      expect($.util.isTemplate('foo')).toBeFalsy()
+      expect($.util.isTemplate('exports = bar')).toBeFalsy()
+      expect($.util.isTemplate('function(locals){}')).toBeTruthy()
+      expect($.util.isTemplate('Handlebars.template()')).toBeTruthy()

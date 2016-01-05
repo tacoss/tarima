@@ -15,3 +15,4 @@ module.exports = (filename, params, code) ->
     tarima.parse filename, code, params
 
 module.exports.engines = tarima.engines
+module.exports.util = tarima.util
