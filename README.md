@@ -139,6 +139,7 @@ console.log(tarima.engines()); // ['coffee', 'ejs', ...]
 - `wrapper` &mdash; Execute this callback after `bundle()`
 - `marker` &mdash; Custom marker for extracting front-matter
 - `exports` &mdash; If true prepends `module.exports` on fn-views
+- `globals` &mdash; Object map for injecting static globals within scripts
 
 If you want to override certain options for any engine:
 
@@ -199,6 +200,15 @@ All parsed files can use a front-matter block for local data.
 
 h1= title
 ```
+
+## Helpers
+
+Since `0.7.8` tarima exposes some internal utilities:
+
+- `tarima.util`
+  - `isView(filename)`
+  - `isScript(filename)`
+  - `isTemplate(sourcecode)`
 
 ## Dependant tools
 

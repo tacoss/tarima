@@ -61,6 +61,19 @@ describe 'defined api', ->
 
       expect(view.params.options.data).toEqual foo: candy: 'bar'
 
+  describe 'globals support', ->
+    it 'should skip non-scripts', ->
+      view = $ 'a.b.c', 'FOO', globals:
+        FOO: 'BAR'
+
+      expect(view.render()).not.toContain 'BAR'
+
+    it 'should allow scripts', ->
+      view = $ 'x.js', 'FOO', globals:
+        FOO: 'BAR'
+
+       expect(view.compile()).toContain 'BAR'
+
   describe 'util helpers', ->
     it 'should validate know views', ->
       expect($.util.isView('x.js')).toBeFalsy()
