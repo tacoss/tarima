@@ -100,3 +100,8 @@ describe 'defined api', ->
       expect($.util.isTemplate('exports = bar')).toBeFalsy()
       expect($.util.isTemplate('function(locals){}')).toBeTruthy()
       expect($.util.isTemplate('Handlebars.template()')).toBeTruthy()
+
+    it 'should validate known extensions', ->
+      expect($.util.isSupported('js')).toBeFalsy()
+      expect($.util.isSupported('x.y')).toBeFalsy()
+      expect($.util.isSupported('x.js')).toBeTruthy()
