@@ -71,8 +71,10 @@ describe 'defined api', ->
     it 'should allow scripts', ->
       view = $ 'x.js', 'FOO', globals:
         FOO: 'BAR'
+        CANDY: 'DOES NOTHING'
 
-       expect(view.compile()).toContain 'BAR'
+      expect(view.compile()).toContain 'BAR'
+      expect(view.compile()).not.toContain 'CANDY'
 
   describe 'util helpers', ->
     it 'should validate know views', ->
