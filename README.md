@@ -204,9 +204,15 @@ h1= title
 
 Since `0.8.0` tarima introduced the `_render` keyword which is used to `yield` the rendered view through more templates, e.g.
 
-```
+```html
 {{!-- other/layout.hbs --}}
 <div>{{{ yield }}}</div>
+```
+
+Output:
+
+```html
+<div><h1>Untitled</h1></div>
 ```
 
 ## Helpers
