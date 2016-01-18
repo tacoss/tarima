@@ -196,9 +196,17 @@ All parsed files can use a front-matter block for local data.
 //-
   ---
   title: Untitled
+  _render: other/layout.hbs
   ---
 
 h1= title
+```
+
+Since `0.8.0` tarima introduced the `_render` keyword which is used to `yield` the rendered view through more templates, e.g.
+
+```
+{{!-- other/layout.hbs --}}
+<div>{{{ yield }}}</div>
 ```
 
 ## Helpers
