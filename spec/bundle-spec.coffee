@@ -11,6 +11,9 @@ describe 'bundling behavior', ->
     it 'should expose dependencies from x.js.less', ->
       expect($('x.js.less').params.dependencies).toContain 'require("l" + "ess")'
 
+    it 'should expose dependencies from x.js.idom', ->
+      expect($('x.js.idom').params.dependencies).toContain '"incremental" + "-dom"'
+
   describe 'calling bundle()', ->
     params =
       wrapper: (code) ->
