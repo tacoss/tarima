@@ -197,6 +197,7 @@ All parsed files can use a front-matter block for local data.
   ---
   title: Untitled
   _render: other/layout.hbs
+  extended: !include ../path/to.yml
   ---
 
 h1= title
@@ -214,6 +215,8 @@ Output:
 ```html
 <div><h1>Untitled</h1></div>
 ```
+
+Since `0.8.1` you can merge additional files using `!include` within any front-matter block.
 
 ## Helpers
 
