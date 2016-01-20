@@ -28,6 +28,9 @@ describe 'expected errors', ->
     test 'less', ['x.css.less:2', '> 2| x', 'Unrecognised input'], ->
       $('x.css.less', '\nx;y').compile()
 
+    test 'less w/ vars', ['x.css.less:2', '> 2| x'], ->
+      $('x.css.less', '\nx;y').compile({ x: 'y', a: b: 'c' })
+
     test 'coffee', ['x.js.coffee:2', '> 2| "', 'missing "'], ->
       $('x.js.coffee', '\n"\nx').compile()
 
