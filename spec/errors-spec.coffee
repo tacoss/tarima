@@ -49,5 +49,5 @@ describe 'expected errors', ->
       $('x.js.jisp', '\n(x').compile()
 
   describe 'front-matter', ->
-    test 'front-matter', ['x.html.jade:2', '(front-matter)'], ->
+    test 'front-matter', ['x.html.jade:2', '(YAMLException)'], ->
       $('x.html.jade', '//-\n  ---\n  x: "y"\n  !\n  ---').compile()
