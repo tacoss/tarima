@@ -61,6 +61,10 @@ describe 'defined api', ->
 
       expect(view.params.options.data).toEqual foo: candy: 'bar'
 
+    it 'should allow !include tags', ->
+      data = $('data.js.jade').data().options.data
+      expect(data).toEqual { foo: 'bar', x: { baz: 'buzz' } }
+
   describe 'globals support', ->
     it 'should skip non-scripts', ->
       view = $ 'a.b.c', 'FOO', globals:
