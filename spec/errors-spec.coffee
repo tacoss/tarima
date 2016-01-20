@@ -23,8 +23,8 @@ describe 'expected errors', ->
     test 'jade', ['x.js.jade:3', '> 3| x('], ->
       $('x.js.jade', '\n\nx(').compile()
 
-    test 'less', ['x.css.less:3', '> 3| *'], ->
-      $('x.css.less', '\n{\n*').compile()
+    test 'less', ['x.css.less:2', '> 2| x'], ->
+      $('x.css.less', '\nx;y').compile()
 
     test 'coffee', ['x.js.coffee:2', '> 2| "'], ->
       $('x.js.coffee', '\n"\nx').compile()
