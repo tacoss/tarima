@@ -48,3 +48,6 @@ describe 'expected errors', ->
     test 'jisp', ['x.js.jisp', 'probably missing )'], ->
       $('x.js.jisp', '\n(x').compile()
 
+  describe 'front-matter', ->
+    test 'front-matter', ['x.html.jade:2', '(front-matter)'], ->
+      $('x.html.jade', '//-\n  ---\n  x: "y"\n  !\n  ---').compile()
