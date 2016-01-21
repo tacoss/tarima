@@ -5,8 +5,7 @@
   },
   "rules": {
     "quotes": [1, "single", "avoid-escape"],
-    "global-strict": [1, "always"],
-    "no-extra-strict": 1,
+    "strict": [0, "global"],
     "no-new-func": 0,
     "camelcase": 0
   }
