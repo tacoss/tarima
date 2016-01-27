@@ -29,8 +29,8 @@ describe 'bundling behavior', ->
       $('e.js.ejs', '<%= value %>')
     ], params)
 
-    try eval(code)
-    catch e
+    it 'should run without issues', ->
+      eval(code)
 
     it 'should return a JST object', ->
       expect(Object::toString.call(views)).toBe '[object Object]'
