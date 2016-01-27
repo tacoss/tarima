@@ -1,10 +1,6 @@
 $ = require('./tarima')
 
 describe 'defined api', ->
-  describe 'engines()', ->
-    it 'should return all registered extensions', ->
-      expect($.engines).not.toThrow()
-
   describe 'common options', ->
     it 'should be allowed to alter partials if options.filter is given', ->
       options =
