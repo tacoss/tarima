@@ -25,21 +25,8 @@
     "node": "~>0.10.21"
   },
   "dependencies": {
-    "babel-core": "^5.8.34",
-    "coffee-script": "^1.9.3",
-    "ejs": "^2.3.2",
-    "handlebars": "^3.0.3",
-    "idom-template": "^0.1.1",
-    "imba": "^0.11.5",
-    "jade": "^1.11.0",
-    "jisp": "^0.3.3",
     "js-yaml": "^3.5.2",
-    "kramed": "^0.5.5",
-    "less": "^2.5.3",
-    "lodash": "^3.10.0",
     "magic-require": "^0.1.0",
-    "ractive": "^0.7.3",
-    "styl": "^0.2.9",
     "tosource": "^1.0.0"
   },
   "devDependencies": {
