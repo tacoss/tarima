@@ -35,35 +35,43 @@ When a extension has no registered engine, the pipeline will stop and return the
 - `params.client ` will be `true` if was invoked with `compile()`
 - `params.source` is used if the engine returns nothing
 
-Currently tarima supports:
+Since `0.9.0` tarima has no built-in support for any engine, instead you must install the required engines you'll use.
 
-- [CoffeeScript](http://coffeescript.org/) for `.{coffee,litcoffe,coffee.md}`
-- [EJS](http://ejs.co/) for `.ejs`
-- [Handlebars](http://handlebarsjs.com/) for `.hbs`
-- [idom-template](https://github.com/Rapid-Application-Development-JS/itemplate) for `.idom`
-- [imba](http://imba.io/) for `.imba`
-- [Jade](http://jade-lang.com/) for `.jade`
-- [jisp](http://jisp.io/) for `.jisp`
-- [ES6](https://babeljs.io/) for `.es6.js`
-- [LESS](http://lesscss.org/) for `.less`
-- [Kramed](https://github.com/GitbookIO/kramed) for `.md`
-- [Ractive](http://www.ractivejs.org/) for `.ract`
-- [Style](https://github.com/tj/styl) for `.styl`
+In example, lets say you want to use CoffeeScript and Jade only:
 
-Some engines can compile to `.js` but most will `render()` only.
+```bash
+$ npm install tarima-coffee tarima-jade --save-dev
+```
 
-### Available methods
+Available engines:
 
-#### `add(type, callback)`
+- `tarima-coffee` &rarr; `.{coffee,litcoffee}`
+- `tarima-ejs` &rarr; `.ejs`
+- `tarima-es6` &rarr; `.{jsx,es6.js}`
+- `tarima-hbs` &rarr; `.hbs`
+- `tarima-idom` &rarr; `.idom`
+- `tarima-imba` &rarr; `.imba`
+- `tarima-jade` &rarr; `.jade`
+- `tarima-jisp` &rarr; `.jisp`
+- `tarima-less` &rarr; `.less`
+- `tarima-md` &rarr; `.md`
+- `tarima-ract` &rarr; `.ract`
+- `tarima-styl` &rarr; `.styl`
 
-Register a custom extension and callback.
+> See: https://github.com/tarima-core
+
+### Engine API
+
+All required engines must implement the following:
 
 ```javascript
-tarima.add('foo', function(params) {
-  if (params.next === 'baz') {
-    return 'bazzinga';
-  }
-});
+module.exports = function(support, configure) {
+  support('foo', function(params) {
+    if (params.next === 'baz') {
+      return 'bazzinga';
+    }
+  });
+};
 ```
 
 The `params` object looks like:
@@ -91,13 +99,17 @@ If `params.client` is `true` it must return a compiled function to render on the
 var tpl = new TemplateEngine(params.source, params.options);
 
 if (params.client) {
-  return tpl.compileClient();
+  return tpl.compile({ client: true });
 }
 
-return tpl.compile();
+return tpl.render();
 ```
 
 Note that in the browser a runtime is required for some engines.
+
+> Some engines can `compile()` for the browser but most will `render()` only.
+
+### Available methods
 
 #### `parse(filepath, source, options)`
 
@@ -121,14 +133,6 @@ Will bundle the array of templates into a stringified JST variable.
 
 ```javascript
 var code = tarima.bundle([tarima.parse('bar.js.ejs', '<%= value %>')]);
-```
-
-#### `engines()`
-
-Return all the registered extensions.
-
-```javascript
-console.log(tarima.engines()); // ['coffee', 'ejs', ...]
 ```
 
 ### Options
