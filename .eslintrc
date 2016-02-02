@@ -1,12 +1,14 @@
 {
   "env": {
-    "node": true,
-    "browser": true
+    "es6": true,
+    "node": true
   },
   "rules": {
     "quotes": [1, "single", "avoid-escape"],
-    "strict": [0, "global"],
-    "no-new-func": 0,
-    "camelcase": 0
+    "strict": [1, "global"],
+    "no-extra-semi": 2
+  },
+  "ecmaFeatures": {
+    "modules": true
   }
 }
