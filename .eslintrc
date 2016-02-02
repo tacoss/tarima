@@ -5,7 +5,7 @@
   },
   "rules": {
     "quotes": [1, "single", "avoid-escape"],
-    "strict": [1, "global"],
+    "strict": [0, "global"],
     "no-extra-semi": 2
   },
   "ecmaFeatures": {
