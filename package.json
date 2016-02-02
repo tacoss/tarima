@@ -35,19 +35,7 @@
     "grunt-parts": "^0.5.0",
     "handlebars": "^4.0.5",
     "jade": "^1.11.0",
-    "less": "^2.5.3",
-    "tarima-coffee": "^0.1.0",
-    "tarima-ejs": "^0.1.0",
-    "tarima-es6": "^0.1.0",
-    "tarima-hbs": "^0.1.0",
-    "tarima-idom": "^0.1.0",
-    "tarima-imba": "^0.1.0",
-    "tarima-jade": "^0.1.0",
-    "tarima-jisp": "^0.1.0",
-    "tarima-less": "^0.1.0",
-    "tarima-md": "^0.1.0",
-    "tarima-ract": "^0.1.0",
-    "tarima-styl": "^0.1.0"
+    "less": "^2.5.3"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
