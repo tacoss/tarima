@@ -7,3 +7,5 @@ node_js:
 script:
   - 'npm install -g grunt-cli coveralls'
   - 'grunt spec && cat generated/reports/spec/lcov.info | coveralls'
+notifications:
+  email: false
