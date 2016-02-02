@@ -25,6 +25,7 @@
     "node": "~>0.10.21"
   },
   "dependencies": {
+    "async-parts": "^0.2.2",
     "js-yaml": "^3.5.2",
     "magic-require": "^0.1.2",
     "tosource": "^1.0.0"
