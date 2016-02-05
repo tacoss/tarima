@@ -24,17 +24,28 @@
   "engines": {
     "node": "~>0.10.21"
   },
+  "scripts": {
+    "dev": "jasmine-node spec --color --coffee --noStack --verbose --autotest --watch lib",
+    "dev:lint": "eslint lib",
+    "dev:spec": "jasmine-node spec --coffee --captureExceptions",
+    "cover": "istanbul cover --root lib --x '**/spec/**' -- jasmine-node spec --coffee",
+    "cover:up": "coveralls",
+    "test": "npm run dev:lint && npm run dev:spec"
+  },
   "dependencies": {
     "async-parts": "^0.2.2",
     "js-yaml": "^3.5.2",
     "magic-require": "^0.1.2",
+    "siguiente": "^0.3.0",
     "tosource": "^1.0.0"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-parts": "^0.5.0",
+    "coveralls": "^2.11.6",
+    "eslint": "^1.10.3",
     "handlebars": "^4.0.5",
+    "istanbul": "^0.4.2",
     "jade": "^1.11.0",
+    "jasmine-node": "^1.14.5",
     "less": "^2.5.3",
     "ractive": "^0.7.3"
   },
