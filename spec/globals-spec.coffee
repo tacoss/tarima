@@ -1,5 +1,3 @@
-tarima = require('./tarima-helpers')
-
 describe 'globals support', ->
   it 'should allow injection of static values', (done) ->
     data =

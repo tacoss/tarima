@@ -2,10 +2,10 @@ fs = require('fs')
 path = require('path')
 tarima = require('../lib')
 
-fixture = (filename) ->
+global.fixture = (filename) ->
   path.join(__dirname, 'fixtures', filename)
 
-module.exports = (filename, source, opts, cb) ->
+global.tarima = (filename, source, opts, cb) ->
   return tarima.bundle(arguments...) if Array.isArray(filename)
 
   if typeof source isnt 'string'
@@ -22,5 +22,3 @@ module.exports = (filename, source, opts, cb) ->
     tarima.load test_file, opts
   else
     tarima.parse filename, source, opts
-
-module.exports.fixture = fixture

@@ -1,4 +1,4 @@
-tarima = require('./tarima-helpers')
+# filter globals compileDebug verboseDebug
 
 describe 'next-draft', ->
   it 'x.jade', (done) ->

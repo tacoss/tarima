@@ -1,5 +1,3 @@
-tarima = require('./tarima-helpers')
-
 describe 'front-matter support', ->
   it 'should export its data merged with locals', (done) ->
     data =
