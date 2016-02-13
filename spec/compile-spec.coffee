@@ -6,7 +6,8 @@ describe 'compileClient support', ->
       done()
 
   it 'should pre-compile ractive templates', (done) ->
-    tarima('x.js.ract', '<i>x</i>').render (err, result) ->
+    tarima('x.js.ract', '<i>{{x}}</i>').render (err, result) ->
       expect(err).toBeUndefined()
+      expect(result.code).toContain '"x"'
       expect(result.code).toContain 'function'
       done()
