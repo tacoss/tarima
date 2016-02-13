@@ -5,7 +5,8 @@ node_js:
   - 4
   - iojs
 script:
-  - 'npm install -g grunt-cli coveralls'
-  - 'grunt spec && cat generated/reports/spec/lcov.info | coveralls'
+  - 'npm run cover'
+after_success:
+  - 'npm run cover:up'
 notifications:
   email: false

@@ -33,9 +33,7 @@
     "test": "npm run dev:lint && npm run dev:spec"
   },
   "dependencies": {
-    "async-parts": "^0.2.2",
     "js-yaml": "^3.5.2",
-    "magic-require": "^0.1.2",
     "siguiente": "^0.3.0",
     "tosource": "^1.0.0"
   },
