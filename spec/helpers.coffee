@@ -21,5 +21,5 @@ global.tarima = (filename, source, opts, cb) ->
   else
     tarima.parse filename, source, opts
 
-global.bundle = ->
-  tarima.bundle(arguments...)
+global.bundle = tarima.bundle
+global.support = tarima.support
