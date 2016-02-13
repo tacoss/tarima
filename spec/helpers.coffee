@@ -6,8 +6,6 @@ global.fixture = (filename) ->
   path.join(__dirname, 'fixtures', filename)
 
 global.tarima = (filename, source, opts, cb) ->
-  return tarima.bundle(arguments...) if Array.isArray(filename)
-
   if typeof source isnt 'string'
     opts = source
     source = ''
@@ -22,3 +20,6 @@ global.tarima = (filename, source, opts, cb) ->
     tarima.load test_file, opts
   else
     tarima.parse filename, source, opts
+
+global.bundle = ->
+  tarima.bundle(arguments...)
