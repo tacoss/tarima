@@ -38,6 +38,7 @@
     "tosource": "^1.0.0"
   },
   "devDependencies": {
+    "coffee-script": "^1.10.0",
     "coveralls": "^2.11.6",
     "eslint": "^1.10.3",
     "handlebars": "^4.0.5",
