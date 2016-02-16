@@ -28,7 +28,7 @@
     "dev": "jasmine-node spec --color --coffee --noStack --verbose --autotest --watch lib",
     "dev:lint": "eslint lib",
     "dev:spec": "jasmine-node spec --coffee --captureExceptions",
-    "cover": "istanbul cover --root lib -x '**/spec/**' -- jasmine-node spec --coffee",
+    "cover": "istanbul cover --root lib -- jasmine-node spec --coffee",
     "cover:up": "codecov",
     "test": "npm run dev:lint && npm run dev:spec"
   },
