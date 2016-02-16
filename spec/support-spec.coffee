@@ -4,7 +4,7 @@ describe 'support helpers', ->
     expect(support.isSupported('x')).toBeFalsy()
     expect(support.isSupported('x.y')).toBeFalsy()
     expect(support.isSupported('js')).toBeFalsy()
-    expect(support.isSupported('x.js')).toBeFalsy()
+    expect(support.isSupported('x.js')).toBeTruthy()
     expect(support.isSupported('jade')).toBeFalsy()
     expect(support.isSupported('x.jade')).toBeTruthy()
     expect(support.isSupported('x.js.jade')).toBeTruthy()
