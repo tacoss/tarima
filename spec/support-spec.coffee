@@ -15,3 +15,10 @@ describe 'support helpers', ->
     expect(support.getExtensions()).toContain 'ract'
     expect(support.getExtensions()).toContain 'coffee'
     expect(support.getExtensions()).toContain 'litcoffee'
+
+  it 'should allow test support by extension-type', ->
+    expect(support.isTemplate('js')).toBeFalsy()
+    expect(support.isTemplate('jade')).toBeTruthy()
+    expect(support.isTemplate('ract')).toBeTruthy()
+    expect(support.isScript('js')).toBeTruthy()
+    expect(support.isScript('coffee')).toBeTruthy()
