@@ -14,3 +14,11 @@ describe 'front-matter support', ->
         a: 'b'
         c: 'd'
       done()
+
+  it 'should support !include tags for locals', (done) ->
+    tarima('with_include_tags.jade').render (err, result) ->
+      expect(err).toBeUndefined()
+      expect(result.locals).toEqual
+        foo:
+          baz: 'buzz'
+      done()
