@@ -49,3 +49,10 @@ Since `0.8.1` you can merge additional files using `!include` within any front-m
 - [tarima-cli](https://github.com/gextech/tarima-cli) support for CLI
 - [gulp-tarima](https://github.com/gextech/gulp-tarima) support for Gulp
 - [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
+
+
+## Alternatives
+
+- [transformers](https://github.com/ForbesLindesay/transformers)
+- [consolidate.js](https://github.com/tj/consolidate.js)
+- [accord](https://github.com/jenius/accord)
