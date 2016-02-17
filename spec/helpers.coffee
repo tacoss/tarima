@@ -23,3 +23,5 @@ global.tarima = (filename, source, opts, cb) ->
 
 global.bundle = tarima.bundle
 global.support = tarima.support
+
+jasmine.getEnv().defaultTimeoutInterval = 30000
