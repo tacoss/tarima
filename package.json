@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "js-yaml": "^3.5.2",
-    "siguiente": "^0.3.0",
+    "siguiente": "^0.3.1",
     "tosource": "^1.0.0"
   },
   "devDependencies": {
