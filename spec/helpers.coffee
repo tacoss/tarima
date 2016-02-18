@@ -21,6 +21,13 @@ global.tarima = (filename, source, opts, cb) ->
   else
     tarima.parse filename, source, opts
 
+global.test = (args, cb, locals) ->
+  (done) ->
+    global.tarima(args...).render locals, (err, result) ->
+      expect(err).toBeUndefined()
+      cb(result)
+      done()
+
 global.bundle = tarima.bundle
 global.support = tarima.support
 
