@@ -17,3 +17,23 @@ describe 'next-draft', ->
       expect(result.code).toContain 'foo(bar)'
       expect(result.code).toContain '.call(this)'
       done()
+
+  it 'x.md.hbs.ejs', (done) ->
+    locals =
+      x: 'y'
+      y: 'z'
+
+    tarima('x.md.hbs.ejs', '# {{<%= x %>}}').render locals, (err, result) ->
+      expect(err).toBeUndefined()
+      expect(result.code).toContain '<h1 id="z">z</h1>'
+      done()
+
+  it 'x.less', (done) ->
+    tarima('x.less', '&*{x:y}').render (err, result) ->
+      expect(err).toBeUndefined()
+      expect(result.code).toContain '''
+        * {
+          x: y;
+        }
+      '''
+      done()
