@@ -23,10 +23,16 @@ describe 'bundling support', ->
       done()
 
   it 'should bundle if source has requires', (done) ->
+    params =
+      cache: {}
+
     script = tarima('x.es6.js', 'import pkg from "./package.json"')
 
-    bundle(script).render (err, result) ->
+    bundle(script, params).render (err, result) ->
       expect(err).toBeUndefined()
       expect(result.code).toContain 'function e(t,n,r)'
       expect(result.code).toContain 'require("./package.json")'
+      expect(params.cache['_stream_0.js']).not.toBeUndefined()
+      expect(params.cache[require.resolve('../package.json')]).not.toBeUndefined()
+      expect(result.required).toContain require.resolve('../package.json')
       done()
