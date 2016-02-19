@@ -21,3 +21,12 @@ describe 'bundling support', ->
       expect(result.code).toContain 'module.exports'
       expect(result.code).toContain '"x":'
       done()
+
+  it 'should bundle if source has requires', (done) ->
+    script = tarima('x.es6.js', 'import pkg from "./package.json"')
+
+    bundle(script).render (err, result) ->
+      expect(err).toBeUndefined()
+      expect(result.code).toContain 'function e(t,n,r)'
+      expect(result.code).toContain 'require("./package.json")'
+      done()
