@@ -10,11 +10,17 @@
 $ npm install tarima
 ```
 
-**Tarima** is a pipeline library for templating  based on the filename extensions.
+**Tarima** is a library for pre-processing based on filename extensions.
 
-- [ ] TODO: describe next-api
+## Chainable rendering
 
-## Front-matter
+Lets say `view.js.ract.jade` will produce a pre-compiled template for Ractive, which is rendered from Jade, etc.
+
+You can add as many extensions you want, the rule of thumb is: produce source-code for the next renderer in the chain.
+
+If you omit the `js` extension then `view.ract.jade` will produce markup, since `html` is the default extension for the Ractive engine.
+
+## Front Matter
 
 All parsed files can use a front-matter block for local data.
 
@@ -49,7 +55,6 @@ Since `0.8.1` you can merge additional files using `!include` within any front-m
 - [tarima-cli](https://github.com/gextech/tarima-cli) support for CLI
 - [gulp-tarima](https://github.com/gextech/gulp-tarima) support for Gulp
 - [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
-
 
 ## Alternatives
 
