@@ -10,9 +10,18 @@
 $ npm install tarima
 ```
 
-**Tarima** is a library for pre-processing based on filename extensions.
+**Tarima** is a pre-processing tool based on filename extensions.
 
-## Chainable rendering
+tl; dr &mdash; Of course [there are alternatives](#alternatives) or even would be easier to setup Gulp, Goble, Brunch, whatever... but repeating the same stuff every-time becomes frustrating.
+
+Also we experienced serious issues from migrating from Grunt to Gulp, and then from Browserify to Webpack:
+
+- Speed &mdash; figuring out which build-tool do it better is messy: lots of plugins, plugins wrapping more plugins, etc.
+- Extensibility &mdash; previous mess wouldn't help either, but fine tuning each plugin becomes the worst thing ever!
+- Debug consistency &mdash; if nothing of this helps just try to debug through several layers of mess...
+- Dependency tracking &mdash; being smart on updating dependant sources is key, who wins?
+
+## How it works
 
 Lets say `view.js.ract.jade` will produce a pre-compiled template for Ractive, which is rendered from Jade, etc.
 
@@ -20,7 +29,7 @@ You can add as many extensions you want, the rule of thumb is: produce source-co
 
 If you omit the `js` extension then `view.ract.jade` will produce markup, since `html` is the default extension for the Ractive engine.
 
-## Front Matter
+### Front Matter
 
 All parsed files can use a front-matter block for local data.
 
@@ -49,6 +58,7 @@ Output:
 ```
 
 Since `0.8.1` you can merge additional files using `!include` within any front-matter block.
+
 
 ## Dependant tools
 
