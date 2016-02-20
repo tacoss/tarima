@@ -34,5 +34,5 @@ describe 'bundling support', ->
       expect(result.code).toContain 'require("./package.json")'
       expect(params.cache['_stream_0.js']).not.toBeUndefined()
       expect(params.cache[require.resolve('../package.json')]).not.toBeUndefined()
-      expect(result.required).toContain require.resolve('../package.json')
+      expect(result.track).toContain require.resolve('../package.json')
       done()
