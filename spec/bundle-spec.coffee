@@ -22,17 +22,17 @@ describe 'bundling support', ->
       expect(result.code).toContain '"x":'
       done()
 
-  it 'should bundle if source has requires', (done) ->
+  it 'should bundle modules using browserify', (done) ->
     params =
       cache: {}
 
-    script = tarima('x.es6.js', 'import pkg from "./package.json"')
+    script = tarima('module_a.es6.js')
 
     bundle(script, params).render (err, result) ->
+      path = require('path')
       expect(err).toBeUndefined()
       expect(result.code).toContain 'function e(t,n,r)'
-      expect(result.code).toContain 'require("./package.json")'
-      expect(params.cache['_stream_0.js']).not.toBeUndefined()
-      expect(params.cache[require.resolve('../package.json')]).not.toBeUndefined()
-      expect(result.track).toContain require.resolve('../package.json')
+      cache = Object.keys(params.cache).map (f) -> path.basename(f)
+      (result.track.map (f) -> path.basename(f)).forEach (f) ->
+        expect(cache).toContain f
       done()
