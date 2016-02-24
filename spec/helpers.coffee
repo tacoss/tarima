@@ -31,4 +31,4 @@ global.test = (args, cb, locals) ->
 global.bundle = tarima.bundle
 global.support = tarima.support
 
-jasmine.getEnv().defaultTimeoutInterval = 30000
+#jasmine.getEnv().defaultTimeoutInterval = 30000
