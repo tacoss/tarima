@@ -1,4 +1,4 @@
-xdescribe 'bundling support', ->
+describe 'bundling support', ->
   it 'should export single templates', (done) ->
     view = tarima('x.js.ract.jade', 'h1 {{x}}')
 
