@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": "~>0.10.21"
+    "node": ">=0.12"
   },
   "scripts": {
     "dev": "jasmine-node spec --color --coffee --noStack --verbose --autotest --watch lib",
@@ -33,7 +33,6 @@
     "test": "npm run dev:lint && npm run dev:spec"
   },
   "dependencies": {
-    "exec-sync": "^0.1.6",
     "js-yaml": "^3.5.2",
     "siguiente": "^0.3.1",
     "through": "^2.3.8",
