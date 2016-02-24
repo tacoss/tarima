@@ -11,7 +11,7 @@ describe 'front-matter support', ->
       |#{a + c}
     ''').render data, (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.code).toContain 3
+      expect(result.source).toContain 3
       done()
 
   it 'should support !include tags for locals', (done) ->

@@ -8,5 +8,5 @@ describe 'install support', ->
   it 'should allow dynamic module installation', (done) ->
     tarima('x.jade', 'h1 OK').render (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.code).toContain '<h1>OK</h1>'
+      expect(result.source).toContain '<h1>OK</h1>'
       done()

@@ -6,5 +6,5 @@ describe 'filters support', ->
 
     tarima('x.jade', 'x y', data).render (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.code).toContain '<x>y</x><z></z>'
+      expect(result.source).toContain '<x>y</x><z></z>'
       done()

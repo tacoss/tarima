@@ -6,6 +6,6 @@ describe 'globals support', ->
 
     tarima('script.js', 'alert(foo)', data).render  (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.code).toContain 'function(foo)'
-      expect(result.code).toContain '.call(this,"bar")'
+      expect(result.source).toContain 'function(foo)'
+      expect(result.source).toContain '.call(this,"bar")'
       done()
