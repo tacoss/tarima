@@ -24,6 +24,7 @@ global.tarima = (filename, source, opts, cb) ->
 global.test = (args, cb, locals) ->
   (done) ->
     global.tarima(args...).render locals, (err, result) ->
+      console.log(err.stack) if err
       expect(err).toBeUndefined()
       cb(result)
       done()
