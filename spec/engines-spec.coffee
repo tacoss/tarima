@@ -10,8 +10,8 @@ describe 'supported engines', ->
         expect(result.source).toEqual 'foo bar'
         expect(result.extension).toEqual 'js'
 
-    it 'x.litcoffee should work as expected (x.js)',
-      test ['x.litcoffee', '    foo bar'], (result) ->
+    it 'x.litcoffee should transpile to x.js',
+      test ['x.litcoffee', '> ok\n\n    foo bar'], (result) ->
         expect(result.source).toContain 'foo(bar)'
         expect(result.extension).toEqual 'js'
 
@@ -77,7 +77,7 @@ describe 'supported engines', ->
         expect(result.source).toContain '<x>y</x>'
         expect(result.extension).toEqual 'html'
 
-    it 'x.y.ract should work as expected (x.y)',
+    it 'x.y.ract should transpile to x.y',
       test ['x.y.ract', '<x>{{"y"}}</x>'], (result) ->
         expect(result.source).toContain '<x>y</x>'
         expect(result.extension).toEqual 'y'
@@ -93,7 +93,7 @@ describe 'supported engines', ->
         expect(result.source).toContain '<x>y</x>'
         expect(result.extension).toEqual 'html'
 
-    it 'x.y.jade should work as expected (x.y)',
+    it 'x.y.jade should transpile to x.y',
       test ['x.y.jade', 'x y'], (result) ->
         expect(result.source).toEqual '<x>y</x>'
         expect(result.extension).toEqual 'y'
@@ -105,13 +105,14 @@ describe 'supported engines', ->
 
   describe 'LESS', ->
     it 'x.less should transpile to x.css',
-      test ['x.less', '&*{x:y}'], (result) ->
+      test ['x.less', '&*{x:@x}'], (result) ->
         expect(result.source).toContain '''
           * {
             x: y;
           }
         '''
         expect(result.extension).toEqual 'css'
+      , { x: 'y', a: [] }
 
     it 'x.y.less should not work (x.y)',
       test ['x.y.less', '&*{x:y}'], (result) ->
@@ -140,10 +141,15 @@ describe 'supported engines', ->
         expect(result.source).toEqual '1'
         expect(result.extension).toEqual 'html'
 
-    it 'x.y.ejs should work as expected (x.y)',
+    it 'x.y.ejs should transpile to x.y',
       test ['x.y.ejs', '<%= 1 %>'], (result) ->
         expect(result.source).toEqual '1'
         expect(result.extension).toEqual 'y'
+
+    it 'x.js.ejs should precompile to x.js',
+      test ['x.js.ejs', '<%= 1 %>'], (result) ->
+        expect(result.source).toContain 'function'
+        expect(result.extension).toEqual 'js'
 
   describe 'Kramed', ->
     it 'x.md should transpile to x.html',
@@ -156,7 +162,7 @@ describe 'supported engines', ->
         expect(result.source).toContain 'foo(bar)'
         expect(result.extension).toEqual 'js'
 
-    it 'x.y.md should work as expected (x.y)',
+    it 'x.y.md should transpile to x.y',
       test ['x.y.md', '# ok'], (result) ->
         expect(result.source).toContain '</h1>'
         expect(result.extension).toEqual 'y'
