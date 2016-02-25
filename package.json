@@ -55,7 +55,6 @@
     "kramed": "^0.5.5",
     "less": "^2.6.0",
     "ractive": "^0.7.3",
-    "rimraf": "^2.5.2",
     "styl": "^0.2.9"
   },
   "publishConfig": {

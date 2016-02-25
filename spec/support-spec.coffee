@@ -1,4 +1,9 @@
+resolve = require('../lib/helpers/resolve')
+
 describe 'support helpers', ->
+  it 'should resolve("npm") as expected', ->
+    expect(resolve('npm')).toContain 'npm'
+
   it 'should test for supported extensions', ->
     expect(support.isSupported()).toBeFalsy()
     expect(support.isSupported('x')).toBeFalsy()
