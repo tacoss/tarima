@@ -158,7 +158,7 @@ describe 'supported engines', ->
         expect(result.extension).toEqual 'html'
 
     it 'x.coffee.md should transpile to x.js',
-      test ['x.coffee.md', '    foo bar'], (result) ->
+      test ['x.coffee.md', '> ok\n\n    foo bar'], (result) ->
         expect(result.source).toContain 'foo(bar)'
         expect(result.extension).toEqual 'js'
 
