@@ -1,9 +1,8 @@
 describe 'support helpers', ->
   it 'should test for supported extensions', ->
     expect(support.isSupported()).toBeFalsy()
-    expect(support.isSupported('x')).toBeFalsy()
     expect(support.isSupported('x.y')).toBeFalsy()
-    expect(support.isSupported('js')).toBeFalsy()
+    expect(support.isSupported(['x', 'js'])).toBeFalsy()
     expect(support.isSupported('x.js')).toBeFalsy()
     expect(support.isSupported('jade')).toBeFalsy()
     expect(support.isSupported('x.jade')).toBeTruthy()
