@@ -39,6 +39,8 @@ describe 'bundling support', ->
       expect(result.source).toContain 'g.a ='
       expect(result.source).toContain 'g.b ='
       expect(result.source).toContain 'g.c ='
+      expect(result.source).toContain 'var jade'
+      expect(result.source).toContain 'module.exports=function'
 
       cache = Object.keys(params.cache).map (f) -> path.basename(f)
       (result.dependencies.map (f) -> path.basename(f)).forEach (f) ->
