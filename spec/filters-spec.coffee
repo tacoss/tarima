@@ -1,10 +1,8 @@
 describe 'filters support', ->
-  it 'should allow some pre-filters', (done) ->
-    data =
-      filter: (partial) ->
-        partial.source += '\nz'
-
-    tarima('x.jade', 'x y', data).render (err, result) ->
-      expect(err).toBeUndefined()
+  it 'should allow some pre-filters',
+    test ['x.jade', 'x y', filter: (partial) -> partial.source += '\nz'], (result) ->
       expect(result.source).toContain '<x>y</x><z></z>'
-      done()
+
+  it 'should allow many pre-filters',
+    test ['x.jade', 'x y', filter: [(partial) -> partial.source += '\nz']], (result) ->
+      expect(result.source).toContain '<x>y</x><z></z>'
