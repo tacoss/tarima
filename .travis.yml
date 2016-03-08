@@ -4,7 +4,7 @@ node_js:
   - 4
   - iojs
 script:
-  - 'npm rm jade && npm run cover'
+  - 'npm run cover'
 after_success:
   - 'npm run cover:up'
 notifications:
