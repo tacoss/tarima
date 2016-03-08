@@ -25,10 +25,10 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "dev": "jasmine-node spec --color --coffee --noStack --verbose --autotest --watch lib",
+    "dev": "jasmine-node spec --coffee --verbose --autoTest --watchFolders lib",
     "dev:lint": "eslint lib",
-    "dev:spec": "jasmine-node spec --coffee --captureExceptions",
-    "cover": "istanbul cover --root lib -- jasmine-node spec --coffee",
+    "dev:spec": "jasmine-node spec --coffee --noStackTrace --captureExceptions",
+    "cover": "istanbul cover --root lib --x '**/spec/**' -- jasmine-node --coffee --spec",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
     "test": "npm run dev:lint && npm run dev:spec"
   },
@@ -50,7 +50,7 @@
     "imba": "^0.14.3",
     "istanbul": "^0.4.2",
     "jade": "^1.11.0",
-    "jasmine-node": "^1.14.5",
+    "jasmine-node": "^2.0.0-beta4",
     "jisp": "^0.3.3",
     "kramed": "^0.5.5",
     "less": "^2.6.0",

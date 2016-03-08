@@ -17,7 +17,8 @@ describe 'front-matter support', ->
   it 'should support !include tags for locals', (done) ->
     tarima('with_include_tags.jade').render (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.locals).toEqual
-        foo:
-          baz: 'buzz'
+      # use JSON.stringify() due identity issues with IncludedFile objects
+      expect(JSON.stringify result.locals).toEqual JSON.stringify
+       foo:
+         baz: 'buzz'
       done()
