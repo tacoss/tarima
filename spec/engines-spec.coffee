@@ -26,8 +26,8 @@ describe 'supported engines', ->
         expect(result.source).toContain ' = 42'
         expect(result.extension).toEqual 'js'
 
-    it 'x.es6.js should transpile to x.js (preferred way)',
-      test ['x.es6', 'export default 42'], (result) ->
+    it 'x.es6.js should transpile to x.js',
+      test ['x.es6.js', 'export default 42'], (result) ->
         expect(result.source).toContain ' = 42'
         expect(result.extension).toEqual 'js'
 
