@@ -79,7 +79,6 @@ tarima.parse('view.ract.jade', 'x {{"y"}}')
 Example output:
 
 ```json
-
 {
   "filename": "view.ract.jade",
   "options": {},
@@ -113,7 +112,19 @@ You can install the following dependencies for specific support:
 
 Babel 5x is more fast than 6x, but using babel 6x is already supported.
 
-> Just run `npm install babel-core@^6 babel-preset-es2015` to get the latest babel version with es2015 as default preset.
+Run `npm install babel-core@^6 babel-preset-es2015` to get the latest babel version with es2015 as default preset:
+
+```js
+var tarima = require('tarima');
+
+tarima.parse('x.es6.js', 'export default 42', {
+  babel: {
+    presets: [require.resolve('babel-preset-es2015')]
+  }
+}).render(function(err, result) {
+  console.log(err, result);
+});
+```
 
 ## Globals & Filters
 
