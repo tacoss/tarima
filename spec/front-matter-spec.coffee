@@ -4,10 +4,9 @@ describe 'front-matter support', ->
       a: 1
 
     tarima('x.pug', '''
-      //-
-        ---
-        c: 2
-        ---
+      ---
+      c: 2
+      ---
       |#{a + c}
     ''').render data, (err, result) ->
       expect(err).toBeUndefined()
