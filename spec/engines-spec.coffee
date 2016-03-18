@@ -103,6 +103,11 @@ describe 'supported engines', ->
         expect(result.source).toContain 'function'
         expect(result.extension).toEqual 'js'
 
+    it 'x.js.jade should precompile to x.js (legacy)', ->
+      test ['x.js.jade', 'x y'], (result) ->
+        expect(result.source).toContain 'function'
+        expect(result.extension).toEqual 'js'
+
   describe 'LESS', ->
     it 'x.less should transpile to x.css',
       test ['x.less', '&*{x:@x}'], (result) ->
