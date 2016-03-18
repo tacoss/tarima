@@ -18,9 +18,9 @@ Also we experienced serious issues from migrating from Grunt to Gulp, and then f
 
 ## How it works
 
-Lets say `view.js.ract.jade` will produce a pre-compiled template for Ractive, which is rendered from Jade, etc.
+Lets say `view.js.ract.pug` will produce a pre-compiled template for Ractive, which is rendered from pug, etc.
 
-If you omit the `js` extension then `view.ract.jade` will produce markup, since `html` is the default extension for the Ractive engine.
+If you omit the `js` extension then `view.ract.pug` will produce markup, since `html` is the default extension for the Ractive engine.
 
 > You can add as many extensions you want, whilst the output is valid input for the next renderer in the chain.
 
@@ -70,7 +70,7 @@ export default 42
 ```js
 var tarima = require('tarima');
 
-tarima.parse('view.ract.jade', 'x {{"y"}}')
+tarima.parse('view.ract.pug', 'x {{"y"}}')
   .render(function(err, result) {
     console.log(err, result);
   });
@@ -80,11 +80,11 @@ Example output:
 
 ```json
 {
-  "filename": "view.ract.jade",
+  "filename": "view.ract.pug",
   "options": {},
   "source": "<x>y</x>",
   "data": {},
-  "parts": ["ract", "jade"],
+  "parts": ["ract", "pug"],
   "name": "view",
   "locals": {},
   "runtimes": [],
@@ -98,7 +98,7 @@ Example output:
 You can install the following dependencies for specific support:
 
 - `npm install coffee-script` &rarr; `.coffee` and `.litcoffee`
-- `npm install jade` &rarr; `.jade`
+- `npm install pug` &rarr; `.pug`
 - `npm install less` &rarr; `.less`
 - `npm install imba` &rarr; `.imba`
 - `npm install jisp` &rarr; `.jisp`

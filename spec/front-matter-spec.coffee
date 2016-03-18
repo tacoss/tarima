@@ -3,7 +3,7 @@ describe 'front-matter support', ->
     data =
       a: 1
 
-    tarima('x.jade', '''
+    tarima('x.pug', '''
       //-
         ---
         c: 2
@@ -15,7 +15,7 @@ describe 'front-matter support', ->
       done()
 
   it 'should support !include tags for locals', (done) ->
-    tarima('with_include_tags.jade').render (err, result) ->
+    tarima('with_include_tags.pug').render (err, result) ->
       expect(err).toBeUndefined()
       # use JSON.stringify() due identity issues with IncludedFile objects
       expect(JSON.stringify result.locals).toEqual JSON.stringify

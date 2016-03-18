@@ -49,11 +49,11 @@
     "idom-template": "^0.1.1",
     "imba": "^0.14.3",
     "istanbul": "^0.4.2",
-    "jade": "^1.11.0",
     "jasmine-node": "2.0.0-beta4",
     "jisp": "^0.3.3",
     "kramed": "^0.5.5",
     "less": "^2.6.0",
+    "pug": "^2.0.0-alpha1",
     "ractive": "^0.7.3",
     "styl": "^0.2.9"
   },

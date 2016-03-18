@@ -1,6 +1,6 @@
 describe 'bundling support', ->
   it 'should export single templates', (done) ->
-    view = tarima('x.js.hbs.jade', 'h1 {{x}}')
+    view = tarima('x.js.hbs.pug', 'h1 {{x}}')
 
     bundle(view).render (err, result) ->
       expect(err).toBeUndefined()
@@ -12,9 +12,9 @@ describe 'bundling support', ->
 
   it 'should export multiple templates', (done) ->
     views = [
-      tarima('page.jade')
-      tarima('x.js.hbs.jade', 'x {{y}}')
-      tarima('x.js.ract.jade', 'a {{b}}')
+      tarima('page.pug')
+      tarima('x.js.hbs.pug', 'x {{y}}')
+      tarima('x.js.ract.pug', 'a {{b}}')
     ]
 
     bundle(views).render (err, result) ->
@@ -39,7 +39,7 @@ describe 'bundling support', ->
       expect(result.source).toContain 'g.a ='
       expect(result.source).toContain 'g.b ='
       expect(result.source).toContain 'g.c ='
-      expect(result.source).toContain 'var jade'
+      expect(result.source).toContain 'var pug'
       expect(result.source).toContain 'module.exports=function'
 
       cache = Object.keys(params.cache).map (f) -> path.basename(f)

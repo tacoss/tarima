@@ -87,19 +87,19 @@ describe 'supported engines', ->
         expect(result.source).toContain 'function'
         expect(result.extension).toEqual 'js'
 
-  describe 'Jade', ->
-    it 'x.jade should render to x.html',
-      test ['x.jade', 'x y'], (result) ->
+  describe 'Pug', ->
+    it 'x.pug should render to x.html',
+      test ['x.pug', 'x y'], (result) ->
         expect(result.source).toContain '<x>y</x>'
         expect(result.extension).toEqual 'html'
 
-    it 'x.y.jade should transpile to x.y',
-      test ['x.y.jade', 'x y'], (result) ->
+    it 'x.y.pug should transpile to x.y',
+      test ['x.y.pug', 'x y'], (result) ->
         expect(result.source).toEqual '<x>y</x>'
         expect(result.extension).toEqual 'y'
 
-    it 'x.js.jade should precompile to x.js',
-      test ['x.js.jade', 'x y'], (result) ->
+    it 'x.js.pug should precompile to x.js',
+      test ['x.js.pug', 'x y'], (result) ->
         expect(result.source).toContain 'function'
         expect(result.extension).toEqual 'js'
 

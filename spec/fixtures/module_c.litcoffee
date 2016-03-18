@@ -1,4 +1,4 @@
     module.exports =
       number: 3
-      page: require('./page.jade')
-      partial: require('./partial.js.jade')
+      page: require('./page.pug')
+      partial: require('./partial.js.pug')
