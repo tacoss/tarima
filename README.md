@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/gextech/tarima.png?branch=next)](https://travis-ci.org/gextech/tarima)
 [![NPM version](https://badge.fury.io/js/tarima.png)](http://badge.fury.io/js/tarima)
-[![Coverage Status](https://codecov.io/github/gextech/tarima/coverage.svg?branch=next)](https://codecov.io/github/gextech/tarima?branch=next)
+[![Coverage Status](https://codecov.io/github/gextech/tarima/coverage.svg?branch=next)](https://codecov.io/github/gextech/tarima)
 
 ![Tarima](https://dl.dropboxusercontent.com/u/2726997/img/tarima_small.png)
 
@@ -12,15 +12,15 @@ $ npm install tarima
 
 **Tarima** is a pre-processing tool based on filename extensions.
 
-tl; dr &mdash; Of course [there are alternatives](#alternatives) or even would be easier to setup Gulp, Goble, Brunch, whatever... but repeating the same stuff every-time becomes frustrating.
+tl; dr &mdash; Of course [there are alternatives](#alternatives) or even would be easier to setup Gulp, Brunch, whatever... but repeating the same stuff every-time becomes frustrating.
 
 Also we experienced serious issues from migrating from Grunt to Gulp, and then from Browserify to Webpack.
 
 ## How it works
 
-Lets say `view.js.ract.pug` will produce a pre-compiled template for Ractive, which is rendered from pug, etc.
+Lets say `view.js.ract.jade` will produce a pre-compiled template for Ractive, which is rendered from pug, etc.
 
-If you omit the `js` extension then `view.ract.pug` will produce markup, since `html` is the default extension for the Ractive engine.
+If you omit the `js` extension then `view.ract.jade` will produce markup, since `html` is the default extension for the Ractive engine.
 
 > You can add as many extensions you want, whilst the output is valid input for the next renderer in the chain.
 
@@ -126,7 +126,16 @@ tarima.parse('x.es6.js', 'export default 42', {
 });
 ```
 
-## Globals & Filters
+### Extensions
+
+- `npm install rollup` is required to bundle javascript sources into a single source on `bundle()`
+- `npm install less-plugin-autoprefix` for automatic prefixing support on `.less` sources
+
+## Globals
+
+## Filters
+
+## Locals
 
 ## Dependant tools
 
