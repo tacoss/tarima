@@ -26,7 +26,7 @@ describe 'bundling support', ->
       done()
 
   it 'should bundle modules using rollup', (done) ->
-    script = tarima('module_a.js')
+    script = tarima('module_a.litcoffee')
 
     bundle(script).render (err, result) ->
       path = require('path')
