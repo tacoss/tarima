@@ -56,6 +56,7 @@
     "less": "^2.6.0",
     "pug": "^2.0.0-alpha1",
     "ractive": "^0.7.3",
+    "rollup": "^0.25.8",
     "styl": "^0.2.9"
   },
   "publishConfig": {
