@@ -25,26 +25,19 @@ describe 'bundling support', ->
       expect(result.source).toContain 'require'
       done()
 
-  # it 'should bundle modules using browserify', (done) ->
-  #   params =
-  #     cache: {}
+  it 'should bundle modules using rollup', (done) ->
+    script = tarima('module_a.js')
 
-  #   script = tarima('module_a.es6.js')
+    bundle(script).render (err, result) ->
+      path = require('path')
 
-  #   bundle(script, params).render (err, result) ->
-  #     path = require('path')
+      expect(err).toBeUndefined()
+      expect(result.dependencies).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
-  #     expect(err).toBeUndefined()
-  #     console.log result
-  #     # expect(result.source).toContain 'function e(t,n,r)'
-  #     # expect(result.source).toContain 'g.a ='
-  #     # expect(result.source).toContain 'g.b ='
-  #     # expect(result.source).toContain 'g.c ='
-  #     # expect(result.source).toContain 'var pug'
-  #     # expect(result.source).toContain 'module.exports=function'
+      expect(result.source).not.toContain 'require'
+      expect(result.source).toContain 'return b'
+      expect(result.source).toContain "var b = 'x'"
+      expect(result.source).toContain 'this.a = this.a || {}'
+      expect(result.source).toContain 'this.a.b = this.a.b || {}'
 
-  #     # cache = Object.keys(params.cache).map (f) -> path.basename(f)
-  #     # (result.dependencies.map (f) -> path.basename(f)).forEach (f) ->
-  #     #   # expect(cache).toContain f
-  #     #   console.log f
-  #     done()
+      done()
