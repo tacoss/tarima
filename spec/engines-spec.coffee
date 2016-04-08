@@ -22,12 +22,12 @@ describe 'supported engines', ->
 
   describe 'ES6 (babel)', ->
     it 'x.es6 should transpile to x.js',
-      test ['x.es6', 'export default 42'], (result) ->
+      test ['x.es6', 'const x = 42; export default x'], (result) ->
         expect(result.source).toContain ' = 42'
         expect(result.extension).toEqual 'js'
 
     it 'x.es6.js should transpile to x.js',
-      test ['x.es6.js', 'export default 42'], (result) ->
+      test ['x.es6.js', 'const x = 42; export default x'], (result) ->
         expect(result.source).toContain ' = 42'
         expect(result.extension).toEqual 'js'
 
