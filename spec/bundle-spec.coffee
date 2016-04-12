@@ -32,6 +32,7 @@ describe 'bundling support', ->
       path = require('path')
 
       expect(err).toBeUndefined()
+      expect(result.deps).toContain path.resolve(__dirname, 'fixtures/bar.yml')
       expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
       expect(result.source).not.toContain 'require'
