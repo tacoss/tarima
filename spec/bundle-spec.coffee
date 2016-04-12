@@ -5,7 +5,7 @@ describe 'bundling support', ->
     bundle(view).render (err, result) ->
       expect(err).toBeUndefined()
       expect(result.source).toMatch /function.*?\(/
-      expect(result.source).toContain 'module.exports'
+      expect(result.source).toContain 'export default'
       expect(result.source).not.toContain '"x":'
       expect(result.source).toContain 'require'
       done()
@@ -20,7 +20,7 @@ describe 'bundling support', ->
     bundle(views).render (err, result) ->
       expect(err).toBeUndefined()
       expect(result.source).toMatch /function.*?\(/
-      expect(result.source).toContain 'module.exports'
+      expect(result.source).toContain 'export default'
       expect(result.source).toContain '"x":'
       expect(result.source).toContain 'require'
       done()
