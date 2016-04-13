@@ -33,6 +33,7 @@
     "test": "npm run dev:lint && npm run dev:spec"
   },
   "dependencies": {
+    "es6-promise": "^3.1.2",
     "js-yaml": "^3.5.5",
     "redent": "^1.0.0",
     "siguiente": "^0.3.1",
