@@ -3,9 +3,11 @@ describe 'globals support', ->
     data =
       globals:
         foo: 'bar'
+        candy: ->
+          JSON.stringify baz: 'buzz'
 
-    tarima('script.js', 'alert(foo)', data).render  (err, result) ->
+    tarima('script.js', '/* global foo, candy */\nalert(foo)', data).render  (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.source).toContain 'function(foo)'
-      expect(result.source).toContain '.call(this,"bar")'
+      expect(result.source).toContain 'var foo = "bar";'
+      expect(result.source).toContain 'var candy = {"baz":"buzz"};'
       done()
