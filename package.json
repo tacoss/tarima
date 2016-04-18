@@ -41,11 +41,11 @@
   },
   "devDependencies": {
     "babel-core": "^5.8.38",
-    "buble": "^0.4.11",
+    "buble": "^0.5.0",
     "codecov": "^1.0.1",
     "coffee-script": "^1.10.0",
     "ejs": "^2.4.1",
-    "eslint": "^2.1.0",
+    "eslint": "^2.8.0",
     "handlebars": "^4.0.5",
     "idom-template": "^0.1.1",
     "imba": "^0.14.3",
@@ -54,7 +54,7 @@
     "jisp": "^0.3.3",
     "kramed": "^0.5.5",
     "less": "^2.6.0",
-    "pug": "^2.0.0-alpha1",
+    "pug": "^2.0.0-alpha5",
     "ractive": "^0.7.3",
     "rollup": "^0.25.8",
     "styl": "^0.2.9"
