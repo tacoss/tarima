@@ -4,9 +4,10 @@ describe 'front-matter support', ->
       a: 1
 
     tarima('x.pug', '''
-      ---
-      c: 2
-      ---
+      //-
+        ---
+        c: 2
+        ---
       |#{a + c}
     ''').render data, (err, result) ->
       expect(err).toBeUndefined()
@@ -18,6 +19,6 @@ describe 'front-matter support', ->
       expect(err).toBeUndefined()
       # use JSON.stringify() due identity issues with IncludedFile objects
       expect(JSON.stringify result.locals).toEqual JSON.stringify
-       foo:
-         baz: 'buzz'
+        foo:
+          baz: 'buzz'
       done()
