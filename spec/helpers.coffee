@@ -2,6 +2,12 @@ fs = require('fs')
 path = require('path')
 tarima = require('../lib')
 
+exists = (file) ->
+  try
+    fs.statSync(file).isFile()
+  catch e
+    false
+
 global.fixture = (filename) ->
   path.join(__dirname, 'fixtures', filename)
 
@@ -16,7 +22,7 @@ global.tarima = (filename, source, opts, cb) ->
 
   test_file = fixture(filename)
 
-  if fs.existsSync(test_file)
+  if exists(test_file)
     tarima.load test_file, opts
   else
     tarima.parse filename, source, opts
