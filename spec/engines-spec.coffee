@@ -70,7 +70,7 @@ describe 'supported engines', ->
 
     it 'x.y.idom should not work (x.y)',
       test ['x.y.idom', '<x>y</x>'], (result) ->
-        expect(result.source).toEqual '<x>y</x>'
+        expect(result.source).toContain '<x>y</x>'
         expect(result.extension).toEqual 'y'
 
   describe 'Ractive', ->
@@ -97,7 +97,7 @@ describe 'supported engines', ->
 
     it 'x.y.pug should transpile to x.y',
       test ['x.y.pug', 'x y'], (result) ->
-        expect(result.source).toEqual '<x>y</x>'
+        expect(result.source).toContain '<x>y</x>'
         expect(result.extension).toEqual 'y'
 
     it 'x.js.pug should precompile to x.js',
