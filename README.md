@@ -68,7 +68,7 @@ view.render(function(err, result) {
 });
 
 // bundled
-tarima.bundle(view, function(err, result) {
+tarima.bundle(view).render(function(err, result) {
   console.log(err, result);
 });
 ```
@@ -119,11 +119,13 @@ Output:
 
 ### Bundling
 
-`bundle(locals, callback)`  &mdash; Performs the transpilation on the given source, and turn it into a new module.
+`bundle(partial)`  &mdash; Performs the transpilation on the given source, and turn it into a new module.
 
 - Given multiple sources the resulting module will export an object with all transpiled sources, and all of them should be valid templates in order to work.
 
 - Some sources like stylesheets already performs some kind on bundling, but other sources like Javascript doesn't.
+
+This will return an object with a `render()` method as defined above.
 
 ## Supported engines
 
