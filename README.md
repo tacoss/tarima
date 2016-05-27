@@ -66,7 +66,19 @@ var view = tarima.parse('view.ract.pug', 'x {{"y"}}');
 view.render(function(err, result) {
   console.log(err, result);
 });
+```
 
+### Bundling
+
+`bundle(partial)`  &mdash; Performs the transpilation on the given source, and turn it into a new module.
+
+- Given multiple sources the resulting module will export an object with all transpiled sources, and all of them should be valid templates in order to work.
+
+- Some sources like stylesheets already performs some kind on bundling, but other sources like Javascript doesn't.
+
+Example:
+
+```javascript
 // bundled
 tarima.bundle(view).render(function(err, result) {
   console.log(err, result);
@@ -115,17 +127,7 @@ Output:
 
 `_format` &mdash; This value is passed directly as `format` option for rollup, [available formats](https://github.com/rollup/rollup/wiki/JavaScript-API#format) are: `amd`, `js`, `es6`, `iife`, `umd`.
 
-> Both options `_bundle`  and `_format` are available only when `bundle()` is called, see below.
-
-### Bundling
-
-`bundle(partial)`  &mdash; Performs the transpilation on the given source, and turn it into a new module.
-
-- Given multiple sources the resulting module will export an object with all transpiled sources, and all of them should be valid templates in order to work.
-
-- Some sources like stylesheets already performs some kind on bundling, but other sources like Javascript doesn't.
-
-This will return an object with a `render()` method as defined above.
+> Both options `_bundle`  and `_format` are available only when `bundle()` is called, see above.
 
 ## Supported engines
 
