@@ -191,3 +191,12 @@ describe 'supported engines', ->
       test ['x.js.hbs', '<x>{{x}}</x>'], (result) ->
         expect(result.source).toContain 'Handlebars.template'
         expect(result.extension).toEqual 'js'
+
+  describe 'PostCSS', ->
+    it 'css only',
+      test ['x.css', '.x{color:red}'], (result) ->
+        console.log result
+
+    it 'with js',
+      test ['x.js.css', '.x{color:red}'], (result) ->
+        console.log result
