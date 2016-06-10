@@ -20,7 +20,7 @@ describe 'supported engines', ->
         expect(result.source).toEqual '    foo bar'
         expect(result.extension).toEqual 'y'
 
-  describe 'ES6 (babel)', ->
+  describe 'ES6 (bublé)', ->
     it 'x.es6 should transpile to x.js',
       test ['x.es6', 'export default () => 42'], (result) ->
         expect(result.source).toContain 'default function'
@@ -37,6 +37,8 @@ describe 'supported engines', ->
       test ['x.y.es6', 'export default 42'], (result) ->
         expect(result.source).toEqual 'export default 42'
         expect(result.extension).toEqual 'y'
+
+  # TODO: ES6 (babel)
 
   describe 'IMBA', ->
     it 'x.imba should transpile to x.js',
@@ -194,9 +196,11 @@ describe 'supported engines', ->
 
   describe 'PostCSS', ->
     it 'css only',
-      test ['x.css', '.x{color:red}'], (result) ->
-        console.log result
+      test ['x.css', '.x{color:red}', postcss: true], (result) ->
+        expect(result.source).toEqual '.x{color:red}'
+        expect(result.extension).toEqual 'css'
 
     it 'with js',
-      test ['x.js.css', '.x{color:red}'], (result) ->
-        console.log result
+      test ['x.js.css', '.x{color:red}', postcss: true], (result) ->
+        expect(result.source).toEqual 'function(){return ".x{color:red}";}'
+        expect(result.extension).toEqual 'js'
