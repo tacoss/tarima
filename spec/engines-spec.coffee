@@ -211,6 +211,7 @@ describe 'supported engines', ->
         expect(result.extension).toEqual 'css'
 
     it 'with .js.post',
-      test ['x.js.post.css', '.x{color:red}'], (result) ->
-        expect(result.source).toEqual 'function(){return ".x{color:red}";}'
+      test ['x.js.post.css', ':fullscreen a{display:flex}', postcss: { plugins: ['autoprefixer'] }], (result) ->
+        expect(result.source).toContain 'function'
+        expect(result.source).toContain '-webkit-box'
         expect(result.extension).toEqual 'js'
