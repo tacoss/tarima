@@ -196,11 +196,21 @@ describe 'supported engines', ->
 
   describe 'PostCSS', ->
     it 'css only',
-      test ['x.css', '.x{color:red}', postcss: true], (result) ->
+      test ['x.css', '.x{color:red}'], (result) ->
         expect(result.source).toEqual '.x{color:red}'
         expect(result.extension).toEqual 'css'
 
-    it 'with js',
-      test ['x.js.css', '.x{color:red}', postcss: true], (result) ->
+    it 'with .js',
+      test ['x.js.css', '.x{color:red}'], (result) ->
+        expect(result.source).toEqual 'function(){return ".x{color:red}";}'
+        expect(result.extension).toEqual 'js'
+
+    it 'with .post',
+      test ['x.post.css', '.x{color:red}'], (result) ->
+        expect(result.source).toEqual '.x{color:red}'
+        expect(result.extension).toEqual 'css'
+
+    it 'with .js.post',
+      test ['x.js.post.css', '.x{color:red}'], (result) ->
         expect(result.source).toEqual 'function(){return ".x{color:red}";}'
         expect(result.extension).toEqual 'js'
