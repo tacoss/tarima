@@ -63,6 +63,7 @@
     "pug": "^2.0.0-alpha6",
     "ractive": "^0.7.3",
     "rollup": "^0.25.8",
+    "rollup-plugin-json": "^2.0.0",
     "styl": "^0.2.9"
   },
   "publishConfig": {

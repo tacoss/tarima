@@ -134,6 +134,7 @@ Output:
 You can install the following dependencies for specific support:
 
 - `npm install coffee-script` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
+- `npm install postcss` &rarr; `.post.css` sources (experimental)
 - `npm install pug` &rarr; `.pug` and `.jade` (legacy)
 - `npm install less` &rarr; `.less`
 - `npm install imba` &rarr; `.imba`

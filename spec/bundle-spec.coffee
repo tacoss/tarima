@@ -38,9 +38,25 @@ describe 'bundling support', ->
       expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
       expect(result.source).not.toContain 'require'
-      expect(result.source).toContain 'return data'
-      expect(result.source).toContain 'var data = "x"'
+      expect(result.source).toContain 'return b'
+      expect(result.source).toContain "var b = 'x'"
       expect(result.source).toContain 'this.a = this.a || {}'
       expect(result.source).toContain 'this.a.b = this.a.b || {}'
 
+      done()
+
+  it 'should fail bundling unsupported sources', (done) ->
+    bundle(tarima('module_c.js')).render (err) ->
+      expect(err).not.toBeUndefined()
+      expect(err.message).toContain 'data.json does not export default'
+      done()
+
+  it 'should bundle unsupported sources through plugins', (done) ->
+    rollupPluginJSON = require('rollup-plugin-json')()
+
+    bundle(tarima('module_c.js'), rollup: { plugins: [rollupPluginJSON] }).render (err, result) ->
+      expect(err).toBeUndefined()
+      expect(result.source).not.toContain 'require'
+      expect(result.source).toContain 'return data'
+      expect(result.source).toContain 'var data = "x"'
       done()

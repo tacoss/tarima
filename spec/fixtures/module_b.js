@@ -1,2 +1,1 @@
-import data from './data.json'
-export default data
+export default 'x'
