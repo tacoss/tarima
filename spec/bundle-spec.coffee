@@ -15,6 +15,7 @@ describe 'bundling support', ->
       tarima('page.pug')
       tarima('x.js.hbs.pug', 'x {{y}}')
       tarima('x.js.ract.pug', 'a {{b}}')
+      tarima('x.json', '{"foo":"bar"}')
     ]
 
     bundle(views).render (err, result) ->
@@ -23,6 +24,7 @@ describe 'bundling support', ->
       expect(result.source).toContain 'module.exports'
       expect(result.source).toContain '"x":'
       expect(result.source).toContain 'require'
+      expect(result.source).toContain '"x":{"foo":"bar"}'
       done()
 
   it 'should bundle modules using rollup', (done) ->
@@ -36,8 +38,8 @@ describe 'bundling support', ->
       expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
       expect(result.source).not.toContain 'require'
-      expect(result.source).toContain 'return b'
-      expect(result.source).toContain "var b = 'x'"
+      expect(result.source).toContain 'return data'
+      expect(result.source).toContain 'var data = "x"'
       expect(result.source).toContain 'this.a = this.a || {}'
       expect(result.source).toContain 'this.a.b = this.a.b || {}'
 
