@@ -8,6 +8,6 @@ describe 'globals support', ->
 
     tarima('script.js', '/* global foo, candy */\nalert(foo)', data).render  (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.source).toContain 'var foo = "bar";'
-      expect(result.source).toContain 'var candy = {"baz":"buzz"};'
+      expect(result.source).toContain 'var foo = "bar",'
+      expect(result.source).toContain 'candy = {"baz":"buzz"};'
       done()
