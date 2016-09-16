@@ -167,7 +167,7 @@ tarima.parse('x.es6.js', 'export default 42', {
 });
 ```
 
-### Globals
+### Globals and locals
 
 As part of the transpilation process you can put any value as global using the `globals` option:
 
@@ -192,7 +192,13 @@ All given globals are injected in the sample place as the `/* global */` comment
 
 Also you can pass any value, even functions, because all values are normalized through the [tosource](https://github.com/marcello3d/node-tosource) module.
 
-> Note globals are injected during the `post-filter`phase, see below.
+Injecting locals can be avhieved using the `/* local */` comment, but all values are taken from `data` values, including front-matter.
+
+The bundler will merge up all `importee.data` with the `importer.data`.
+
+This variables are injected only at entry-point level.
+
+> Note globals and locals are injected during the `post-filter`phase, see below.
 
 ### Filters
 
