@@ -44,6 +44,11 @@ describe 'bundling support', ->
         expect(result.source).toContain 'this.a = this.a || {}'
         expect(result.source).toContain 'this.a.b = this.a.b || {}'
 
+        expect(result.source).toContain '_s(ok)'
+        expect(result.source).toContain '_s(value)'
+        expect(result.source).toContain 'x = Vue.extend'
+        expect(result.source).toContain 'y = Vue.extend(__view$)'
+
         done()
 
     it 'should fail bundling unsupported sources', (done) ->
