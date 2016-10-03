@@ -60,7 +60,8 @@
     "ractive": "^0.7.3",
     "rollup": "^0.25.8",
     "rollup-plugin-json": "^2.0.0",
-    "styl": "^0.2.9"
+    "styl": "^0.2.9",
+    "vue-template-compiler": "^2.0.1"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"

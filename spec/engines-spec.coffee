@@ -215,3 +215,37 @@ describe 'supported engines', ->
         expect(result.source).toContain 'function'
         expect(result.source).toContain '-webkit-box'
         expect(result.extension).toEqual 'js'
+
+  describe 'Vue', ->
+    it 'views only',
+      test ['x.vue', '<h1>OK</h1>'], (result) ->
+        expect(result.source).toContain "'h1'"
+        expect(result.source).toContain '"OK"'
+
+    tpl = '''
+      <style lang='less'>
+        @foo: red;
+
+        * {
+          color: @foo;
+        }
+      </style>
+
+      <template lang='pug'>
+        h1 {{x}}
+      </template>
+
+      <script lang='coffee'>
+        export default {
+          data: ->
+            x: 'y'
+        }
+      </script>
+    '''
+
+    it 'component files',
+      test ['x.vue', tpl], (result) ->
+        expect(result.source).toContain 'data: function'
+        expect(result.source).toContain "_h('h1',[_s(x)])"
+        expect(result.source).toContain 'export default __view$'
+        expect(result.source).toContain '"* {\\n  color: red;\\n}\\n"'
