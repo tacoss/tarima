@@ -70,7 +70,7 @@ view.render(function(err, result) {
 
 ### Bundling
 
-`bundle(partial)`  &mdash; Performs the transpilation on the given source, and turn it into a new module.
+`bundle(partial, bundleOptions)`  &mdash; Performs the transpilation on the given source, and turn it into a new module.
 
 - Given multiple sources the resulting module will export an object with all transpiled sources, and all of them should be valid templates in order to work.
 
@@ -80,10 +80,18 @@ Example:
 
 ```javascript
 // bundled
-tarima.bundle(view).render(function(err, result) {
-  console.log(err, result);
-});
+tarima.bundle(view, locals)
+  .render(function(err, result) {
+    console.log(err, result);
+  });
 ```
+
+#### bundleOptions
+
+`cwd` &mdash; Save all file paths relative to this directory
+`cache` &mdash; Cache object being used by Rollup.js
+`rollup` &mdash; Configuration object used by Rollup.js
+`exports` &mdash; Can be `cjs` or `es6`. Prefix `module.exports` vs `export default`
 
 ### Front Matter
 
@@ -133,6 +141,7 @@ Output:
 
 You can install the following dependencies for specific support:
 
+- `npm install vue-template-compiler` &rarr; `.vue` component files and templates
 - `npm install coffee-script` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
 - `npm install postcss` &rarr; `.post.css` sources (experimental)
 - `npm install pug` &rarr; `.pug` and `.jade` (legacy)
