@@ -248,4 +248,4 @@ describe 'supported engines', ->
         expect(result.source).toContain 'data: function'
         expect(result.source).toContain "_h('h1',[_s(x)])"
         expect(result.source).toContain '"* {\\n  color: red;\\n}\\n"'
-        expect(result.source).toContain 'export default Vue.extend(__view$)'
+        expect(result.source).toContain 'export default Vue.extend(__x$v)'

@@ -47,7 +47,7 @@ describe 'bundling support', ->
         expect(result.source).toContain '_s(ok)'
         expect(result.source).toContain '_s(value)'
         expect(result.source).toContain 'x = Vue.extend'
-        expect(result.source).toContain 'y = Vue.extend(__view$)'
+        expect(result.source).toContain 'y = Vue.extend'
 
         done()
 
