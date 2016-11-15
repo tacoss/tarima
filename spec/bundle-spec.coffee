@@ -40,7 +40,7 @@ describe 'bundling support', ->
 
         expect(result.source).not.toContain 'require'
         expect(result.source).toContain 'return b'
-        expect(result.source).toContain "var b = 'x'"
+        expect(result.source).toMatch /var b.* = 'x'/
         expect(result.source).toContain 'this.a = this.a || {}'
         expect(result.source).toContain 'this.a.b = this.a.b || {}'
 
@@ -54,7 +54,7 @@ describe 'bundling support', ->
     it 'should fail bundling unsupported sources', (done) ->
       bundle(tarima('module_c.js')).render (err) ->
         expect(err).not.toBeUndefined()
-        expect(err.message).toContain 'data.json does not export default'
+        expect(err.message).toMatch /does not export default|'default' is not exported/
         done()
 
     it 'should bundle unsupported sources through plugins', (done) ->
@@ -62,5 +62,5 @@ describe 'bundling support', ->
         expect(err).toBeUndefined()
         expect(result.source).not.toContain 'require'
         expect(result.source).toContain 'return data'
-        expect(result.source).toContain 'var data = "x"'
+        expect(result.source).toMatch /var data.* = "x"/
         done()
