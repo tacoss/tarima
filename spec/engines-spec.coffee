@@ -249,3 +249,8 @@ describe 'supported engines', ->
         expect(result.source).toContain "_h('h1',[_s(x)])"
         expect(result.source).toContain '"*[vue-x] {\\n  color: red;\\n}\\n"'
         expect(result.source).toContain 'export default Vue.extend(__x$v)'
+
+  describe 'SASS', ->
+    it 'styles only',
+      test ['x.sass', '$x: red;\n*\n  color: $x'], (result) ->
+        expect(result.source).toContain 'color: red'
