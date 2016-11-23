@@ -56,14 +56,14 @@
     "jisp": ">=0.3.3",
     "kramed": ">=0.5.5",
     "less": "^2.7.1",
-    "node-sass": ">=3.12.5",
-    "postcss": "^5.2.5",
+    "node-sass": "^3.13.0",
+    "postcss": "^5.2.6",
     "pug": ">=2.0.0-alpha6",
     "ractive": "^0.8.5",
-    "rollup": "^0.36.3",
+    "rollup": "^0.36.4",
     "rollup-plugin-json": ">=2.0.0",
     "styl": ">=0.2.9",
-    "vue-template-compiler": ">=2.0.6"
+    "vue-template-compiler": "^2.1.0"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
