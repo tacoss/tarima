@@ -218,7 +218,7 @@ describe 'supported engines', ->
 
   describe 'Vue', ->
     it 'views only',
-      test ['x.vue', '<h1>OK</h1>'], (result) ->
+      test ['x.vue', '<h1>OK{{...props}}</h1>'], (result) ->
         expect(result.source).toContain "'h1'"
         expect(result.source).toContain '"OK"'
 
@@ -246,7 +246,7 @@ describe 'supported engines', ->
     it 'component files',
       test ['x.vue', tpl], (result) ->
         expect(result.source).toContain 'data: function'
-        expect(result.source).toContain "_h('h1',[_s(x)])"
+        expect(result.source).toContain "_c('h1',[_v(_s(x))])"
         expect(result.source).toContain '"*[vue-x] {\\n  color: red;\\n}\\n"'
         expect(result.source).toContain 'export default Vue.extend(__x$v)'
 
