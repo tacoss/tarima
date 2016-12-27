@@ -254,3 +254,10 @@ describe 'supported engines', ->
     it 'styles only',
       test ['x.sass', '$x: red;\n*\n  color: $x'], (result) ->
         expect(result.source).toContain 'color: red'
+
+  describe 'TypeScript', ->
+    it 'scripts only',
+      test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
+        expect(result.source).toContain '"use strict"'
+        expect(result.source).toContain 'var foo'
+        expect(result.source).toContain '(x)'
