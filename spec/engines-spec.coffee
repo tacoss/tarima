@@ -258,6 +258,5 @@ describe 'supported engines', ->
   describe 'TypeScript', ->
     it 'scripts only',
       test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
-        expect(result.source).toContain '"use strict"'
         expect(result.source).toContain 'var foo'
         expect(result.source).toContain '(x)'
