@@ -1074,6 +1074,12 @@ gaze@~0.5.1:
   dependencies:
     globule "~0.1.0"
 
+gen-pug-source-map@^0.1.2:
+  version v0.1.2
+  resolved "https://registry.yarnpkg.com/gen-pug-source-map/-/gen-pug-source-map-0.1.2.tgz#de79387e8df5d0167dd54ac2f298317f1e772304"
+  dependencies:
+    source-map "^0.5.6"
+
 generate-function@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/generate-function/-/generate-function-2.0.0.tgz#6858fe7c0969b7d4e9093337647ac79f60dfbe74"
