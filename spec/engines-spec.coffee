@@ -218,7 +218,7 @@ describe 'supported engines', ->
 
   describe 'Vue', ->
     it 'views only',
-      test ['x.vue', '<h1>OK{{...props}}</h1>'], (result) ->
+      test ['x.vue', '<h1>OK{{x}}</h1>'], (result) ->
         expect(result.source).toContain "'h1'"
         expect(result.source).toContain '"OK"'
 
