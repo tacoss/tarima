@@ -39,6 +39,7 @@ describe 'supported engines', ->
         expect(result.extension).toEqual 'y'
 
   # TODO: ES6 (babel)
+  # TODO: ES6 (traceur)
 
   describe 'IMBA', ->
     it 'x.imba should transpile to x.js',

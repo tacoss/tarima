@@ -37,8 +37,6 @@
     "es6-promise": "^4.0.5",
     "js-yaml": "^3.7.0",
     "redent": "^2.0.0",
-    "siguiente": ">=0.3.1",
-    "svelte": "^1.0.1",
     "tosource": ">=1.0.0"
   },
   "devDependencies": {
@@ -65,6 +63,8 @@
     "rollup": "^0.36.4",
     "rollup-plugin-json": ">=2.0.0",
     "styl": ">=0.2.9",
+    "svelte": "^1.0.1",
+    "traceur": "^0.0.111",
     "typescript": "^2.1.4",
     "vue-template-compiler": "^2.1.0"
   },
