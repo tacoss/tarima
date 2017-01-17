@@ -13,18 +13,29 @@ describe 'bundling support', ->
   it 'should export multiple templates', (done) ->
     views = [
       tarima('page.pug')
-      tarima('x.js.hbs.pug', 'x {{y}}')
-      tarima('x.js.ract.pug', 'a {{b}}')
-      tarima('x.json', '{"foo":"bar"}')
+      tarima('tpl_1.js.hbs.pug', 'x {{y}}')
+      tarima('tpl_2.js.ract.pug', 'a {{b}}')
+      tarima('data_1.json', '{"foo":"bar"}')
+      tarima('style_1.less', '*{color:red}')
+      tarima('style_2.js.less', '*{color:@var}')
     ]
 
     bundle(views).render (err, result) ->
       expect(err).toBeUndefined()
-      expect(result.source).toMatch /function.*?\(/
-      expect(result.source).toContain 'module.exports'
-      expect(result.source).toContain '"x":'
-      expect(result.source).toContain 'require'
-      expect(result.source).toContain '"x":{"foo":"bar"}'
+
+      try
+        $ = module = { exports: {} }
+        eval(result.source)
+
+        expect($.exports.data_1()).toEqual { foo: 'bar' }
+        expect($.exports.style_1()).toContain 'color: red;'
+        expect($.exports.style_2({ var: 'cyan' })).toContain 'color: cyan;'
+        expect($.exports.tpl_1()).toContain '<x></x>'
+        expect($.exports.tpl_2().v).toEqual 4
+        expect($.exports.page()).toContain '<h1>It works!</h1>'
+      catch e
+        throw new Error 'This should not happen'
+
       done()
 
   describe 'Rollup.js integration', ->
