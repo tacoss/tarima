@@ -49,6 +49,7 @@
     "eslint": "^3.10.2",
     "fuse-box": "^1.3.56",
     "gen-pug-source-map": "^0.1.2",
+    "google-closure-compiler-js": "^20161201.0.1",
     "handlebars": ">=4.0.6",
     "idom-template": "^1.1.3",
     "imba": ">=0.14.3",
