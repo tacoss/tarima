@@ -27,16 +27,16 @@ describe 'bundling support', ->
         $ = module = { exports: {} }
         eval(result.source)
 
-        expect($.exports.data_1()).toEqual { foo: 'bar' }
-        expect($.exports.style_1()).toContain 'color: red;'
+        expect($.exports.data_1).toEqual { foo: 'bar' }
+        expect($.exports.style_1).toContain 'color: red;'
         expect($.exports.style_2({ var: 'cyan' })).toContain 'color: cyan;'
         expect($.exports.tpl_1()).toContain '<x></x>'
         expect($.exports.tpl_2().v).toEqual 4
-        expect($.exports.page()).toContain '<h1>It works!</h1>'
+        expect($.exports.page).toContain '<h1>It works!</h1>'
       catch e
         throw new Error 'This should not happen'
-
-      done()
+      finally
+        done()
 
   describe 'Rollup.js integration', ->
     it 'should bundle modules using rollup', (done) ->
@@ -69,9 +69,14 @@ describe 'bundling support', ->
         done()
 
     it 'should bundle unsupported sources through plugins', (done) ->
-      bundle(tarima('module_c.js'), rollup: { plugins: ['rollup-plugin-json'] }).render (err, result) ->
+      bundle(tarima('module_c.js'), rollup: { plugins: [{
+        load: (id) ->
+          if id.indexOf('.txt') > -1
+            return 'export default "TXT"'
+          null
+      }] }).render (err, result) ->
         expect(err).toBeUndefined()
         expect(result.source).not.toContain 'require'
         expect(result.source).toContain 'return data'
-        expect(result.source).toMatch /var data.* = "x"/
+        expect(result.source).toMatch /var data.* = "TXT"/
         done()

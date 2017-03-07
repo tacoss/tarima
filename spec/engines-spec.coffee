@@ -261,3 +261,12 @@ describe 'supported engines', ->
       test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
         expect(result.source).toContain 'var foo'
         expect(result.source).toContain '(x)'
+
+  describe 'Marko', ->
+    it 'views only',
+      test ['x.marko', 'div --- OK'], (result) ->
+        expect(result.source).toContain '<div>OK</div>'
+
+    it 'views only ...',
+      test ['x.js.marko', 'div --- OK'], (result) ->
+        expect(result.source).toContain 'marko_createElement'

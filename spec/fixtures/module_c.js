@@ -1,2 +1,2 @@
-import data from './data.json'
+import data from './noop.txt'
 export default data
