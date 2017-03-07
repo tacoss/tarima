@@ -49,7 +49,7 @@ describe 'bundling support', ->
         expect(result.deps).toContain path.resolve(__dirname, 'fixtures/bar.yml')
         expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
-        expect(result.source).not.toContain 'require'
+        #expect(result.source).not.toContain 'require'
         expect(result.source).toContain 'return b'
         expect(result.source).toMatch /var b.* = 'x'/
         expect(result.source).toContain 'this.a = this.a || {}'
