@@ -49,7 +49,7 @@ describe 'bundling support', ->
         expect(result.deps).toContain path.resolve(__dirname, 'fixtures/bar.yml')
         expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
-        #expect(result.source).not.toContain 'require'
+        expect(result.source).not.toContain 'require'
         expect(result.source).toContain 'return b'
         expect(result.source).toMatch /var b.* = 'x'/
         expect(result.source).toContain 'this.a = this.a || {}'
@@ -69,14 +69,23 @@ describe 'bundling support', ->
         done()
 
     it 'should bundle unsupported sources through plugins', (done) ->
-      bundle(tarima('module_c.js'), rollup: { plugins: [{
-        load: (id) ->
-          if id.indexOf('.txt') > -1
-            return 'export default "TXT"'
-          null
-      }] }).render (err, result) ->
+      bundle(tarima('component.marko'), rollup: {
+        plugins: [
+          require('rollup-plugin-node-resolve')({
+            jsnext: true
+            main: true
+            browser: true
+            preferBuiltins: false
+            extensions: ['.js', '.marko']
+          }),
+          require('rollup-plugin-commonjs')({
+            include: ['node_modules/**', '**/*.marko', '**/*.js']
+            extensions: ['.js', '.marko']
+          })
+      ]
+      })
+      .render (err, result) ->
         expect(err).toBeUndefined()
-        expect(result.source).not.toContain 'require'
-        expect(result.source).toContain 'return data'
-        expect(result.source).toMatch /var data.* = "TXT"/
+        expect(result.source).toContain 'createCommonjsModule'
+        expect(result.source).toContain './component.marko'
         done()
