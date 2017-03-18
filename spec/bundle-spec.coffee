@@ -70,19 +70,16 @@ describe 'bundling support', ->
 
     it 'should bundle unsupported sources through plugins', (done) ->
       bundle(tarima('component.marko'), rollup: {
-        plugins: [
-          require('rollup-plugin-node-resolve')({
+        plugins:
+          'rollup-plugin-node-resolve':
             jsnext: true
             main: true
             browser: true
             preferBuiltins: false
             extensions: ['.js', '.marko']
-          }),
-          require('rollup-plugin-commonjs')({
+          'rollup-plugin-commonjs':
             include: ['node_modules/**', '**/*.marko', '**/*.js']
             extensions: ['.js', '.marko']
-          })
-      ]
       })
       .render (err, result) ->
         expect(err).toBeUndefined()
