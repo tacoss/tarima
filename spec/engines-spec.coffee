@@ -270,3 +270,8 @@ describe 'supported engines', ->
     it 'views only ...',
       test ['x.js.marko', 'div --- OK'], (result) ->
         expect(result.source).toContain 'marko_createElement'
+
+  describe 'Svelte', ->
+    it 'components only',
+      test ['x.js.svelte', '<div>{{value}}</div>'], (result) ->
+        console.log result.source
