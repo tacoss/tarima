@@ -28,15 +28,20 @@ global.tarima = (filename, source, opts, cb) ->
     tarima.parse filename, source, opts
 
 global.test = (args, cb, locals) ->
-  (done) ->
+  global.it args[0], (done) ->
     global.tarima(args...).render locals, (err, result) ->
       if err
         console.log(args)
         console.log(err.stack)
         return done()
+
       expect(err).toBeUndefined()
-      cb(result)
+
+      try
+        cb(result)
+      catch e
+        console.log e
+
       done()
 
 global.bundle = tarima.bundle
-global.support = tarima.support
