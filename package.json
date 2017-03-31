@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "description": "Templating madness!",
   "main": "lib/index.js",
   "repository": {
