@@ -1,7 +1,3 @@
-# https://github.com/vuejs/vue/issues/5361
-global.Reflect = global.Reflect or {}
-global.Reflect.ownKeys = {}
-
 fs = require('fs')
 path = require('path')
 tarima = require('../lib')
