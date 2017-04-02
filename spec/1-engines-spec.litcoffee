@@ -52,6 +52,10 @@
           expect(result.source).toEqual '    foo bar'
           expect(result.extension).toEqual 'y'
 
+        test ['x.js.litcoffee', '    foo bar'], (result) ->
+          expect(result.source).toContain 'foo(bar);'
+          expect(result.extension).toEqual 'js'
+
       describe 'ES6 (bublé)', ->
         test ['x.es6', 'export default () => 42'], (result) ->
           expect(result.source).toContain 'default function'

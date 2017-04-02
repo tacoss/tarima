@@ -22,8 +22,9 @@
         it 'should bundle modules', (done) ->
           tarima('module_a.litcoffee', { bundler: 'fusebox' })
           .bundle (err, result) ->
-            console.log err
-            console.log result
+            # FIXME
+            # console.log err
+            # console.log result.source
             done()
 
     describe 'Webpack integration', ->
