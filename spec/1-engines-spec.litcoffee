@@ -1,4 +1,9 @@
     describe 'Markup', ->
+      describe 'Liquid', ->
+        test ['x.liquid', '{% assign x = "y" %}{{x}}'], (result) ->
+          expect(result.source).toEqual 'y'
+          expect(result.extension).toEqual 'html'
+
       describe 'Markdown', ->
         test ['x.md', '# ok'], (result) ->
           expect(result.source).toContain '</h1>'
