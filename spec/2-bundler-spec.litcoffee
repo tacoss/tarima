@@ -39,7 +39,6 @@
           it 'should bundle modules', ->
             # FIXME
 
-
     describe 'Webpack integration', ->
       it 'should bundle modules', (done) ->
         tarima('module_a.litcoffee', { bundler: 'webpack' })
