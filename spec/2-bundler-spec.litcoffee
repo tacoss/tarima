@@ -35,7 +35,7 @@
               done()
 
       catch e
-        describe 'FuseBox integration', ->
+        describe 'FuseBox integration (skipped)', ->
           it 'should bundle modules', ->
             # FIXME
 
@@ -48,13 +48,15 @@
           expect(result.deps).toContain path.resolve(__dirname, 'fixtures/bar.yml')
           expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
+          expect(result.source).toContain 'harmony default export'
+          expect(result.source).toContain "Vue.component('x'"
+          expect(result.source).toContain "Vue.component('y'"
+
           expect(result.source).toContain 'var a.b.c'
 
           expect(result.source).toContain '_s(ok)'
           expect(result.source).toContain '_s(value)'
-          expect(result.source).toContain "Vue.component('x'"
-          expect(result.source).toContain "Vue.component('y'"
-          expect(result.source).toContain 'harmony default export'
+
           done()
 
     describe 'Rollup.js integration', ->

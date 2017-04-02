@@ -81,16 +81,16 @@
         ], (result) ->
           expect(result.source).toContain 'module.exports'
 
-      # describe 'ES6 (babel)', ->
-      #   test [
-      #     'x.es6'
-      #     'export default () => 42',
-      #     {
-      #       babel:
-      #         presets: [['es2015', {}]]
-      #     }
-      #   ], (result) ->
-      #     expect(result.source).toContain 'exports.default'
+      describe 'ES6 (babel)', ->
+        test [
+          'x.es6'
+          'export default () => 42',
+          {
+            babel:
+              presets: [['es2015', {}]]
+          }
+        ], (result) ->
+          expect(result.source).toContain 'exports.default'
 
       describe 'TypeScript', ->
         test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
@@ -233,7 +233,7 @@
         test ['x.js.marko', 'div --- OK', { client: true }], (result) ->
           expect(result.source).toContain 'require("marko/vdom")'
 
-    if parseFloat(process.version.substr(1)) >= 6.0
-      describe 'Svelte', ->
-        test ['x.svelte', '<div>{{value}}</div>'], (result) ->
-          expect(result.source).toContain 'export default X;'
+      if parseFloat(process.version.substr(1)) >= 6.0
+        describe 'Svelte', ->
+          test ['x.svelte', '<div>{{value}}</div>'], (result) ->
+            expect(result.source).toContain 'export default X;'
