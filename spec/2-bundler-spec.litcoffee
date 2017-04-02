@@ -22,9 +22,13 @@
         it 'should bundle modules', (done) ->
           tarima('module_a.litcoffee', { bundler: 'fusebox' })
           .bundle (err, result) ->
-            # FIXME
-            # console.log err
-            # console.log result.source
+            expect(result.source).toContain 'function template'
+            expect(result.source).toContain 'with(this)'
+            expect(result.source).toContain 'marko_attr'
+            expect(result.source).toContain 'It works!'
+            expect(result.source).toContain 'this,"y"'
+            expect(result.source).toContain '"x"'
+            expect(result.source).toContain "'x"
             done()
 
     describe 'Webpack integration', ->
