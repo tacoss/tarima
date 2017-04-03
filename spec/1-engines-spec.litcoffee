@@ -183,7 +183,7 @@
       describe 'Ractive', ->
         test ['x.ract', '<x>{{"y"}}</x>'], (result) ->
           expect(result.source).toContain '<x>y</x>'
-          expect(result.extension).toEqual 'html'
+          expect(result.extension).toEqual 'js'
 
         test ['x.y.ract', '<x>{{"y"}}</x>'], (result) ->
           expect(result.source).toContain '<x>y</x>'
