@@ -180,10 +180,15 @@
           expect(result.extension).toEqual 'css'
 
     describe 'Components: WIP', ->
+      describe 'Moon', ->
+        test ['x.moon', '<h1>{{value}}</h1>', { locals: value: 'OK' }], (result) ->
+          expect(result.source).toContain '<h1>OK</h1>'
+          expect(result.extension).toEqual 'html'
+
       describe 'Ractive', ->
         test ['x.ract', '<x>{{"y"}}</x>'], (result) ->
           expect(result.source).toContain '<x>y</x>'
-          expect(result.extension).toEqual 'js'
+          expect(result.extension).toEqual 'html'
 
         test ['x.y.ract', '<x>{{"y"}}</x>'], (result) ->
           expect(result.source).toContain '<x>y</x>'
