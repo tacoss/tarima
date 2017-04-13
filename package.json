@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "debug": ">=2.2.0",
+    "deindent": "^0.1.0",
     "es6-promise": "^4.0.5",
     "js-yaml": "^3.7.0",
     "redent": "^2.0.0",

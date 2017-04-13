@@ -193,6 +193,26 @@
           expect(result.source).toContain '"h1"'
           expect(result.extension).toEqual 'js'
 
+        test ['x.js.moon', '''
+          <template lang='pug'>
+            h1 It works!
+          </template>
+
+          <style lang='less'>
+            @color: red;
+            *{color:@color}
+          </style>
+        '''], (result) ->
+          try
+            result = eval """
+              (function () {
+                #{result.source.replace('module.exports =', 'return')}
+              })()
+            """
+          catch e
+
+          expect(typeof result).toBe 'function'
+
       describe 'Ractive', ->
         test ['x.ract', '<x>{{"y"}}</x>'], (result) ->
           expect(result.source).toContain 'function'
