@@ -181,17 +181,25 @@
 
     describe 'Components: WIP', ->
       describe 'Moon', ->
-        test ['x.moon', '<h1>{{value}}</h1>', { locals: value: 'OK' }], (result) ->
-          expect(result.source).toContain '<h1>OK</h1>'
-          expect(result.extension).toEqual 'html'
+        test ['x.moon', '<h1>{{value}}</h1>'], (result) ->
+          expect(result.source).toContain '"h1"'
+          expect(result.extension).toEqual 'js'
+
+        test ['x.y.moon', '<h1>{{value}}</h1>'], (result) ->
+          expect(result.source).toContain '<h1>{{value}}</h1>'
+          expect(result.extension).toEqual 'y'
+
+        test ['x.js.moon', '<h1>{{value}}</h1>'], (result) ->
+          expect(result.source).toContain '"h1"'
+          expect(result.extension).toEqual 'js'
 
       describe 'Ractive', ->
         test ['x.ract', '<x>{{"y"}}</x>'], (result) ->
-          expect(result.source).toContain '<x>y</x>'
-          expect(result.extension).toEqual 'html'
+          expect(result.source).toContain 'function'
+          expect(result.extension).toEqual 'js'
 
         test ['x.y.ract', '<x>{{"y"}}</x>'], (result) ->
-          expect(result.source).toContain '<x>y</x>'
+          expect(result.source).toContain '<x>{{"y"}}</x>'
           expect(result.extension).toEqual 'y'
 
         test ['x.js.ract', '<x>{{"y"}}</x>'], (result) ->
@@ -241,4 +249,10 @@
       if parseFloat(process.version.substr(1)) >= 6.0
         describe 'Svelte', ->
           test ['x.svelte', '<div>{{value}}</div>'], (result) ->
+            expect(result.source).toContain 'module.exports = X;'
+
+          test ['x.y.svelte', '<div>{{value}}</div>'], (result) ->
+            expect(result.source).toContain '<div>{{value}}</div>'
+
+          test ['x.js.svelte', '<div>{{value}}</div>', { client: true }], (result) ->
             expect(result.source).toContain 'export default X;'
