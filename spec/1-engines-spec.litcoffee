@@ -58,17 +58,17 @@
 
       describe 'ES6 (bublé)', ->
         test ['x.es6', 'export default () => 42'], (result) ->
-          expect(result.source).toContain 'default function'
+          expect(result.source).toContain 'module.exports'
           expect(result.source).toContain 'return 42'
           expect(result.extension).toEqual 'js'
 
         test ['x.es6.js', 'export default () => 42'], (result) ->
-          expect(result.source).toContain 'default function'
+          expect(result.source).toContain 'module.exports'
           expect(result.source).toContain 'return 42'
           expect(result.extension).toEqual 'js'
 
         test ['x.y.es6', 'export default 42'], (result) ->
-          expect(result.source).toEqual 'export default 42'
+          expect(result.source).toMatch /module.exports[\s\S]*=[\s\S]*42/
           expect(result.extension).toEqual 'y'
 
       describe 'ES6 (traceur)', ->
@@ -254,7 +254,7 @@
           expect(result.source).toContain 'data: function'
           expect(result.source).toContain "_c('h1',[_v(_s(x))])"
           expect(result.source).toContain '"*[vue-x] {\\n  color: red;\\n}\\n"'
-          expect(result.source).toMatch /export default[\s\S]+Vue\.component\('X', __x\$v\)/
+          expect(result.source).toMatch /module\.exports[\s\S]*Vue\.component\('X', __x\$v\)/
 
       describe 'Marko', ->
         test ['x.marko', 'div --- OK'], (result) ->
@@ -275,4 +275,4 @@
             expect(result.source).toContain '<div>{{value}}</div>'
 
           test ['x.js.svelte', '<div>{{value}}</div>', { client: true }], (result) ->
-            expect(result.source).toContain 'export default X;'
+            expect(result.source).toMatch /module\.exports[\s\S]*=[\s\S]*X;/

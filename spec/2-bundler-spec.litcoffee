@@ -35,7 +35,8 @@
                 # expect(result.source).toContain 'this,"y"'
                 # expect(result.source).toContain '"x"'
                 # expect(result.source).toContain "'x"
-                console.log result.source
+                # FIXME: works on real-word but not here (?)
+                #console.log result.source
               done()
 
       catch e
@@ -73,8 +74,8 @@
             expect(result.deps).toContain path.resolve(__dirname, 'fixtures/bar.yml')
             expect(result.deps).toContain path.resolve(__dirname, 'fixtures/module_b.js')
 
-            expect(result.source).toContain 'return b'
             expect(result.source).toMatch /var b.* = 'x'/
+            expect(result.source).toContain 'var y = (function()'
             expect(result.source).toContain 'this.a = this.a || {}'
             expect(result.source).toContain 'this.a.b = this.a.b || {}'
 
@@ -82,7 +83,6 @@
             expect(result.source).toContain '_s(value)'
             expect(result.source).toContain "Vue.component('x'"
             expect(result.source).toContain "Vue.component('y'"
-            expect(result.source).not.toContain '__VUE_WITH_STATEMENT__'
           done()
 
       it 'should bundle commonjs sources through plugins', (done) ->
