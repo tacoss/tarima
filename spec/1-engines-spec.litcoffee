@@ -254,7 +254,7 @@
           expect(result.source).toContain 'data: function'
           expect(result.source).toContain "_c('h1',[_v(_s(x))])"
           expect(result.source).toContain '"*[vue-x] {\\n  color: red;\\n}\\n"'
-          expect(result.source).toContain 'export default Vue.extend(__x$v)'
+          expect(result.source).toMatch /export default[\s\S]+Vue\.component\('X', __x\$v\)/
 
       describe 'Marko', ->
         test ['x.marko', 'div --- OK'], (result) ->
