@@ -103,7 +103,7 @@ module.exports = (options, done) => {
 
   // initialize meta-bundler
   /* eslint-disable global-require */
-  tarima = tarima || require('tarima');
+  tarima = tarima || require('../../lib');
 
   options.ignore = options.ignore || [];
   options.locals = options.locals || {};

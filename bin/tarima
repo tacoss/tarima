@@ -46,24 +46,20 @@ process.env.NODE_ENV = _.flags.env =
 process.env.NODE_ENV || _.flags.env || 'development';
 
 // common helpers
-const $ = require('../lib/utils');
+const $ = require('./lib/utils');
 
-const logger = require('../lib/logger');
+const logger = require('./lib/logger');
 
 const die = process.exit.bind(process);
 
 const thisPkg = require(path.join(__dirname, '../package.json'));
 
-const tarima = require.resolve('tarima');
-const _tarima = $.readJSON(path.resolve(tarima, '../../package.json')).version;
-
 if (_.flags.version && _.flags.verbose) {
   logger.printf('{gray|%s}\n', path.dirname(__dirname));
-  logger.printf('{gray|%s}\n', path.resolve(tarima, '../..'));
 }
 
-logger.printf('{green|%s v%s} {gray|(tarima v%s)} {gray|+%s}\n',
-    thisPkg.name, thisPkg.version, _tarima, $.timeDiff(start));
+logger.printf('{green|%s v%s} {gray|+%s}\n',
+  thisPkg.name, thisPkg.version, $.timeDiff(start));
 
 if (_.flags.version) {
   die(1);
