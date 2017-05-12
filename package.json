@@ -31,7 +31,7 @@
     "dev": "yarn spec -- --verbose --autoTest --watchFolders lib",
     "lint": "eslint lib bin",
     "spec": "jasmine-node spec --coffee --noStackTrace --captureExceptions",
-    "cover": "istanbul cover --root lib --x '**/spec/**' -- yarn spec",
+    "cover": "istanbul cover --root lib --x '**/spec/**' -- jasmine-node spec --coffee",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
     "test": "yarn lint && yarn spec"
   },
