@@ -62,7 +62,6 @@
     "eslint": "^3.5.0",
     "eslint-config-airbnb-base": "^5.0.3",
     "eslint-plugin-import": "^1.14.0",
-    "fuse-box": "^2",
     "gen-pug-source-map": "^0.1.2",
     "handlebars": ">=4.0.6",
     "istanbul": ">=0.4.3",
@@ -83,11 +82,14 @@
     "rollup-plugin-json": ">=2.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "styl": ">=0.2.9",
-    "svelte": "^1.13.2",
     "traceur": "^0.0.111",
     "typescript": "^2.2.2",
     "vue-template-compiler": "^2.2.6",
     "webpack": "^2.3.2"
+  },
+  "optionalDependencies": {
+    "fuse-box": "^2",
+    "svelte": "^1.20.2"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
