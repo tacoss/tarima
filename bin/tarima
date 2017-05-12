@@ -58,8 +58,8 @@ if (_.flags.version && _.flags.verbose) {
   logger.printf('{gray|%s}\n', path.dirname(__dirname));
 }
 
-logger.printf('{green|%s v%s} {gray|+%s}\n',
-  thisPkg.name, thisPkg.version, $.timeDiff(start));
+logger.printf('{green|%s v%s} {gray|(node %s)} {gray|+%s}\n',
+  thisPkg.name, thisPkg.version, process.version, $.timeDiff(start));
 
 if (_.flags.version) {
   die(1);
