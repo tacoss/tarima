@@ -87,10 +87,14 @@
 
       it 'should bundle commonjs sources through plugins', (done) ->
         tarima('component.marko', rollup: {
+          onwarn: (warning) ->
+            return if warning.code is 'MISSING_EXPORT'
+            console.log warning.message
           plugins:
             'rollup-plugin-node-resolve':
               jsnext: true
               main: true
+              module: true
               browser: true
               preferBuiltins: false
               extensions: ['.js', '.marko']
