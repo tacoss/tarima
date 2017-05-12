@@ -2,11 +2,13 @@ fs = require('fs')
 path = require('path')
 tarima = require('../lib')
 
-exists = (file) ->
-  try
-    fs.statSync(file).isFile()
-  catch e
-    false
+global.bundle = tarima.bundle
+global.cmd = require('./helpers/cmd')
+global.read = require('./helpers/read')
+global.write = require('./helpers/write')
+global.exists = require('./helpers/exists')
+global.unlink = require('./helpers/unlink');
+global.rmdir = require('./helpers/rmdir');
 
 global.fixture = (filename) ->
   path.join(__dirname, 'fixtures', filename)
@@ -22,7 +24,7 @@ global.tarima = (filename, source, opts, cb) ->
 
   test_file = fixture(filename)
 
-  if exists(test_file)
+  if global.exists(test_file)
     tarima.load test_file, opts
   else
     tarima.parse filename, source, opts
@@ -43,5 +45,3 @@ global.test = (args, cb, locals) ->
         console.log e
 
       done()
-
-global.bundle = tarima.bundle

@@ -1,14 +1,17 @@
 {
   "name": "tarima",
-  "version": "1.11.0-dev",
+  "version": "2.0.0-dev",
   "description": "Templating madness!",
   "main": "lib/index.js",
+  "bin": {
+    "tarima": "bin/tarima"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gextech/tarima.git"
+    "url": "https://github.com/tacoss/tarima.git"
   },
   "bugs": {
-    "url": "https://github.com/gextech/tarima/issues"
+    "url": "https://github.com/tacoss/tarima/issues"
   },
   "keywords": [
     "templating",
@@ -22,7 +25,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=0.12"
+    "node": ">=0.4"
   },
   "scripts": {
     "dev": "jasmine-node spec --coffee --verbose --autoTest --watchFolders lib",
@@ -33,12 +36,20 @@
     "test": "npm run dev:lint && npm run dev:spec"
   },
   "dependencies": {
+    "chalk": ">=1.1.3",
+    "cli-width": ">=2.1.0",
     "debug": ">=2.2.0",
     "deindent": "^0.1.0",
+    "dotenv": "^2.0.0",
     "es6-promise": "^4.0.5",
+    "fs-extra": "^1.0.0",
+    "glob": "^7.1.1",
     "js-yaml": "^3.7.0",
+    "micromatch": "^2.3.11",
+    "pretty-ms": ">=2.1.0",
     "redent": "^2.0.0",
-    "tosource": ">=1.0.0"
+    "tosource": ">=1.0.0",
+    "wargs": "^0.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.3",
@@ -66,6 +77,7 @@
     "postcss": "^5.2.6",
     "pug": ">=2.0.0-beta11",
     "ractive": "^0.8.12",
+    "rimraf": ">=2.5.4",
     "rollup": "^0.41.6",
     "rollup-plugin-commonjs": "^7.1.0",
     "rollup-plugin-json": ">=2.0.0",

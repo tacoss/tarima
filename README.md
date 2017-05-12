@@ -1,8 +1,8 @@
 # Tarima
 
-[![Build Status](https://travis-ci.org/gextech/tarima.png?branch=next)](https://travis-ci.org/gextech/tarima)
+[![Build Status](https://travis-ci.org/tacoss/tarima.png?branch=next)](https://travis-ci.org/tacoss/tarima)
 [![NPM version](https://badge.fury.io/js/tarima.png)](http://badge.fury.io/js/tarima)
-[![Coverage Status](https://codecov.io/github/gextech/tarima/coverage.svg?branch=next)](https://codecov.io/github/gextech/tarima)
+[![Coverage Status](https://codecov.io/github/tacoss/tarima/coverage.svg?branch=next)](https://codecov.io/github/tacoss/tarima)
 
 ![Tarima](https://dl.dropboxusercontent.com/u/2726997/img/tarima_small.png)
 
@@ -254,9 +254,9 @@ All supported templates can take locals, you can pass any values when calling `.
 
 ## Dependant tools
 
-- [tarima-cli](https://github.com/gextech/tarima-cli) support for CLI
-- [gulp-tarima](https://github.com/gextech/gulp-tarima) support for Gulp
-- [grunt-tarima-task](https://github.com/gextech/grunt-tarima-task) support for Grunt
+- [tarima-cli](https://github.com/tacoss/tarima-cli) support for CLI
+- [gulp-tarima](https://github.com/tacoss/gulp-tarima) support for Gulp
+- [grunt-tarima-task](https://github.com/tacoss/grunt-tarima-task) support for Grunt
 
 ## Alternatives
 

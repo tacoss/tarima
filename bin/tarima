@@ -1,0 +1,473 @@
+#!/bin/sh
+':' // ; exec "$(command -v nodejs || command -v node)" "$0" "$@"
+;
+
+'use strict';
+
+/* eslint-disable global-require */
+/* eslint-disable no-nested-ternary */
+
+let start = new Date();
+
+const path = require('path');
+const wargs = require('wargs');
+
+const _ = wargs(process.argv.slice(2), {
+  aliases: {
+    B: 'bundler',
+    b: 'bundle',
+    q: 'quiet',
+    W: 'public',
+    D: 'dest',
+    S: 'src',
+    e: 'env',
+    c: 'config',
+    v: 'version',
+    V: 'verbose',
+    x: 'exclude',
+    l: 'plugins',
+    L: 'devPlugins',
+    O: 'optimize',
+    r: 'reload',
+    d: 'debug',
+    f: 'force',
+    w: 'watch',
+    y: 'only',
+    R: 'rename',
+    G: 'globals',
+    E: 'extensions',
+  },
+});
+
+// defaults
+process.name = 'tarima-cli';
+
+process.env.NODE_ENV = _.flags.env =
+process.env.NODE_ENV || _.flags.env || 'development';
+
+// common helpers
+const $ = require('../lib/utils');
+
+const logger = require('../lib/logger');
+
+const die = process.exit.bind(process);
+
+const thisPkg = require(path.join(__dirname, '../package.json'));
+
+const tarima = require.resolve('tarima');
+const _tarima = $.readJSON(path.resolve(tarima, '../../package.json')).version;
+
+if (_.flags.version && _.flags.verbose) {
+  logger.printf('{gray|%s}\n', path.dirname(__dirname));
+  logger.printf('{gray|%s}\n', path.resolve(tarima, '../..'));
+}
+
+logger.printf('{green|%s v%s} {gray|(tarima v%s)} {gray|+%s}\n',
+    thisPkg.name, thisPkg.version, _tarima, $.timeDiff(start));
+
+if (_.flags.version) {
+  die(1);
+}
+
+const _bin = Object.keys(thisPkg.bin)[0];
+
+if (_.flags.help) {
+  logger.writeln(`
+Usage:
+  ${_bin} [OPTIONS]
+  ${_bin} [...] js:es6 css:less
+  ${_bin} [...] API_KEY=*secret* PORT=3000
+  ${_bin} [...] "**/*:{basedir/1}/{fname}" "**/mock:{basedir/2}/api/{fname}"
+
+Options:
+  -S, --src         Sources files, comma separated (e.g. -S app,public)
+  -D, --dest        Destination directory (e.g. -D build/dist)
+  -W, --public      Public directory for relative sources
+
+  -e, --env         Customization per environment (e.g. -e prod)
+
+                    Values are exported as globals depending on the environment:
+
+                      "globals": {
+                        "dev": { ... },
+                        "prod": { ... },
+                        "FOO": "bar"
+                      }
+
+  -c, --config      Use configuration file (e.g. -c ./config.js)
+                    You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
+
+  -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower)
+  -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
+  -O, --optimize    Apply optimizations for final sources (google-closure-compiler-js, csso)
+
+  -w, --watch       Enable file watching for all sources
+  -f, --force       Force rendering/bundling of all sources
+  -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
+  -B  --bundler     Choose bundler tool: webpack, rollup or fuse-box (e.g. -B webpack)
+
+  -q, --quiet       Minimize output logs
+  -d, --debug       Enable debug mode when transpiling
+  -V, --verbose     Enable verbose logs (use for trouble-shooting)
+
+  -y, --only        Filter out non-matching sources using src.indexOf("substr")
+  -x, --exclude     Filter out sources using globs (e.g. -x test/broken -x .coffee)
+
+                    Example patterns:
+                      - *foo     -> !*foo
+                      - .bar     -> !**/*.bar
+                      - x.y      -> !**/x.y
+                      - foo      -> !**/foo/**
+                      - foo/bar  -> !**/foo/bar/**
+
+  -r, --reload      Load module for reloading on changes (e.g. -r bin/server)
+
+                    Imported modules should be like:
+
+                    module.exports = function start() {
+                      return function stop() {};
+                    };
+
+
+  -E, --extensions  Enable hidden extensions (e.g. -E .es6.js -E .post.css -E .js.hbs.pug)
+  -G, --globals     Shorthand for global variables (e.g. -G FOO=BAR)
+  -R, --rename      Custom naming expressions (e.g. -R "**/*:{basedir/1}/{fname}")
+`);
+  die(1);
+}
+
+if (!_.flags.quiet) {
+  logger.setLevel(_.flags.verbose ? 'verbose' : _.flags.debug ? 'debug' : 'info');
+
+  if (_.flags.debug && _.flags.verbose) {
+    require('debug').enable('tarima,tarima:*');
+  }
+}
+
+const run = require('../lib');
+const spawn = require('child_process').spawn;
+
+// empty dummy
+let mainPkg = {};
+
+const cwd = process.cwd();
+const pkg = path.join(cwd, 'package.json');
+
+const fixedDest = _.flags.dest || 'build';
+const fixedSrc = _.flags.src || 'src/**';
+
+// load .env
+const env = require('dotenv').config({ silent: true }) || {};
+
+if ($.isFile(pkg)) {
+  mainPkg = $.readJSON(pkg);
+}
+
+const isWatch = _.flags.watch === true;
+
+const defaultConfig = {
+  cwd,
+  src: fixedSrc,
+  dest: path.join(cwd, fixedDest),
+  public: path.join(cwd, fixedDest),
+  cacheFile: path.join(cwd, '.tarima'),
+  bundle: $.toArray(_.flags.bundle || '**/index.js'),
+  watch: [],
+  filter: [],
+  notifications: {
+    title: mainPkg.name || path.basename(cwd),
+    okIcon: path.join(__dirname, 'ok.png'),
+    errIcon: path.join(__dirname, 'err.png'),
+  },
+  bundleOptions: {
+    bundler: _.flags.bundler,
+    globals: _.data,
+    optimize: _.flags.optimize === true,
+    extensions: _.params,
+  },
+  flags: _.flags,
+  force: _.flags.force,
+  reload: _.flags.reload === true ? 'reload' : _.flags.reload,
+  rename: _._.concat($.toArray(_.flags.rename)),
+  plugins: $.toArray(_.flags.plugins),
+  devPlugins: $.toArray(_.flags.devPlugins),
+};
+
+function errLog(message) {
+  process.stderr.write(`\r${$.color.red(message)}\n`);
+}
+
+// apply package settings
+try {
+  $.merge(defaultConfig, mainPkg.tarima || {});
+} catch (e) {
+  errLog(`Configuration mismatch: ${(_.flags.debug && e.stack) || e.message || e.toString()}`);
+  die(1);
+}
+
+// support for tarima.CONFIG.{js,json}
+let configFile = _.flags.config === true ? 'config' : _.flags.config;
+
+if (configFile && configFile.indexOf('.') === -1) {
+  const fixedConfig = path.join(cwd, `tarima.${configFile}`);
+
+  [`${fixedConfig}.js`, `${fixedConfig}.json`].forEach(file => {
+    if ($.isFile(file)) {
+      configFile = file;
+    }
+  });
+}
+
+if (configFile) {
+  if (!$.isFile(configFile)) {
+    process.stderr.write(`\r${$.color.red(`Missing '${configFile}' file`)}\n`);
+    die(1);
+  }
+
+  logger.getLogger()
+    .info('{log.gray|Loading tarima configuration from `%s`}', path.relative(cwd, configFile));
+
+  $.merge(defaultConfig, $.readJSON(path.resolve(configFile)));
+}
+
+function fixedArray(obj) {
+  return !Array.isArray(obj) ? obj.split(',') : obj;
+}
+
+function fixedValue(string) {
+  if (/^-?\d+(\.\d+)?$/.test(string)) {
+    return parseFloat(string);
+  }
+
+  const values = {
+    true: true,
+    false: false,
+  };
+
+  if (typeof values[string] !== 'undefined') {
+    return values[string];
+  }
+
+  return string || null;
+}
+
+if (_.flags.only) {
+  const test = fixedArray(_.flags.only);
+
+  defaultConfig.filter.push(value => {
+    value = path.relative(defaultConfig.src, value);
+
+    test.forEach(key => {
+      if (value.indexOf(test[key]) > -1) {
+        return true;
+      }
+    });
+  });
+}
+
+if (_.flags.exclude) {
+  fixedArray(_.flags.exclude).forEach(skip => {
+    if (skip.indexOf('*') > -1) {
+      defaultConfig.filter.push(`!${skip}`);
+    } else if (skip.substr(0, 1) === '.') {
+      defaultConfig.filter.push(`!**/*${skip}`);
+    } else if (skip.indexOf('.') > -1) {
+      defaultConfig.filter.push(`!**/${skip}`);
+    } else {
+      defaultConfig.filter.push(`!**/${skip}/**`);
+    }
+  });
+}
+
+// apply globals first
+const _globals = defaultConfig.globals || defaultConfig.env || {};
+
+$.merge(env, _globals[_.flags.env] || {});
+$.merge(env, _globals);
+
+// package info
+env.env = $.extend({}, process.env);
+env.pkg = mainPkg;
+
+Object.keys(env).forEach(key => {
+  defaultConfig.bundleOptions.globals[key] = env[key];
+});
+
+if (_.flags.globals) {
+  fixedArray(_.flags.globals).forEach(value => {
+    const parts = value.split('=');
+
+    defaultConfig.bundleOptions.globals[parts[0]] = fixedValue(parts[1]);
+  });
+}
+
+if (_.flags.extensions) {
+  $.toArray(_.flags.extensions).forEach(exts => {
+    const parts = exts.replace(/^\./, '').split('.').reverse();
+
+    defaultConfig.bundleOptions.extensions[parts.shift()] = parts;
+  });
+}
+
+defaultConfig.bundleOptions.compileDebug = _.flags.debug;
+defaultConfig.bundleOptions.verboseDebug = _.flags.verbose;
+
+const cmd = _.cmd || [];
+
+let child;
+
+function end() {
+  if (!(_.flags.server || isWatch) || _.flags.reload) {
+    logger.printf('\n');
+  }
+}
+
+function infoFiles(result) {
+  if (isWatch && result.output.length) {
+    $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''} in ${result.elapsed}`,
+      defaultConfig.notifications.title,
+      defaultConfig.notifications.okIcon);
+  }
+
+  if (!result.output.length) {
+    logger.printf('\r\r{ok.cyan|Without changes (%s)}', result.elapsed);
+  }
+
+  if (!isWatch || result.output.length > 1) {
+    logger.printf('\r\r{ok.cyan|%s file%s written in +%s}',
+        result.output.length,
+        result.output.length !== 1 ? 's' : '',
+        result.elapsed);
+
+    end();
+  }
+}
+
+const _close = process.version.split('.')[1] === '6' ? 'exit' : 'close';
+
+function exec(onError) {
+  function restart() {
+    // restart
+    const _start = new Date();
+
+    if (child) {
+      child.kill('SIGINT');
+    }
+
+    logger.printf('\r\r{gray|%s}\r\n', cmd.join(' '));
+
+    child = spawn(cmd[0], cmd.slice(1), {
+      cwd: defaultConfig.cwd || defaultConfig.dest,
+      detached: true,
+    });
+
+    child.stdout.pipe(process.stdout);
+
+    const errors = [];
+
+    child.stderr.on('data', data => {
+      const line = data.toString().trim();
+
+      if (line) {
+        errors.push(line);
+      }
+    });
+
+    child.on(_close, exitCode => {
+      const _end = $.timeDiff(_start);
+
+      let message = `${cmd.join(' ')}\n— `;
+      let icon = defaultConfig.notifications.okIcon;
+
+      if (exitCode || errors.length) {
+        icon = defaultConfig.notifications.errIcon;
+        message += 'Error';
+      } else {
+        message += `Done in ${_end}`;
+      }
+
+      $.notify(message, defaultConfig.notifications.title, icon);
+
+      if (errors.length) {
+        errLog(errors.join('\n'));
+        onError({ msg: errors.join('\n') });
+      }
+
+      logger.printf('\r\r{%s|%s} {gray|+%s}\n',
+        exitCode || errors.length ? 'red' : 'green', cmd[0], _end);
+
+      if (exitCode && !isWatch) {
+        die(exitCode);
+      }
+
+      if (!isWatch) {
+        die();
+      }
+    });
+  }
+
+  return restart;
+}
+
+process.on('SIGINT', () => {
+  logger.printf('\r\r');
+
+  if (child) {
+    child.kill('SIGINT');
+  }
+
+  die();
+});
+
+let _restart;
+
+start = new Date();
+
+run(defaultConfig, function done(err, result) {
+  if (err) {
+    logger.printf('\n');
+
+    errLog((_.flags.debug && err.stack) || err.message || err.toString());
+
+    if (!(_.flags.server || isWatch)) {
+      die(1);
+    }
+
+    return;
+  }
+
+  infoFiles(result);
+
+  if (!isWatch && err) {
+    if (child) {
+      child.kill();
+    }
+
+    die(1);
+  }
+
+  if (cmd.length && !err) {
+    _restart = _restart || exec(this.emit.bind(null, 'error'));
+    _restart();
+    return;
+  }
+
+  if (isWatch) {
+    if (result.output.length > 1) {
+      logger.printf('\n');
+    }
+
+    logger.printf('\r\r{wait.yellow|Waiting for changes...} {gray|[press CTRL-C to quit]}');
+
+    end();
+    return;
+  }
+
+  if (!_.flags.reload) {
+    die();
+  }
+});
+
+logger.getLogger()
+  .info('{log.gray|Reading from} `%s` {gray|...} `%s` {gray|+%s}',
+    defaultConfig.src, path.relative(cwd, defaultConfig.dest) || '.', $.timeDiff(start));
