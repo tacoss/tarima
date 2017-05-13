@@ -147,7 +147,7 @@ if (!_.flags.quiet) {
   }
 }
 
-const run = require('../lib');
+const run = require('./lib');
 const spawn = require('child_process').spawn;
 
 // empty dummy

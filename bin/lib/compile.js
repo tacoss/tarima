@@ -7,6 +7,7 @@ const Promise = require('es6-promise');
 const cliWidth = require('cli-width');
 
 const logger = require('./logger');
+const support = require('../../lib/support');
 
 const prefix = 'data:application/json;charset=utf-8;base64,';
 
@@ -434,7 +435,7 @@ module.exports = function _compile(tarima, files, cb) {
       cache.set(src, { dirty: true });
     }
 
-    if (!tarima.support.isSupported(src)) {
+    if (!support.isSupported(src)) {
       return append(src, id => {
         if (match(src)) {
           seen[id] = 1;
