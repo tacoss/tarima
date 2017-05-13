@@ -20,7 +20,6 @@ const _ = wargs(process.argv.slice(2), {
     W: 'public',
     D: 'dest',
     S: 'src',
-    m: 'dev',
     e: 'env',
     c: 'config',
     v: 'version',
@@ -84,10 +83,10 @@ Options:
   -D, --dest        Destination directory (e.g. -D build/dist)
   -W, --public      Public directory for relative sources
 
-  -m, --dev         Enable dev-mode (required for watching)
   -e, --env         Customization per environment (e.g. -e prod)
 
-                    Values are exported as globals depending on the environment:
+                    - NODE_ENV=development is required for watching
+                    - Values are exported as globals depending on the environment:
 
                       "globals": {
                         "dev": { ... },
@@ -184,8 +183,6 @@ const env = require('dotenv').config({ silent: true }) || {};
 if ($.isFile(pkg)) {
   mainPkg = $.readJSON(pkg);
 }
-
-const isWatch = _.flags.dev === true;
 
 const defaultConfig = {
   cwd,
@@ -330,18 +327,20 @@ if (_.flags.extensions) {
 defaultConfig.bundleOptions.compileDebug = _.flags.debug;
 defaultConfig.bundleOptions.verboseDebug = _.flags.verbose;
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const cmd = _.cmd || [];
 
 let child;
 
 function end() {
-  if (!(_.flags.server || isWatch) || _.flags.reload) {
+  if (!(_.flags.server || isDev) || _.flags.reload) {
     logger.printf('\n');
   }
 }
 
 function infoFiles(result) {
-  if (isWatch && result.output.length) {
+  if (isDev && result.output.length) {
     $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''} in ${result.elapsed}`,
       defaultConfig.notifications.title,
       defaultConfig.notifications.okIcon);
@@ -351,7 +350,7 @@ function infoFiles(result) {
     logger.printf('\r\r{ok.cyan|Without changes (%s)}', result.elapsed);
   }
 
-  if (!isWatch || result.output.length > 1) {
+  if (!isDev || result.output.length > 1) {
     logger.printf('\r\r{ok.cyan|%s file%s written in +%s}',
         result.output.length,
         result.output.length !== 1 ? 's' : '',
@@ -415,11 +414,11 @@ function exec(onError) {
       logger.printf('\r\r{%s|%s} {gray|+%s}\n',
         exitCode || errors.length ? 'red' : 'green', cmd[0], _end);
 
-      if (exitCode && !isWatch) {
+      if (exitCode && !isDev) {
         die(exitCode);
       }
 
-      if (!isWatch) {
+      if (!isDev) {
         die();
       }
     });
@@ -448,7 +447,7 @@ run(defaultConfig, function done(err, result) {
 
     errLog((_.flags.debug && err.stack) || err.message || err.toString());
 
-    if (!(_.flags.server || isWatch)) {
+    if (!(_.flags.server || isDev)) {
       die(1);
     }
 
@@ -457,7 +456,7 @@ run(defaultConfig, function done(err, result) {
 
   infoFiles(result);
 
-  if (!isWatch && err) {
+  if (!isDev && err) {
     if (child) {
       child.kill();
     }
@@ -471,7 +470,7 @@ run(defaultConfig, function done(err, result) {
     return;
   }
 
-  if (isWatch) {
+  if (isDev) {
     if (result.output.length > 1) {
       logger.printf('\n');
     }

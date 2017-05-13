@@ -107,9 +107,11 @@ module.exports = function _read(cb) {
     return cb(e);
   }
 
-  if (self.opts.flags.dev === true) {
-    watch.call(self, cb);
-  }
+  process.nextTick(() => {
+    if (self.opts.flags.env === 'development') {
+      watch.call(self, cb);
+    }
+  });
 
   files.forEach(file => {
     const entry = self.cache.get(file);
