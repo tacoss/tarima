@@ -4239,7 +4239,7 @@ supports-color@^3.1.0, supports-color@^3.2.3:
   dependencies:
     has-flag "^1.0.0"
 
-svelte@^1.13.2:
+svelte@^1.20.2:
   version "1.20.2"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-1.20.2.tgz#62cc3305414ca71197d00d846b970f79f9d21ae8"
 

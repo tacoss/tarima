@@ -33,6 +33,9 @@ const _ = wargs(process.argv.slice(2), {
     f: 'force',
     w: 'watch',
     y: 'only',
+    p: 'port',
+    P: 'proxy',
+    s: 'serve',
     R: 'rename',
     G: 'globals',
     E: 'extensions',
@@ -97,7 +100,11 @@ Options:
   -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
   -O, --optimize    Apply optimizations for final sources (google-closure-compiler-js, csso)
 
+  -p, --port        Enable custom port for serving files (e.g. tarima-lr)
+  -P, --proxy       Enable proxying for local server (e.g. tarima-lr)
+  -s, --serve       Enable file serving (e.g. with tarima-lr)
   -w, --watch       Enable file watching for all sources
+
   -f, --force       Force rendering/bundling of all sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
   -B  --bundler     Choose bundler tool: webpack, rollup or fuse-box (e.g. -B webpack)

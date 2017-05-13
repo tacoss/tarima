@@ -74,23 +74,28 @@
       describe 'ES6 (traceur)', ->
         test [
           'x.es6'
-          'export default () => 42',
-          {
-            'es6-compiler': 'traceur'
-          }
+          '''
+            /**
+            ---
+            _transpiler: traceur
+            ---
+            */
+            export default () => 42
+          '''
         ], (result) ->
           expect(result.source).toContain 'module.exports'
+          expect(result.source).toContain '$__default'
 
       describe 'ES6 (babel)', ->
         test [
           'x.es6'
           'export default () => 42',
           {
-            babel:
-              presets: [['es2015', {}]]
+            babel: true
           }
         ], (result) ->
-          expect(result.source).toContain 'exports.default'
+          expect(result.source).toContain 'module.exports'
+          expect(result.source).toContain '(() => 42)'
 
       describe 'TypeScript', ->
         test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
