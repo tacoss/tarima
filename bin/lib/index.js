@@ -1,7 +1,5 @@
 'use strict';
 
-let tarima;
-
 const $ = require('./utils');
 
 const path = require('path');
@@ -14,6 +12,10 @@ const compileFiles = require('./compile');
 
 const plugableSupportAPI = require('./hooks');
 const cacheableSupportAPI = require('./caching');
+
+// initialize meta-bundler
+/* eslint-disable global-require */
+const tarima = require('../../lib');
 
 function makeReplacement(obj, test, rename) {
   return value => {
@@ -100,10 +102,6 @@ module.exports = (options, done) => {
 
   const filters = Array.isArray(options.filter) ? options.filter : ['**'];
   const context = plugableSupportAPI(logger, options);
-
-  // initialize meta-bundler
-  /* eslint-disable global-require */
-  tarima = tarima || require('../../lib');
 
   options.ignore = options.ignore || [];
   options.locals = options.locals || {};

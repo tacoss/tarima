@@ -147,7 +147,24 @@ if (!_.flags.quiet) {
   }
 }
 
-const run = require('./lib');
+function errLog(message) {
+  process.stderr.write(`\r${$.color.red(message)}\n`);
+}
+
+const run = (opts, cb) => {
+  const _runner = require('./lib');
+
+  // delay once resolver loads
+  process.nextTick(() => {
+    try {
+      _runner(opts, cb);
+    } catch (e) {
+      errLog((_.flags.debug && e.stack) || e.message || e.toString());
+      die(1);
+    }
+  });
+};
+
 const spawn = require('child_process').spawn;
 
 // empty dummy
@@ -195,10 +212,6 @@ const defaultConfig = {
   plugins: $.toArray(_.flags.plugins),
   devPlugins: $.toArray(_.flags.devPlugins),
 };
-
-function errLog(message) {
-  process.stderr.write(`\r${$.color.red(message)}\n`);
-}
 
 // apply package settings
 try {
