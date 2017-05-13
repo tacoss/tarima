@@ -372,7 +372,8 @@ function exec(onError) {
       child.kill('SIGINT');
     }
 
-    logger.printf('\r\r{gray|%s}\r\n', cmd.join(' '));
+    logger.printf('\r\r{gray|%s}\r\n', cmd
+      .map(arg => (arg.indexOf(' ') === -1 ? arg : `"${arg}"`)).join(' '));
 
     child = spawn(cmd[0], cmd.slice(1), {
       cwd: defaultConfig.cwd || defaultConfig.dest,
