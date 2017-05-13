@@ -288,7 +288,7 @@ module.exports = (options, done) => {
       }
 
       if (typeof options.reload === 'function') {
-        close = options.reload.call(context, context);
+        close = options.reload.call(context, context, options.cwd);
       }
     } catch (e) {
       _state = 'errored';
