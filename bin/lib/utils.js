@@ -15,10 +15,6 @@ const CLR = '\x1b[K';
 
 let notifier;
 
-try {
-  notifier = require('node-notifier');
-} catch (e) { /* nothing */ }
-
 function env(value) {
   if (typeof value === 'string') {
     return value.replace(/\$\{(\w+)\}/g, (match, key) => {
@@ -141,9 +137,15 @@ function notify(message, title, icon) {
     noticeObj.icon = path.resolve(icon);
   }
 
-  if (notifier) {
-    notifier.notify(noticeObj);
-  }
+  process.nextTick(() => {
+    try {
+      notifier = notifier || require('node-notifier');
+    } catch (e) { /* nothing */ }
+
+    if (notifier) {
+      notifier.notify(noticeObj);
+    }
+  });
 }
 
 function makeFilter(any, filters) {
