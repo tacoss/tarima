@@ -5,7 +5,8 @@
 [![Coverage Status](https://codecov.io/github/tacoss/tarima/coverage.svg?branch=next)](https://codecov.io/github/tacoss/tarima)
 [![Known Vulnerabilities](https://snyk.io/test/npm/tarima/badge.svg)](https://snyk.io/test/npm/tarima)
 
-![Tarima](https://dl.dropboxusercontent.com/u/2726997/img/tarima_small.png)
+![Tarima](tarima.png)
+
 
 ```bash
 $ yarn add tarima --dev
