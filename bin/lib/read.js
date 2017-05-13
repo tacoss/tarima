@@ -107,7 +107,7 @@ module.exports = function _read(cb) {
     return cb(e);
   }
 
-  if (self.opts.flags.watch === true) {
+  if (self.opts.flags.dev === true) {
     watch.call(self, cb);
   }
 

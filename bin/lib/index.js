@@ -107,7 +107,7 @@ module.exports = (options, done) => {
   options.locals = options.locals || {};
   options.rename = options.rename || [];
 
-  // devPlugins works only on watch/server mode
+  // devPlugins works only on dev-mode
   options.plugins = options.plugins || [];
   options.devPlugins = options.devPlugins || [];
 
@@ -139,7 +139,7 @@ module.exports = (options, done) => {
 
   const plugs = Promise.all((options.plugins || [])
     // conditionally load devPlugins
-    .concat(options.flags.watch === true ? options.devPlugins || [] : [])
+    .concat(options.flags.dev === true ? options.devPlugins || [] : [])
       .map(file => {
         const testFile = path.resolve(file);
 

@@ -20,6 +20,7 @@ const _ = wargs(process.argv.slice(2), {
     W: 'public',
     D: 'dest',
     S: 'src',
+    m: 'dev',
     e: 'env',
     c: 'config',
     v: 'version',
@@ -83,6 +84,7 @@ Options:
   -D, --dest        Destination directory (e.g. -D build/dist)
   -W, --public      Public directory for relative sources
 
+  -m, --dev         Enable dev-mode (required for watching)
   -e, --env         Customization per environment (e.g. -e prod)
 
                     Values are exported as globals depending on the environment:
@@ -93,6 +95,7 @@ Options:
                         "FOO": "bar"
                       }
 
+  -w, --watch       Enable custom file watching (e.g. -w _src,bin)
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
 
@@ -103,7 +106,6 @@ Options:
   -p, --port        Enable custom port for serving files (e.g. tarima-lr)
   -P, --proxy       Enable proxying for local server (e.g. tarima-lr)
   -s, --serve       Enable file serving (e.g. with tarima-lr)
-  -w, --watch       Enable file watching for all sources
 
   -f, --force       Force rendering/bundling of all sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
@@ -183,7 +185,7 @@ if ($.isFile(pkg)) {
   mainPkg = $.readJSON(pkg);
 }
 
-const isWatch = _.flags.watch === true;
+const isWatch = _.flags.dev === true;
 
 const defaultConfig = {
   cwd,
@@ -192,7 +194,7 @@ const defaultConfig = {
   public: path.join(cwd, fixedDest),
   cacheFile: path.join(cwd, '.tarima'),
   bundle: $.toArray(_.flags.bundle || '**/index.js'),
-  watch: [],
+  watch: $.toArray(_.flags.watch),
   filter: [],
   notifications: {
     title: mainPkg.name || path.basename(cwd),
