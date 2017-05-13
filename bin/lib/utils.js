@@ -122,9 +122,13 @@ function mtime(filepath) {
   return exists(filepath) ? +fs.statSync(filepath).mtime : null;
 }
 
-function toArray(obj) {
+function toArray(obj, split) {
   if (!obj) {
     return [];
+  }
+
+  if (split && typeof obj === 'string') {
+    return obj.split(',');
   }
 
   return !Array.isArray(obj) ? [obj] : obj;

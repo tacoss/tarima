@@ -271,7 +271,7 @@ The best way is adding tarima as dependency, global or locally, and then setup y
 
 Now calling `yarn dev` will start in watch-mode and `yarn build` will force a complete rebuild of all sources.
 
-The default source directory is `./src` if you need anything else you can provide arguments, e.g. `tarima -s foo,bar` which will produce `{foo,bar}/**/*` as input.
+The default source directory is `./src` if you need anything else you can provide arguments, e.g. `tarima -S foo,bar` which will produce `{foo,bar}/**/*` as input.
 
 Also you can specify this option in your `package.json` file:
 

@@ -191,7 +191,7 @@ const defaultConfig = {
   public: path.join(cwd, fixedDest),
   cacheFile: path.join(cwd, '.tarima'),
   bundle: $.toArray(_.flags.bundle || '**/index.js'),
-  watch: $.toArray(_.flags.watch),
+  watch: $.toArray(_.flags.watch, true),
   filter: [],
   notifications: {
     title: mainPkg.name || path.basename(cwd),
@@ -208,8 +208,8 @@ const defaultConfig = {
   force: _.flags.force,
   reload: _.flags.reload === true ? 'reload' : _.flags.reload,
   rename: _._.concat($.toArray(_.flags.rename)),
-  plugins: $.toArray(_.flags.plugins),
-  devPlugins: $.toArray(_.flags.devPlugins),
+  plugins: $.toArray(_.flags.plugins, true),
+  devPlugins: $.toArray(_.flags.devPlugins, true),
 };
 
 // apply package settings
@@ -245,10 +245,6 @@ if (configFile) {
   $.merge(defaultConfig, $.readJSON(path.resolve(configFile)));
 }
 
-function fixedArray(obj) {
-  return !Array.isArray(obj) ? obj.split(',') : obj;
-}
-
 function fixedValue(string) {
   if (/^-?\d+(\.\d+)?$/.test(string)) {
     return parseFloat(string);
@@ -267,7 +263,7 @@ function fixedValue(string) {
 }
 
 if (_.flags.only) {
-  const test = fixedArray(_.flags.only);
+  const test = $.toArray(_.flags.only, true);
 
   defaultConfig.filter.push(value => {
     value = path.relative(defaultConfig.src, value);
@@ -281,7 +277,7 @@ if (_.flags.only) {
 }
 
 if (_.flags.exclude) {
-  fixedArray(_.flags.exclude).forEach(skip => {
+  $.toArray(_.flags.exclude, true).forEach(skip => {
     if (skip.indexOf('*') > -1) {
       defaultConfig.filter.push(`!${skip}`);
     } else if (skip.substr(0, 1) === '.') {
@@ -309,7 +305,7 @@ Object.keys(env).forEach(key => {
 });
 
 if (_.flags.globals) {
-  fixedArray(_.flags.globals).forEach(value => {
+  $.toArray(_.flags.globals, true).forEach(value => {
     const parts = value.split('=');
 
     defaultConfig.bundleOptions.globals[parts[0]] = fixedValue(parts[1]);
