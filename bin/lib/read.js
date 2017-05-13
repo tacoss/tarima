@@ -73,21 +73,25 @@ function watch(cb) {
     timeout = setTimeout(next.bind(this), options.interval || 200);
   }
 
-  chokidar.watch(options.src, {
-    cwd: options.cwd,
-    ignored: options.ignore,
-    persistent: true,
-    ignoreInitial: true,
-    ignorePermissionErrors: true,
-    followSymlinks: options.followSymlinks,
-  })
-  .on('all', (evt, file) => {
-    if (evt === 'add' || evt === 'change' || evt === 'unlink') {
-      add.call(this, file);
-    }
-  })
-  .on('error', e => next.call(this, e))
-  .add(options.watch);
+  try {
+    chokidar.watch(options.src, {
+      cwd: options.cwd,
+      ignored: options.ignore,
+      persistent: true,
+      ignoreInitial: true,
+      ignorePermissionErrors: true,
+      followSymlinks: options.followSymlinks,
+    })
+    .on('all', (evt, file) => {
+      if (evt === 'add' || evt === 'change' || evt === 'unlink') {
+        add.call(this, file);
+      }
+    })
+    .on('error', e => next.call(this, e))
+    .add(options.watch);
+  } catch (e) {
+    next.call(this, e);
+  }
 }
 
 module.exports = function _read(cb) {

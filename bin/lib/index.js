@@ -139,7 +139,7 @@ module.exports = (options, done) => {
 
   const plugs = Promise.all((options.plugins || [])
     // conditionally load devPlugins
-    .concat(options.flags.dev === true ? options.devPlugins || [] : [])
+    .concat(options.flags.env === 'development' ? options.devPlugins || [] : [])
       .map(file => {
         const testFile = path.resolve(file);
 
