@@ -57,6 +57,12 @@ function merge(target, source, keys) {
       } catch (e) {
         throw new Error(`Merging failed at: ${fixedKeys.join('.')}`);
       }
+    } else if (Array.isArray(target[key])) {
+      const fixedValue = env(value);
+
+      if (target[key].indexOf(fixedValue) === -1) {
+        target[key].push(fixedValue);
+      }
     } else if (typeof value !== 'undefined') {
       target[key] = env(value);
     }
@@ -122,13 +128,9 @@ function mtime(filepath) {
   return exists(filepath) ? +fs.statSync(filepath).mtime : null;
 }
 
-function toArray(obj, split) {
+function toArray(obj) {
   if (!obj) {
     return [];
-  }
-
-  if (split && typeof obj === 'string') {
-    return obj.split(',');
   }
 
   return !Array.isArray(obj) ? [obj] : obj;

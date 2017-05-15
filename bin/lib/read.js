@@ -95,12 +95,16 @@ function watch(cb) {
 }
 
 module.exports = function _read(cb) {
+  const filter = this.opts.src.length > 1
+    ? `{${this.opts.src}}/**`
+    : `${this.opts.src}/**`;
+
   const self = this;
 
   let files = [];
 
   try {
-    files = glob.sync(this.opts.src, {
+    files = glob.sync(filter, {
       dot: true,
       nodir: true,
       nosort: true,

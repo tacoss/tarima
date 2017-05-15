@@ -12,50 +12,74 @@ let start = new Date();
 const path = require('path');
 const wargs = require('wargs');
 
-const _ = wargs(process.argv.slice(2), {
-  aliases: {
-    B: 'bundler',
-    b: 'bundle',
-    q: 'quiet',
-    W: 'public',
-    D: 'dest',
-    S: 'src',
-    e: 'env',
-    c: 'config',
-    v: 'version',
-    V: 'verbose',
-    x: 'exclude',
-    l: 'plugins',
-    L: 'devPlugins',
-    O: 'optimize',
-    r: 'reload',
-    d: 'debug',
-    f: 'force',
-    w: 'watch',
-    y: 'only',
-    p: 'port',
-    P: 'proxy',
-    s: 'serve',
-    R: 'rename',
-    G: 'globals',
-    E: 'extensions',
-  },
-});
+// common helpers
+const die = process.exit.bind(process);
+const $ = require('./lib/utils');
+
+function errLog(message) {
+  process.stderr.write(`\r${$.color.red(message)}\n`);
+}
+
+const DEFAULTS = {
+  bundler: 'rollup',
+  bundle: '**/index.js',
+  public: 'public',
+  dest: 'build',
+  env: process.env.NODE_ENV || 'development',
+  config: 'config',
+  reload: 'index.js',
+  port: process.env.PORT || 3000,
+  proxy: 'localhost:8080',
+};
+
+let _;
+
+try {
+  _ = wargs(process.argv.slice(2), {
+    arrays: 'SxlLwyREG',
+    booleans: 'qvVOdfs',
+    defaults: DEFAULTS,
+    aliases: {
+      B: 'bundler',
+      b: 'bundle',
+      q: 'quiet',
+      W: 'public',
+      D: 'dest',
+      S: 'src',
+      e: 'env',
+      c: 'config',
+      v: 'version',
+      V: 'verbose',
+      x: 'exclude',
+      l: 'plugins',
+      L: 'devPlugins',
+      O: 'optimize',
+      r: 'reload',
+      d: 'debug',
+      f: 'force',
+      w: 'watch',
+      y: 'only',
+      p: 'port',
+      P: 'proxy',
+      s: 'serve',
+      R: 'rename',
+      G: 'globals',
+      E: 'extensions',
+    },
+  });
+} catch (e) {
+  errLog(`${e.message || e.toString()} (use --help for usage info)`);
+  die(1);
+}
+
+const logger = require('./lib/logger');
+
+const thisPkg = require(path.join(__dirname, '../package.json'));
 
 // defaults
 process.name = 'tarima-cli';
 
-process.env.NODE_ENV = _.flags.env =
-process.env.NODE_ENV || _.flags.env || 'development';
-
-// common helpers
-const $ = require('./lib/utils');
-
-const logger = require('./lib/logger');
-
-const die = process.exit.bind(process);
-
-const thisPkg = require(path.join(__dirname, '../package.json'));
+process.env.NODE_ENV = _.flags.env;
 
 if (_.flags.version && _.flags.verbose) {
   logger.printf('{gray|%s}\n', path.dirname(__dirname));
@@ -79,26 +103,26 @@ Usage:
   ${_bin} [...] "**/*:{basedir/1}/{fname}" "**/mock:{basedir/2}/api/{fname}"
 
 Options:
-  -S, --src         Sources files, comma separated (e.g. -S app,public)
+  -S, --src         Sources files, comma separated (e.g. -S app -S public )
   -D, --dest        Destination directory (e.g. -D build/dist)
   -W, --public      Public directory for relative sources
 
-  -e, --env         Customization per environment (e.g. -e prod)
+  -e, --env         Customization per environment (e.g. -e production)
 
                     - NODE_ENV=development is required for watching
                     - Values are exported as globals depending on the environment:
 
                       "globals": {
-                        "dev": { ... },
-                        "prod": { ... },
+                        "development": { ... },
+                        "production": { ... },
                         "FOO": "bar"
                       }
 
-  -w, --watch       Enable custom file watching (e.g. -w _src,bin)
+  -w, --watch       Enable custom file watching (e.g. -w _src -w bin)
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
 
-  -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower)
+  -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower -l talavera)
   -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
   -O, --optimize    Apply optimizations for final sources (google-closure-compiler-js, csso)
 
@@ -124,7 +148,7 @@ Options:
                       - foo      -> !**/foo/**
                       - foo/bar  -> !**/foo/bar/**
 
-  -r, --reload      Load module for reloading on changes (e.g. -r bin/server)
+  -r, --reload      Load module for hot-reloading on changes (e.g. -r bin/server)
 
                     Imported modules should be like:
 
@@ -132,9 +156,8 @@ Options:
                       return function stop() {};
                     };
 
-
   -E, --extensions  Enable hidden extensions (e.g. -E .es6.js -E .post.css -E .js.hbs.pug)
-  -G, --globals     Shorthand for global variables (e.g. -G FOO=BAR)
+  -G, --globals     Shorthand for global variables (e.g. -G FOO=BAR -G AKI_PEY=xyz)
   -R, --rename      Custom naming expressions (e.g. -R "**/*:{basedir/1}/{fname}")
 `);
   die(1);
@@ -146,10 +169,6 @@ if (!_.flags.quiet) {
   if (_.flags.debug && _.flags.verbose) {
     require('debug').enable('tarima,tarima:*');
   }
-}
-
-function errLog(message) {
-  process.stderr.write(`\r${$.color.red(message)}\n`);
 }
 
 const run = (opts, cb) => {
@@ -174,9 +193,6 @@ let mainPkg = {};
 const cwd = process.cwd();
 const pkg = path.join(cwd, 'package.json');
 
-const fixedDest = _.flags.dest || 'build';
-const fixedSrc = _.flags.src || 'src/**';
-
 // load .env
 const env = require('dotenv').config({ silent: true }) || {};
 
@@ -186,12 +202,15 @@ if ($.isFile(pkg)) {
 
 const defaultConfig = {
   cwd,
-  src: fixedSrc,
-  dest: path.join(cwd, fixedDest),
-  public: path.join(cwd, fixedDest),
-  cacheFile: path.join(cwd, '.tarima'),
-  bundle: $.toArray(_.flags.bundle || '**/index.js'),
-  watch: $.toArray(_.flags.watch, true),
+  src: $.toArray(_.flags.src),
+  watch: $.toArray(_.flags.watch),
+  bundle: $.toArray(_.flags.bundle),
+  plugins: $.toArray(_.flags.plugins),
+  devPlugins: $.toArray(_.flags.devPlugins),
+  rename: _._.concat($.toArray(_.flags.rename)),
+  dest: _.flags.dest || DEFAULTS.dest,
+  public: _.flags.public || DEFAULTS.public,
+  cacheFile: '.tarima',
   filter: [],
   notifications: {
     title: mainPkg.name || path.basename(cwd),
@@ -201,15 +220,12 @@ const defaultConfig = {
   bundleOptions: {
     bundler: _.flags.bundler,
     globals: _.data,
-    optimize: _.flags.optimize === true,
+    optimize: _.flags.optimize,
     extensions: _.params,
   },
   flags: _.flags,
   force: _.flags.force,
-  reload: _.flags.reload === true ? 'reload' : _.flags.reload,
-  rename: _._.concat($.toArray(_.flags.rename)),
-  plugins: $.toArray(_.flags.plugins, true),
-  devPlugins: $.toArray(_.flags.devPlugins, true),
+  reload: _.flags.reload,
 };
 
 // apply package settings
@@ -263,10 +279,10 @@ function fixedValue(string) {
 }
 
 if (_.flags.only) {
-  const test = $.toArray(_.flags.only, true);
+  const test = $.toArray(_.flags.only);
 
   defaultConfig.filter.push(value => {
-    value = path.relative(defaultConfig.src, value);
+    value = path.relative(cwd, value);
 
     test.forEach(key => {
       if (value.indexOf(test[key]) > -1) {
@@ -277,7 +293,7 @@ if (_.flags.only) {
 }
 
 if (_.flags.exclude) {
-  $.toArray(_.flags.exclude, true).forEach(skip => {
+  $.toArray(_.flags.exclude).forEach(skip => {
     if (skip.indexOf('*') > -1) {
       defaultConfig.filter.push(`!${skip}`);
     } else if (skip.substr(0, 1) === '.') {
@@ -305,7 +321,7 @@ Object.keys(env).forEach(key => {
 });
 
 if (_.flags.globals) {
-  $.toArray(_.flags.globals, true).forEach(value => {
+  $.toArray(_.flags.globals).forEach(value => {
     const parts = value.split('=');
 
     defaultConfig.bundleOptions.globals[parts[0]] = fixedValue(parts[1]);
@@ -482,6 +498,18 @@ run(defaultConfig, function done(err, result) {
   }
 });
 
+if (defaultConfig.src.length > 1) {
+  logger.getLogger()
+    .info('{log.gray|Reading from} {gray|... +%s}\n  %s',
+      $.timeDiff(start),
+      defaultConfig.src.map(src => `{yellow|${src}/**}`).join('\n  '));
+} else {
+  logger.getLogger()
+    .info('{log.gray|Reading from} {yellow|%s/**} {gray|... +%s}',
+      defaultConfig.src[0],
+      $.timeDiff(start));
+}
+
 logger.getLogger()
-  .info('{log.gray|Reading from} `%s` {gray|...} `%s` {gray|+%s}',
-    defaultConfig.src, path.relative(cwd, defaultConfig.dest) || '.', $.timeDiff(start));
+  .info('{log.gray|Output to} {yellow|%s} {gray|...}',
+    path.relative(cwd, defaultConfig.dest) || '.');

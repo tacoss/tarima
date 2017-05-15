@@ -57,7 +57,7 @@ function style(_message) {
     }
 
     return message;
-  }).replace(/`(.+?)`/g, expression => clc.yellow(expression));
+  });
 }
 
 /* eslint-disable prefer-rest-params */
