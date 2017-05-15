@@ -25,9 +25,9 @@ const DEFAULTS = {
   bundle: '**/index.js',
   public: 'public',
   dest: 'build',
-  env: process.env.NODE_ENV || 'development',
   config: 'config',
   reload: 'index.js',
+  env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
   proxy: 'localhost:8080',
 };
@@ -341,7 +341,7 @@ defaultConfig.bundleOptions.verboseDebug = _.flags.verbose;
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const cmd = _.cmd || [];
+const cmd = _.raw || [];
 
 let child;
 
@@ -383,7 +383,7 @@ function exec(onError) {
       child.kill('SIGINT');
     }
 
-    logger.printf('\r\r{gray|%s}\r\n', cmd
+    logger.printf('\r\r{gray|$ %s}\r\n', cmd
       .map(arg => (arg.indexOf(' ') === -1 ? arg : `"${arg}"`)).join(' '));
 
     child = spawn(cmd[0], cmd.slice(1), {
