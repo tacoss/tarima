@@ -383,8 +383,10 @@ function exec(onError) {
       child.kill('SIGINT');
     }
 
-    logger.printf('\r\r{gray|$ %s}\r\n', cmd
-      .map(arg => (arg.indexOf(' ') === -1 ? arg : `"${arg}"`)).join(' '));
+    const _cmd = cmd
+      .map(arg => (arg.indexOf(' ') === -1 ? arg : `"${arg}"`)).join(' ');
+
+    logger.printf('\r\r{gray|$ %s}\r\n', _cmd);
 
     child = spawn(cmd[0], cmd.slice(1), {
       cwd: defaultConfig.cwd || defaultConfig.dest,
@@ -406,7 +408,7 @@ function exec(onError) {
     child.on(_close, exitCode => {
       const _end = $.timeDiff(_start);
 
-      let message = `${cmd.join(' ')}\n— `;
+      let message = `${_cmd}\n— `;
       let icon = defaultConfig.notifications.okIcon;
 
       if (exitCode || errors.length) {
