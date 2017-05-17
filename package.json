@@ -36,7 +36,7 @@
     "test": "yarn lint && yarn spec"
   },
   "dependencies": {
-    "chalk": ">=1.1.3",
+    "chalk": "^1.1.3",
     "cli-width": ">=2.1.0",
     "debug": ">=2.2.0",
     "deindent": "^0.1.0",
