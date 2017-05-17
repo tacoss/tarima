@@ -165,7 +165,7 @@ module.exports = function _compile(tarima, files, cb) {
       const _prefix = view.dest.indexOf('.js') > -1 ? '//' : '/*';
       const _suffix = view.dest.indexOf('.js') > -1 ? '' : ' */';
 
-      view.output += `\n${_prefix} # sourceMappingURL=${
+      view.output += `\n${_prefix}# sourceMappingURL=${
         (options.bundleOptions.sourceMapFile
           ? `${path.basename(view.dest)}.map`
           : toUrl(view.sourceMap))
