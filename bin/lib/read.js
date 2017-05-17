@@ -3,6 +3,8 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable global-require */
 
+const debug = require('debug')('tarima:read');
+
 const $ = require('./utils');
 
 const glob = require('glob');
@@ -84,6 +86,7 @@ function watch(cb) {
     })
     .on('all', (evt, file) => {
       if (evt === 'add' || evt === 'change' || evt === 'unlink') {
+        debug(`${evt} ${file}`);
         add.call(this, file);
       }
     })
@@ -95,6 +98,10 @@ function watch(cb) {
 }
 
 module.exports = function _read(cb) {
+  if (!this.opts.src.length) {
+    return cb(new Error(`Missing sources, given '${this.opts.src}'`));
+  }
+
   const filter = this.opts.src.length > 1
     ? `{${this.opts.src}}/**`
     : `${this.opts.src}/**`;
@@ -102,6 +109,8 @@ module.exports = function _read(cb) {
   const self = this;
 
   let files = [];
+
+  debug(filter);
 
   try {
     files = glob.sync(filter, {
