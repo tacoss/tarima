@@ -333,7 +333,7 @@ module.exports = function _compile(tarima, files, cb) {
           try {
             opts._bundle = _bundle;
             opts._cache = _cache;
-            partial = tarima.load(path.join(options.cwd, src), opts);
+            partial = tarima.load(path.resolve(options.cwd, src), opts);
           } catch (e) {
             return next(e);
           }
