@@ -1,5 +1,7 @@
 'use strict';
 
+const debug = require('debug')('tarima:compile');
+
 const $ = require('./utils');
 
 const path = require('path');
@@ -422,9 +424,12 @@ module.exports = function _compile(tarima, files, cb) {
     }
   };
 
+  debug('Processing %s files', files.length);
+
   files.forEach(src => {
     // skip early
     if (watching(src)) {
+      debug('Skip. %s', src);
       return;
     }
 
@@ -436,6 +441,8 @@ module.exports = function _compile(tarima, files, cb) {
     }
 
     if (!support.isSupported(src)) {
+      debug('Skip. %s', src);
+
       return append(src, id => {
         if (match(src)) {
           seen[id] = 1;
@@ -449,6 +456,7 @@ module.exports = function _compile(tarima, files, cb) {
     }
 
     if (!seen[src] && match(src)) {
+      debug(src);
       seen[src] = true;
       append(src, compile);
     }
