@@ -37,7 +37,7 @@ let _;
 try {
   _ = wargs(process.argv.slice(2), {
     arrays: 'SxlLwyREG',
-    booleans: 'qvVOdfs',
+    booleans: 'qvVOdfos',
     defaults: DEFAULTS,
     aliases: {
       B: 'bundler',
@@ -59,6 +59,7 @@ try {
       f: 'force',
       w: 'watch',
       y: 'only',
+      o: 'open',
       p: 'port',
       P: 'proxy',
       s: 'serve',
