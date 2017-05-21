@@ -7,7 +7,6 @@
 
 ![Tarima](tarima.png)
 
-
 ```bash
 $ yarn add tarima --dev
 ```
@@ -113,7 +112,7 @@ $ tarima -B fusebox
 
 Settings under `bundleOptions.webpack` has precedence over `bundleOptions.bundler` and therefore `webpack` is used as bundler.
 
-The former option (`bundleOptions.bundler`) is prefered if no advanced settings are needed.
+The former option (`bundleOptions.bundler`) is preferred if no advanced settings are needed.
 
 ### 1.4 - Front Matter
 
@@ -166,7 +165,7 @@ You can install the following dependencies for specific support:
 - `yarn add liquid-node` &rarr; `.sv` and `.liquid`
 - `yarn add babel-core@^5` &rarr; `.jsx` and `.es6.js`
 
-> Tarima doesn't ship any dependency for the supported engines, is your responsability to install whatever you will need.
+> Tarima doesn't ship any dependency for the supported engines, is your responsibility to install whatever you will need.
 
 ### 2.1 - ES6 support
 
@@ -271,14 +270,16 @@ The best way is adding tarima as dependency, global or locally, and then setup y
 
 Now calling `yarn dev` will start in watch-mode and `yarn build` will force a complete rebuild of all sources.
 
-The default source directory is `./src` if you need anything else you can provide arguments, e.g. `tarima -S foo,bar` which will produce `{foo,bar}/**/*` as input.
+The default source directory is `./src` if you need anything else you can provide arguments, e.g. `tarima -S foo -S bar` which will watch more directories.
+
+> Use directory names only without globs as they will be compiled like `{foo,bar}/**`
 
 Also you can specify this option in your `package.json` file:
 
 ```javascript
 {
   "tarima": {
-    "src": "{controllers,models,views}/**/*"
+    "src": ["foo", "bar"]
   }
 }
 ```
@@ -371,6 +372,14 @@ export default function () {
 
 > When using `_bundle` you don't need to declare it on each imported file, only within the entry-points you want to bundle.
 
+On javascript you can use the tilde prefix for loading sources from the `cwd`, e.g.
+
+```js
+import pkg from '~/package.json';
+
+console.log(pkg.version);
+```
+
 Even stylesheets are entry-points by nature:
 
 ```less
@@ -381,7 +390,7 @@ a { color: @link-text-color; }
 
 So you don't need anything else to bundle stylesheets. ;)
 
-### 3.6 - Ignore sources
+### 3.6 - Ignoring sources
 
 Ignoring sources will skip all matched files from watching, Tarima will never track them for any purpose.
 
@@ -438,7 +447,7 @@ You can setup the specific behavior of bundling using `bundleOptions`:
 { // package.json
   "tarima": {
     "bundleOptions": {
-      "babel": {},
+      "transpiler": "babel"
       "less": { "plugins": [] }
     }
   }
@@ -487,5 +496,27 @@ Some plugins can take its configuration from `pluginOptions` or directly from th
 All `plugins` are loaded automatically by Tarima on the startup.
 
 > `devPlugins` are loaded only if the dev-mode is enabled (aka `NODE_ENV=development`)
+
+### 3.11 - Settings
+
+- `cwd` &mdash;
+- `src`
+- `dest`
+- `public`
+- `cacheFile`
+- `rename`
+- `filter`
+- `ignore`
+- `ignoreFiles`
+- `watch`
+- `bundle`
+- `bundleOptions`
+- `plugins`
+- `devPlugins`
+- `pluginOptions`
+- `flags`
+- `locals`
+- `reloader`
+- `notifications`
 
 WIP: this document is being updated...
