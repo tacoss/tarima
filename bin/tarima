@@ -180,7 +180,7 @@ const run = (opts, cb) => {
     try {
       _runner(opts, cb);
     } catch (e) {
-      errLog((_.flags.debug && e.stack) || e.message || e.toString());
+      errLog((_.flags.verbose && e.stack) || e.message || e.toString());
       die(1);
     }
   });
@@ -233,7 +233,7 @@ const defaultConfig = {
 try {
   $.merge(defaultConfig, mainPkg.tarima || {});
 } catch (e) {
-  errLog(`Configuration mismatch: ${(_.flags.debug && e.stack) || e.message || e.toString()}`);
+  errLog(`Configuration mismatch: ${(_.flags.verbose && e.stack) || e.message || e.toString()}`);
   die(1);
 }
 
