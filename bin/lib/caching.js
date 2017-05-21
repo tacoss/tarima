@@ -81,5 +81,10 @@ module.exports = cacheFile => {
         $.writeJSON(cacheFile, cache);
       }
     },
+    reset() {
+      Object.keys(cache).forEach(key => {
+        delete cache[key];
+      });
+    },
   };
 };

@@ -225,7 +225,6 @@ const defaultConfig = {
     extensions: _.params,
   },
   flags: _.flags,
-  force: _.flags.force,
   reload: _.flags.reload,
 };
 

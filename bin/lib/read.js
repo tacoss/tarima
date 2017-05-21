@@ -146,7 +146,7 @@ module.exports = function _read(cb) {
       sync(file, files, self.cache);
     }
 
-    entry.dirty = (self.opts.force === true)
+    entry.dirty = (self.opts.flags.force === true)
       || (entry.deleted || entry.dirty || !entry.mtime);
   });
 

@@ -132,7 +132,11 @@ module.exports = (options, done) => {
   }
 
   if (!$.exists(options.dest)) {
-    options.force = true;
+    options.flags.force = true;
+  }
+
+  if (options.flags.force) {
+    context.cache.reset();
   }
 
   let src = [];
