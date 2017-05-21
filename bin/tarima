@@ -26,7 +26,7 @@ const DEFAULTS = {
   public: 'public',
   dest: 'build',
   config: 'config',
-  reload: 'index.js',
+  reloader: 'index.js',
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
   proxy: 'localhost:8080',
@@ -54,7 +54,7 @@ try {
       l: 'plugins',
       L: 'devPlugins',
       O: 'optimize',
-      r: 'reload',
+      r: 'reloader',
       d: 'debug',
       f: 'force',
       w: 'watch',
@@ -149,7 +149,7 @@ Options:
                       - foo      -> !**/foo/**
                       - foo/bar  -> !**/foo/bar/**
 
-  -r, --reload      Load module for hot-reloading on changes (e.g. -r bin/server)
+  -r, --reloader    Load module for reset stuff on changes (e.g. -r bin/server)
 
                     Imported modules should be like:
 
@@ -225,7 +225,7 @@ const defaultConfig = {
     extensions: _.params,
   },
   flags: _.flags,
-  reload: _.flags.reload,
+  reloader: _.flags.reloader,
 };
 
 // apply package settings
@@ -346,7 +346,7 @@ const cmd = _.raw || [];
 let child;
 
 function end() {
-  if (!(_.flags.server || isDev) || _.flags.reload) {
+  if (!(_.flags.server || isDev) || _.flags.reloader) {
     logger.printf('\n');
   }
 }
@@ -495,7 +495,7 @@ run(defaultConfig, function done(err, result) {
     return;
   }
 
-  if (!_.flags.reload) {
+  if (!_.flags.reloader) {
     die();
   }
 });

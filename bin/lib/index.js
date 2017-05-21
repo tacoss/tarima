@@ -284,15 +284,15 @@ module.exports = (options, done) => {
       done.call(context, err, result);
       context.emit('end', err, result);
 
-      if (typeof options.reload === 'string') {
+      if (typeof options.reloader === 'string') {
         logger.getLogger()
-          .info('{log.gray|Running %s}', options.reload);
+          .info('{log.gray|Running %s}', options.reloader);
 
-        options.reload = require(options.reload);
+        options.reloader = require(options.reloader);
       }
 
-      if (typeof options.reload === 'function') {
-        close = options.reload.call(context, context, options.cwd);
+      if (typeof options.reloader === 'function') {
+        close = options.reloader.call(context, context, options.cwd);
       }
     } catch (e) {
       _state = 'errored';
