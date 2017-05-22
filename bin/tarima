@@ -77,6 +77,8 @@ const logger = require('./lib/logger');
 
 const thisPkg = require(path.join(__dirname, '../package.json'));
 
+_.flags.env = (_.flags.env !== true ? _.flags.env : '') || 'development';
+
 // defaults
 process.name = 'tarima-cli';
 

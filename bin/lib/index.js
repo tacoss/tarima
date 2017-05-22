@@ -91,7 +91,7 @@ module.exports = (options, done) => {
   }
 
   // resolve all relative paths
-  ['dest', 'public', 'reload', 'cacheFile', 'rollupFile'].forEach(subpath => {
+  ['dest', 'public', 'reloader', 'cacheFile', 'rollupFile'].forEach(subpath => {
     if (options[subpath]) {
       options[subpath] = Array.isArray(options[subpath]) ?
         options[subpath].map(subdir => {
