@@ -90,13 +90,17 @@ module.exports = (options, done) => {
     options.bundle = options.bundle === true ? ['**'] : options.bundle ? [options.bundle] : [];
   }
 
+  // normalize cwd
+  options.cwd = typeof options.cwd === 'string'
+    ? path.resolve(options.cwd)
+    : process.cwd();
+
   // resolve all relative paths
   ['dest', 'public', 'reloader', 'cacheFile', 'rollupFile'].forEach(subpath => {
     if (options[subpath]) {
-      options[subpath] = Array.isArray(options[subpath]) ?
-        options[subpath].map(subdir => {
-          return path.resolve(options.cwd, subdir);
-        }) : path.resolve(options.cwd, options[subpath]);
+      options[subpath] = Array.isArray(options[subpath])
+        ? options[subpath].map(subdir => path.resolve(options.cwd, subdir))
+        : path.resolve(options.cwd, options[subpath]);
     }
   });
 
