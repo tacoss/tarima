@@ -34,7 +34,7 @@ global.test = (args, cb, locals) ->
     global.tarima(args...).render locals, (err, result) ->
       if err
         console.log(args)
-        console.log(err.stack)
+        console.log(err.stack || err.message)
         return done()
 
       expect(err).toBeUndefined()
