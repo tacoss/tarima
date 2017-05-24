@@ -41,7 +41,17 @@ function dispatch(files, run) {
       });
     }))
     .then(result => {
-      next(undefined, result);
+      next(undefined, result.reduce((prev, cur) => {
+        cur.forEach(val => {
+          if (Array.isArray(val)) {
+            Array.prototype.push.appl(prev, val);
+          } else {
+            prev.push(val);
+          }
+        });
+
+        return prev;
+      }, []));
     }).catch(error => {
       next(error);
     });

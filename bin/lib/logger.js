@@ -109,40 +109,51 @@ module.exports = {
     }
 
     let err;
+    let retval;
 
     try {
       if (cb) {
-        cb();
+        retval = cb();
       }
     } catch (e) {
       err = e;
     }
 
-    if (ok) {
-      const diff = $.timeDiff(start);
+    function end(res) {
+      if (ok) {
+        const diff = $.timeDiff(start);
 
-      let base = 'gray';
+        let base = 'gray';
 
-      // Ns (seconds)
-      if (diff.indexOf('ms') === -1) {
-        base = 'yellow';
+        // Ns (seconds)
+        if (diff.indexOf('ms') === -1) {
+          base = 'yellow';
 
-        // TODO: configure threshold?
-        if (parseFloat(diff) > 2.0) {
-          base = 'red';
+          // TODO: configure threshold?
+          if (parseFloat(diff) > 2.0) {
+            base = 'red';
+          }
         }
+
+        const ms = start ? `{${base}|+${diff}}` : '';
+
+        if (err) {
+          this.printf('\r  {pad.gray|%s} {err.red|%s} %s', type, res || src || dest, ms);
+          this.writeln(err);
+        } else {
+          this.printf('\r  {pad.gray|%s} {%s|%s} %s', type, styles[type] || 'ok.green', res || dest, ms);
+        }
+
+        $.echo('\r\n');
       }
+    }
 
-      const ms = start ? `{${base}|+${diff}}` : '';
-
-      if (err) {
-        this.printf('\r  {pad.gray|%s} {err.red|%s} %s', type, src || dest, ms);
-        this.writeln(err);
-      } else {
-        this.printf('\r  {pad.gray|%s} {%s|%s} %s', type, styles[type] || 'ok.green', dest, ms);
-      }
-
-      $.echo('\r\n');
+    if (!retval || typeof retval.then !== 'function') {
+      end.call(this, retval);
+    } else {
+      retval.then(result => {
+        end.call(this, result);
+      });
     }
   },
   printf() {

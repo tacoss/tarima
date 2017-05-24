@@ -507,11 +507,12 @@ module.exports = function _compile(tarima, files, cb) {
       }
 
       return new Promise((resolve, reject) => {
-        b(err => {
+        b((err, _files) => {
           if (err) {
             reject(err);
           } else {
             resolve();
+            data.push(_files);
           }
         });
       });
