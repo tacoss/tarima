@@ -128,6 +128,11 @@ module.exports = (options, done) => {
   options.bundleOptions.rollup = options.bundleOptions.rollup || {};
   options.bundleOptions.helpers = options.bundleOptions.helpers || {};
   options.bundleOptions.resources = options.bundleOptions.resources || [];
+  options.bundleOptions.extensions = options.bundleOptions.extensions || {};
+
+  $.merge(options.bundleOptions.extensions, options.extensions || {});
+
+  delete options.extensions;
 
   function die(error) {
     done.call(context, Array.isArray(error) ? error.map(err => {
