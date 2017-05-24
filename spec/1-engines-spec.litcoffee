@@ -89,13 +89,28 @@
       describe 'ES6 (babel)', ->
         test [
           'x.es6'
-          'export default () => 42',
+          'export default () => 42'
           {
             babel: true
           }
         ], (result) ->
           expect(result.source).toContain 'module.exports'
           expect(result.source).toContain '(() => 42)'
+
+      describe 'ES6 (nodent)', ->
+        test [
+          'x.es6'
+          '''
+            const x = async () => 42;
+            export default async () => await x();
+          '''
+          {
+            nodent: true
+          }
+        ], (result) ->
+          expect(result.source).toContain '$asyncbind'
+          expect(result.source).toContain 'new Promise'
+          expect(result.source).toContain 'module.exports ='
 
       describe 'TypeScript', ->
         test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
