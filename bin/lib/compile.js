@@ -61,13 +61,13 @@ module.exports = function _compile(tarima, files, cb) {
   options.bundleOptions.cache = cache.all() || {};
 
   // built-in helpers
-  options.bundleOptions.helpers.import = id => $.read(path.join(options.dest, id));
+  options.bundleOptions.helpers.destFile = id => $.read(path.join(options.dest, id));
   options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
 
   /* eslint-disable prefer-rest-params */
   /* eslint-disable prefer-spread */
 
-  options.bundleOptions.helpers.include = function _include() {
+  options.bundleOptions.helpers.includeTag = function _include() {
     return Array.prototype.slice.call(arguments)
       .map(src => {
         if (String(src).indexOf('.css') > -1) {

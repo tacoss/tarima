@@ -42,7 +42,7 @@ function dispatch(files, run) {
     }))
     .then(result => {
       next(undefined, result.reduce((prev, cur) => {
-        cur.forEach(val => {
+        (cur || []).forEach(val => {
           if (Array.isArray(val)) {
             Array.prototype.push.appl(prev, val);
           } else {
