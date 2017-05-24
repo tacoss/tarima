@@ -355,20 +355,19 @@ function end() {
 
 function infoFiles(result) {
   if (isDev && result.output.length) {
-    $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''} in ${result.elapsed}`,
+    $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''}`,
       defaultConfig.notifications.title,
       defaultConfig.notifications.okIcon);
   }
 
   if (!result.output.length) {
-    logger.printf('\r\r{ok.cyan|Without changes (%s)}', result.elapsed);
+    logger.printf('\r\r{ok.cyan|Without changes}');
   }
 
   if (!isDev || result.output.length > 1) {
-    logger.printf('\r\r{ok.cyan|%s file%s written in +%s}',
+    logger.printf('\r\r{ok.cyan|%s file%s written}',
         result.output.length,
-        result.output.length !== 1 ? 's' : '',
-        result.elapsed);
+        result.output.length !== 1 ? 's' : '');
 
     end();
   }

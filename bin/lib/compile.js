@@ -46,7 +46,6 @@ function toUrl(sourceMap) {
 
 module.exports = function _compile(tarima, files, cb) {
   const _width = cliWidth();
-  const start = new Date();
 
   const data = [];
   const tasks = [];
@@ -493,7 +492,6 @@ module.exports = function _compile(tarima, files, cb) {
       cache: cache.all(),
       input: Object.keys(seen),
       output: $.flatten(data),
-      elapsed: $.timeDiff(start),
     });
   }
 
