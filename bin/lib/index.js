@@ -134,6 +134,33 @@ module.exports = (options, done) => {
 
   delete options.extensions;
 
+  function push(filter) {
+    const offset = filter.indexOf('/');
+
+    if (offset === -1) {
+      options.ignore.push(`**/${filter}`);
+
+      if (filter.indexOf('.') === -1 && filter.indexOf('*') === -1) {
+        options.ignore.push(`**/${filter}/**`);
+        options.ignore.push(`${filter}/**`);
+      }
+
+      options.ignore.push(filter);
+      return;
+    }
+
+    if (offset === 0) {
+      filter = filter.substring(1);
+    }
+
+    if (filter.charAt(filter.length - 1) === '/') {
+      options.ignore.push(filter.slice(0, -1));
+      options.ignore.push(`${filter}**`);
+    } else {
+      options.ignore.push(filter);
+    }
+  }
+
   function die(error) {
     done.call(context, Array.isArray(error) ? error.map(err => {
       return err.message || err.toString();
@@ -186,6 +213,14 @@ module.exports = (options, done) => {
       }));
 
   const opts = plugs.then(() => {
+    if (options.ignore) {
+      const ignores = options.ignore.slice();
+
+      options.ignore = [];
+
+      ignores.forEach(push);
+    }
+
     if (options.ignoreFiles) {
       options.ignoreFiles.forEach(ifile => {
         if ($.isFile(ifile)) {
@@ -193,30 +228,7 @@ module.exports = (options, done) => {
 
           lines.forEach(line => {
             if (line.length && (line[0] !== '#') && (options.ignore.indexOf(line) === -1)) {
-              const offset = line.indexOf('/');
-
-              if (offset === -1) {
-                options.ignore.push(`**/${line}`);
-
-                if (line.indexOf('.') === -1 && line.indexOf('*') === -1) {
-                  options.ignore.push(`**/${line}/**`);
-                  options.ignore.push(`${line}/**`);
-                }
-
-                options.ignore.push(line);
-                return;
-              }
-
-              if (offset === 0) {
-                line = line.substring(1);
-              }
-
-              if (line.charAt(line.length - 1) === '/') {
-                options.ignore.push(line.slice(0, -1));
-                options.ignore.push(`${line}**`);
-              } else {
-                options.ignore.push(line);
-              }
+              push(line);
             }
           });
         }

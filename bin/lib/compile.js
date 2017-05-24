@@ -429,7 +429,7 @@ module.exports = function _compile(tarima, files, cb) {
   files.forEach(src => {
     // skip early
     if (watching(src)) {
-      debug('Skip. %s', src);
+      debug('Watch. %s', src);
       return;
     }
 
@@ -441,12 +441,14 @@ module.exports = function _compile(tarima, files, cb) {
     }
 
     if (!support.isSupported(src)) {
-      debug('Skip. %s', src);
-
       return append(src, id => {
         if (match(src)) {
+          debug('Match. %s', id);
+
           seen[id] = 1;
           unknown.push(id);
+        } else {
+          debug('Skip. %s', id);
         }
       });
     }

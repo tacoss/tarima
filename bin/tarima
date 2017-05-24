@@ -286,11 +286,11 @@ if (_.flags.only) {
   defaultConfig.filter.push(value => {
     value = path.relative(cwd, value);
 
-    test.forEach(key => {
-      if (value.indexOf(test[key]) > -1) {
+    for (let i = 0; i < test.length; i += 1) {
+      if (value.indexOf(test[i]) > -1) {
         return true;
       }
-    });
+    }
   });
 }
 
