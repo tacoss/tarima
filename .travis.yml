@@ -12,7 +12,7 @@ node_js:
   - 6
   - 7
 before_script:
-  - '(node -v | grep v6) && yarn add svelte fuse-box'
+  - '(node -v | grep v6) && yarn add svelte fuse-box || exit 0'
 script:
   - 'yarn cover'
 after_success:
