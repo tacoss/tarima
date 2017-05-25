@@ -263,6 +263,11 @@ if (configFile) {
   $.merge(defaultConfig, $.readJSON(path.resolve(configFile)));
 }
 
+// normalize extensions
+$.merge(defaultConfig.bundleOptions.extensions, defaultConfig.extensions || {});
+
+delete defaultConfig.extensions;
+
 function fixedValue(string) {
   if (/^-?\d+(\.\d+)?$/.test(string)) {
     return parseFloat(string);

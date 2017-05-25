@@ -130,10 +130,6 @@ module.exports = (options, done) => {
   options.bundleOptions.resources = options.bundleOptions.resources || [];
   options.bundleOptions.extensions = options.bundleOptions.extensions || {};
 
-  $.merge(options.bundleOptions.extensions, options.extensions || {});
-
-  delete options.extensions;
-
   function push(filter) {
     const offset = filter.indexOf('/');
 
