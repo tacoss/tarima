@@ -77,7 +77,7 @@
           '''
             /**
             ---
-            _transpiler: traceur
+            $transpiler: traceur
             ---
             */
             export default () => 42

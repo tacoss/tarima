@@ -1,5 +1,5 @@
 ---
-_bundle: a.b.c
+$bundle: a.b.c
 datum: !include bar.yml
 ---
 
