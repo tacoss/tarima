@@ -343,9 +343,9 @@ module.exports = function _compile(tarima, files, cb) {
 
           const _start = new Date();
 
-          const _method = (partial.params.data._bundle || isBundle(src)) ? 'bundle' : 'render';
+          const _method = (partial.params.data.$bundle || isBundle(src)) ? 'bundle' : 'render';
 
-          const _bundler = partial.params.data._bundler || opts.bundler || 'rollup';
+          const _bundler = partial.params.data.$bundler || opts.bundler || 'rollup';
 
           partial[_method]((err, output) => {
             if (err) {

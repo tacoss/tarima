@@ -94,7 +94,7 @@ You can enable an specific bundler in several ways:
 # from any source
 /**
 ---
-_bundler: fusebox
+$bundler: fusebox
 ---
 */
 
@@ -122,7 +122,7 @@ All parsed files can use a front-matter block for local data.
 //-
   ---
   title: Untitled
-  _render: other/layout.hbs
+  $render: other/layout.hbs
   extended: !include ../path/to.yml
   ---
 
@@ -135,11 +135,13 @@ Note you can merge additional files using the `!include` directive within any fr
 
 Tarima use some predefined keys in order to customize certain aspects of rendering, transpilation or bundling individually:
 
-- `_format` &mdash; This value is passed directly as `format` option for rollup, [available formats](https://github.com/rollup/rollup/wiki/JavaScript-API#format) are: `amd`, `js`, `es6`, `iife`, `umd`
-- `_bundle` &mdash; This value will be used as the exported symbol on bundles
-- `_bundler` &mdash; Set a custom bundler (instead of the default) for this source only
-- `_external` &mdash; External modules to bundle explicitly
-- `_transpiler` &mdash; Customer transpiler for ES6 sources
+- `$format` &mdash; This value is passed directly as `format` option for rollup, [available formats](https://github.com/rollup/rollup/wiki/JavaScript-API#format) are: `amd`, `js`, `es6`, `iife`, `umd`
+- `$bundle` &mdash; This value will be used as the exported symbol on bundles
+- `$render` &mdash; Render the current output as `yield` for the given source file
+- `$bundler` &mdash; Set a custom bundler (instead of the default) for this source only
+- `$globals` &mdash; Global variables to bundle explicitly
+- `$external` &mdash; External modules to bundle explicitly
+- `$transpiler` &mdash; Set the transpiler for all ES6 sources
 
 ## 2.0 - Supported engines
 
@@ -354,12 +356,12 @@ This option can be `true` to enable bundling on all files (filtered),  a glob st
 
 > Files matching the globs will be treated as entry-points, see below.
 
-Or locally set the `_bundle` option as front-matter:
+Or locally set the `$bundle` option as front-matter:
 
 ```javascript
 /**
 ---
-_bundle: true
+$bundle: true
 ---
 */
 
@@ -370,7 +372,7 @@ export default function () {
 };
 ```
 
-> When using `_bundle` you don't need to declare it on each imported file, only within the entry-points you want to bundle.
+> When using `$bundle` you don't need to declare it on each imported file, only within the entry-points you want to bundle.
 
 On javascript you can use the tilde prefix for loading sources from the `cwd`, e.g.
 
