@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Templating madness!",
   "main": "lib/index.js",
   "bin": {
@@ -49,7 +49,7 @@
     "pretty-ms": ">=2.1.0",
     "redent": "^2.0.0",
     "tosource": ">=1.0.0",
-    "wargs": "^1.0.2"
+    "wargs": "^0.6.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.3",
