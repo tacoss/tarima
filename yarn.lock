@@ -4075,9 +4075,9 @@ walkdir@~0.0.7:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/walkdir/-/walkdir-0.0.11.tgz#a16d025eb931bd03b52f308caed0f40fcebe9532"
 
-wargs@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/wargs/-/wargs-0.6.2.tgz#4c88ba8c9e4b3c1339019117a6196bae2673da8d"
+wargs@^0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/wargs/-/wargs-0.6.3.tgz#7b29a4bb60fe128d753917f489182f12cbc5d98d"
 
 warp10@^1.0.0:
   version "1.3.4"
