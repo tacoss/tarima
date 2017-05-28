@@ -332,7 +332,7 @@ module.exports = function _compile(tarima, files, cb) {
             type: _method,
           };
 
-          return logger(result, () => {
+          return logger(result, end => {
             partial[_method]((err, output) => {
               if (err) {
                 return next(err);
@@ -352,6 +352,7 @@ module.exports = function _compile(tarima, files, cb) {
 
               data.push(result.dest);
 
+              result.target = result.dest || result.target;
               result.sourceMap = output.sourceMap;
               result.output = output.source;
 
@@ -379,7 +380,7 @@ module.exports = function _compile(tarima, files, cb) {
               cache.set(file, 'data', prune(output.data));
 
               delete result.output;
-
+              end(`${_method}:ok`, result.dest);
               next();
             });
           });
