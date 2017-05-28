@@ -222,10 +222,10 @@ module.exports = function _compile(tarima, files, cb) {
   }
 
   function copy(src) {
-    return () => {
+    return next => {
       const out = [];
 
-      return Promise.all(src.map(target => {
+      Promise.all(src.map(target => {
         const entry = cache.get(target.src);
 
         if ((entry && entry.deleted) || !$.exists(target.src)) {
@@ -234,7 +234,9 @@ module.exports = function _compile(tarima, files, cb) {
           return null;
         }
 
-        return logger('copy', target, () => {
+        target.type = 'copy';
+
+        return logger(target, () => {
           sync(target.src);
 
           out.push(target.dest);
@@ -243,7 +245,8 @@ module.exports = function _compile(tarima, files, cb) {
           $.copy(target.src, target.dest);
         });
       }))
-      .then(() => data.push(out));
+      .then(() => data.push(out))
+      .then(() => next());
     };
   }
 
@@ -320,15 +323,16 @@ module.exports = function _compile(tarima, files, cb) {
           const _method = (partial.params.data.$bundle || isBundle(src)) ? 'bundle' : 'render';
           const _bundler = partial.params.data.$bundler || opts.bundler || 'rollup';
 
-          const file = path.relative(options.cwd, partial.params.filename);
-          const target = dest(file, partial.params.extension);
+          let file = path.relative(options.cwd, partial.params.filename);
+          let target = dest(file, partial.params.extension);
 
           const result = {
             src: file,
             dest: target,
+            type: _method,
           };
 
-          return logger(_method, result.src, () => {
+          return logger(result, () => {
             partial[_method]((err, output) => {
               if (err) {
                 return next(err);
@@ -338,6 +342,9 @@ module.exports = function _compile(tarima, files, cb) {
               if (options.bundleOptions.bundleCache && _bundler === 'rollup') {
                 _bundle = output._bundle || _bundle;
               }
+
+              file = result.src = path.relative(options.cwd, output.filename);
+              target = result.dest = dest(file, output.extension);
 
               const index = track.bind(null, file);
 

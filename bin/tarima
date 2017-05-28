@@ -12,10 +12,18 @@ const wargs = require('wargs');
 
 // common helpers
 const die = process.exit.bind(process);
+
 const $ = require('./lib/utils');
 
+// safe
+let logger;
+
 function errLog(message) {
-  process.stderr.write(`\r${$.color.red(message)}\n`);
+  if (logger) {
+    logger.printf('\r\r{%error|%s%}\n', message);
+  } else {
+    process.stderr.write(`\r${message}\n`);
+  }
 }
 
 const DEFAULTS = {
@@ -75,7 +83,7 @@ try {
 // nice logs!
 const _level = _.flags.verbose ? 'verbose' : _.flags.debug ? 'debug' : 'info';
 
-const logger = require('log-pose')
+logger = require('log-pose')
   .setLevel(_.flags.quiet ? false : _level)
   .getLogger(12, process.stdout, process.stderr);
 
@@ -491,10 +499,10 @@ process.on('SIGINT', () => {
 let _restart;
 
 run(defaultConfig, function done(err, result) {
-  debug('done %s - %s file%s added',
-    err || 'without errors',
+  debug('done %s file%s added - %s',
     result.output.length,
-    result.output.length === 1 ? '' : 's');
+    result.output.length === 1 ? '' : 's',
+    err || 'without errors');
 
   if (err) {
     logger.write('\n');
