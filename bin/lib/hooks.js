@@ -28,6 +28,7 @@ function dispatch(files, run) {
     unknown.push(file);
   });
 
+  // process subtasks
   run(unknown, next => {
     Promise.all(cb.map((task, k) => {
       return new Promise((resolve, reject) => {
@@ -75,7 +76,7 @@ function emit(hook) {
 }
 
 function dist(obj) {
-  this.status(new Date(), obj, () => {
+  this(new Date(), obj, () => {
     switch (obj.type) {
       case 'concat':
         $.write(obj.dest, obj.src.map(file => {

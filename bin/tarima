@@ -79,9 +79,13 @@ const logger = require('log-pose')
   .setLevel(_.flags.quiet ? false : _level)
   .getLogger(12, process.stdout, process.stderr);
 
-if (logger.isVerbose()) {
-  require('debug').enable('tarima,tarima:*');
+if (_.flags.debug && _.flags.verbose) {
+  require('debug').enable('tarima,tarima:*,grown,grown:*,talavera:*');
+  require('log-pose').setLevel(false);
 }
+
+// local debug
+const debug = require('debug')('tarima');
 
 const thisPkg = require(path.join(__dirname, '../package.json'));
 
@@ -92,8 +96,12 @@ process.name = 'tarima';
 
 process.env.NODE_ENV = _.flags.env;
 
-logger.printf('{green|%s v%s} {gray|(node %s)}\n',
-  thisPkg.name, thisPkg.version, process.version);
+logger.printf('{%green|%s v%s%} {%gray|(node %s)%}\n',
+  thisPkg.name,
+  thisPkg.version,
+  process.version);
+
+debug('v%s - node %s', thisPkg.version, process.version);
 
 if (_.flags.version) {
   die();
@@ -174,10 +182,12 @@ Options:
 const run = (opts, cb) => {
   const _runner = require('./lib');
 
+  debug('settings %s', JSON.stringify(opts, null, 2));
+
   // delay once resolver loads
   process.nextTick(() => {
     try {
-      _runner(opts, cb);
+      _runner(opts, logger, cb);
     } catch (e) {
       errLog((_.flags.verbose && e.stack) || e.message || e.toString());
       die(1);
@@ -197,6 +207,8 @@ const pkg = path.join(cwd, 'package.json');
 const env = require('dotenv').config({ silent: true }) || {};
 
 if ($.isFile(pkg)) {
+  debug('config %s', pkg);
+
   mainPkg = $.readJSON(pkg);
 }
 
@@ -250,11 +262,13 @@ if (configFile && configFile.indexOf('.') === -1) {
 
 if (configFile) {
   if (!$.isFile(configFile)) {
-    logger.info('\r{fail|Missing file: %s}\n', configFile);
+    logger.info('\r{%fail|Missing file: %s%}\n', configFile);
     die(1);
   }
 
-  logger.info('{log|Loading tarima configuration from `%s`}\n', path.relative(cwd, configFile));
+  logger.info('{%log|Loading settings from %s%}\n', path.relative(cwd, configFile));
+
+  debug('config %s', configFile);
 
   $.merge(defaultConfig, $.readJSON(path.resolve(configFile)));
 }
@@ -284,6 +298,8 @@ function fixedValue(string) {
 if (_.flags.only) {
   const test = $.toArray(_.flags.only);
 
+  debug('--only %s', test.join(' '));
+
   defaultConfig.filter.push(value => {
     value = path.relative(cwd, value);
 
@@ -296,7 +312,11 @@ if (_.flags.only) {
 }
 
 if (_.flags.exclude) {
-  $.toArray(_.flags.exclude).forEach(skip => {
+  const test = $.toArray(_.flags.exclude);
+
+  debug('--exclude %s', test.join(' '));
+
+  test.forEach(skip => {
     if (skip.indexOf('*') > -1) {
       defaultConfig.filter.push(`!${skip}`);
     } else if (skip.substr(0, 1) === '.') {
@@ -316,15 +336,28 @@ $.merge(env, _globals[_.flags.env] || {});
 $.merge(env, _globals);
 
 // package info
-env.env = $.extend({}, process.env);
-env.pkg = mainPkg;
+Object.defineProperty(env, 'env', {
+  configurable: false,
+  enumerable: false,
+  get: () => $.extend({}, process.env),
+});
+
+Object.defineProperty(env, 'pkg', {
+  configurable: false,
+  enumerable: false,
+  get: () => mainPkg,
+});
 
 Object.keys(env).forEach(key => {
   defaultConfig.bundleOptions.globals[key] = env[key];
 });
 
 if (_.flags.globals) {
-  $.toArray(_.flags.globals).forEach(value => {
+  const test = $.toArray(_.flags.globals);
+
+  debug('--globals %s', test.join(' '));
+
+  test.forEach(value => {
     const parts = value.split('=');
 
     defaultConfig.bundleOptions.globals[parts[0]] = fixedValue(parts[1]);
@@ -332,7 +365,11 @@ if (_.flags.globals) {
 }
 
 if (_.flags.extensions) {
-  $.toArray(_.flags.extensions).forEach(exts => {
+  const test = $.toArray(_.flags.extensions);
+
+  debug('--extensions %s', test.join(' '));
+
+  test.forEach(exts => {
     const parts = exts.replace(/^\./, '').split('.').reverse();
 
     defaultConfig.bundleOptions.extensions[parts.shift()] = parts;
@@ -362,12 +399,12 @@ function infoFiles(result) {
   }
 
   if (!result.output.length) {
-    logger.printf('\r\r{ok.cyan|Without changes}');
+    logger.printf('\r\r{%ok|Without changes%}');
     end();
   }
 
   if (!isDev || result.output.length > 1) {
-    logger.printf('\r\r{ok.cyan|%s file%s written}',
+    logger.printf('\r\r{%end|%s file%s written%}',
         result.output.length,
         result.output.length !== 1 ? 's' : '');
 
@@ -387,7 +424,9 @@ function exec(onError) {
     const _cmd = cmd
       .map(arg => (arg.indexOf(' ') === -1 ? arg : `"${arg}"`)).join(' ');
 
-    logger.printf('\r\r{gray|$ %s}\r\n', _cmd);
+    logger.printf('\r\r{%gray|$ %s%}\r\n', _cmd);
+
+    debug('exec %s', _cmd);
 
     child = spawn(cmd[0], cmd.slice(1), {
       cwd: defaultConfig.cwd || defaultConfig.dest,
@@ -419,6 +458,8 @@ function exec(onError) {
 
       $.notify(message, defaultConfig.notifications.title, icon);
 
+      debug('exec %s - %s', exitCode, _cmd);
+
       if (errors.length) {
         errLog(errors.join('\n'));
         onError({ msg: errors.join('\n') });
@@ -449,7 +490,12 @@ process.on('SIGINT', () => {
 
 let _restart;
 
-run(defaultConfig, logger, function done(err, result) {
+run(defaultConfig, function done(err, result) {
+  debug('done %s - %s file%s added',
+    err || 'without errors',
+    result.output.length,
+    result.output.length === 1 ? '' : 's');
+
   if (err) {
     logger.write('\n');
 
@@ -483,7 +529,7 @@ run(defaultConfig, logger, function done(err, result) {
       logger.write('\n');
     }
 
-    logger.printf('\r\r{wait.yellow|Waiting for changes...} {gray|[press CTRL-C to quit]}');
+    logger.printf('\r\r{%wait|Waiting for changes...%} {%gray|[press CTRL-C to quit]%}\r');
 
     end();
     return;
@@ -495,10 +541,10 @@ run(defaultConfig, logger, function done(err, result) {
 });
 
 if (defaultConfig.src.length > 1) {
-  logger.info('{log|Reading from} {gray|...}\n  %s\n',
-    defaultConfig.src.map(src => `{yellow|${src}/**}`).join('\n  '));
+  logger.info('{%log|Reading from:%}\n  %s\n',
+    defaultConfig.src.map(src => `{%yellow|${src}/**%}`).join('\n  '));
 } else {
-  logger.info('{log|Reading from} {yellow|%s/**}\n', defaultConfig.src[0]);
+  logger.info('{%log|Reading from:%} {%yellow|%s/**%}\n', defaultConfig.src[0]);
 }
 
-logger.info('{log|Output to} {yellow|%s} {gray|...}\n', path.relative(cwd, defaultConfig.dest) || '.');
+logger.info('{%log|Output to:%} {%yellow|%s%}\n', path.relative(cwd, defaultConfig.dest) || '.');

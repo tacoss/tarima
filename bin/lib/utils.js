@@ -131,6 +131,7 @@ function notify(message, title, icon) {
 
   process.nextTick(() => {
     try {
+      require('debug').disable('node-notifier:*');
       notifier = notifier || require('node-notifier');
     } catch (e) { /* nothing */ }
 

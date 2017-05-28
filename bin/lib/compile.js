@@ -6,7 +6,6 @@ const $ = require('./utils');
 
 const path = require('path');
 const Promise = require('es6-promise');
-const cliWidth = require('cli-width');
 
 const support = require('../../lib/support');
 
@@ -44,8 +43,6 @@ function toUrl(sourceMap) {
 }
 
 module.exports = function _compile(tarima, files, cb) {
-  const _width = cliWidth();
-
   const data = [];
   const tasks = [];
 
@@ -204,18 +201,6 @@ module.exports = function _compile(tarima, files, cb) {
     $.write(view.dest, view.output);
   }
 
-  function ensureWait(src) {
-    let _file = path.relative(options.cwd, src);
-
-    const _max = Math.max(42, _width) - 15;
-
-    if (_file.length > _max) {
-      _file = `${_file.substr(0, 10)}...${_file.substr(-(_max - 13))}`;
-    }
-
-    logger.printf('\r{wait.yellow|%s}\r\r', _file);
-  }
-
   function dest(id, ext) {
     return path.relative(options.cwd, path.join(options.dest, ext
       ? id.replace(/\.[\w.]+$/, `.${ext}`)
@@ -237,23 +222,19 @@ module.exports = function _compile(tarima, files, cb) {
   }
 
   function copy(src) {
-    return next => {
+    return () => {
       const out = [];
 
-      src.forEach(target => {
+      return Promise.all(src.map(target => {
         const entry = cache.get(target.src);
 
         if ((entry && entry.deleted) || !$.exists(target.src)) {
           target.type = 'delete';
           dist(target);
-          return;
+          return null;
         }
 
-        const _start = new Date();
-
-        ensureWait(target.src);
-
-        logger(_start, 'copy', target, () => {
+        return logger('copy', target, () => {
           sync(target.src);
 
           out.push(target.dest);
@@ -261,11 +242,8 @@ module.exports = function _compile(tarima, files, cb) {
 
           $.copy(target.src, target.dest);
         });
-      });
-
-      data.push(out);
-
-      next();
+      }))
+      .then(() => data.push(out));
     };
   }
 
@@ -339,37 +317,34 @@ module.exports = function _compile(tarima, files, cb) {
             return next(e);
           }
 
-          ensureWait(src);
-
-          const _start = new Date();
-
           const _method = (partial.params.data.$bundle || isBundle(src)) ? 'bundle' : 'render';
-
           const _bundler = partial.params.data.$bundler || opts.bundler || 'rollup';
 
-          partial[_method]((err, output) => {
-            if (err) {
-              return next(err);
-            }
+          const file = path.relative(options.cwd, partial.params.filename);
+          const target = dest(file, partial.params.extension);
 
-            // cached for later
-            if (options.bundleOptions.bundleCache && _bundler === 'rollup') {
-              _bundle = output._bundle || _bundle;
-            }
+          const result = {
+            src: file,
+            dest: target,
+          };
 
-            const file = path.relative(options.cwd, output.filename);
-            const target = dest(file, output.extension);
+          return logger(_method, result.src, () => {
+            partial[_method]((err, output) => {
+              if (err) {
+                return next(err);
+              }
 
-            const index = track.bind(null, file);
+              // cached for later
+              if (options.bundleOptions.bundleCache && _bundler === 'rollup') {
+                _bundle = output._bundle || _bundle;
+              }
 
-            const result = {
-              src: file,
-              dest: target,
-            };
+              const index = track.bind(null, file);
 
-            ensureRename(result);
+              ensureRename(result);
 
-            logger(_start, _method, result, () => {
+              data.push(result.dest);
+
               result.sourceMap = output.sourceMap;
               result.output = output.source;
 
@@ -397,11 +372,9 @@ module.exports = function _compile(tarima, files, cb) {
               cache.set(file, 'data', prune(output.data));
 
               delete result.output;
+
+              next();
             });
-
-            data.push(result.dest);
-
-            next();
           });
         },
       });
@@ -428,7 +401,7 @@ module.exports = function _compile(tarima, files, cb) {
   files.forEach(src => {
     // skip early
     if (watching(src)) {
-      debug('Watch. %s', src);
+      debug('WATCH %s', src);
       return;
     }
 
@@ -442,12 +415,12 @@ module.exports = function _compile(tarima, files, cb) {
     if (!support.isSupported(src)) {
       return append(src, id => {
         if (match(src)) {
-          debug('Match. %s', id);
+          debug('OK %s', id);
 
           seen[id] = 1;
           unknown.push(id);
         } else {
-          debug('Skip. %s', id);
+          debug('SKIP %s', id);
         }
       });
     }
@@ -456,10 +429,17 @@ module.exports = function _compile(tarima, files, cb) {
       delete _cache[src];
     }
 
-    if (!seen[src] && match(src)) {
-      debug('Add. %s', src);
+    if (!seen[src]) {
+      debug('ADD %s', src);
       seen[src] = true;
-      append(src, compile);
+
+      if (match(src)) {
+        append(src, compile);
+      } else {
+        debug('NOMATCH %s', src);
+      }
+    } else {
+      debug('SEEN %s', src);
     }
   });
 
@@ -488,16 +468,19 @@ module.exports = function _compile(tarima, files, cb) {
     _cache = null;
     _bundle = null;
 
-    cb(err, {
-      cache: cache.all(),
-      input: Object.keys(seen),
-      output: $.flatten(data),
-    });
+    try {
+      cb(err, {
+        cache: cache.all(),
+        input: Object.keys(seen),
+        output: $.flatten(data),
+      });
+    } catch (e) {
+      console.log('!', e.stack);
+    }
   }
 
   tasks
   .sort((a, b) => b._offset - a._offset)
-  .map(x => x.run)
   .reduce((a, b) => {
     return a.then(() => {
       if (state('abort')) {
@@ -505,7 +488,7 @@ module.exports = function _compile(tarima, files, cb) {
       }
 
       return new Promise((resolve, reject) => {
-        b((err, _files) => {
+        b.run((err, _files) => {
           if (err) {
             reject(err);
           } else {
