@@ -8,7 +8,6 @@ const path = require('path');
 const Promise = require('es6-promise');
 const cliWidth = require('cli-width');
 
-const logger = require('./logger');
 const support = require('../../lib/support');
 
 const prefix = 'data:application/json;charset=utf-8;base64,';
@@ -56,6 +55,7 @@ module.exports = function _compile(tarima, files, cb) {
 
   const dist = this.dist;
   const match = this.match;
+  const logger = this.logger;
   const dispatch = this.dispatch;
 
   options.bundleOptions.cache = cache.all() || {};
@@ -253,7 +253,7 @@ module.exports = function _compile(tarima, files, cb) {
 
         ensureWait(target.src);
 
-        logger.status(_start, 'copy', target, () => {
+        logger(_start, 'copy', target, () => {
           sync(target.src);
 
           out.push(target.dest);
@@ -369,7 +369,7 @@ module.exports = function _compile(tarima, files, cb) {
 
             ensureRename(result);
 
-            logger.status(_start, _method, result, () => {
+            logger(_start, _method, result, () => {
               result.sourceMap = output.sourceMap;
               result.output = output.source;
 
@@ -457,7 +457,7 @@ module.exports = function _compile(tarima, files, cb) {
     }
 
     if (!seen[src] && match(src)) {
-      debug(src);
+      debug('Add. %s', src);
       seen[src] = true;
       append(src, compile);
     }

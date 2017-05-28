@@ -1,9 +1,10 @@
-*~
 .DS_Store
-
-.fusebox
-.grunt
-/tmp
+.tarima
+.env
+*~
+*.log
+/build
+/public
 /coverage
-/generated
 /node_modules
+/bower_components

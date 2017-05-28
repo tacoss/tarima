@@ -7,8 +7,6 @@
 /* eslint-disable global-require */
 /* eslint-disable no-nested-ternary */
 
-let start = new Date();
-
 const path = require('path');
 const wargs = require('wargs');
 
@@ -37,7 +35,7 @@ let _;
 try {
   _ = wargs(process.argv.slice(2), {
     arrays: 'SxlLwyREG',
-    booleans: 'qvVOdfos',
+    booleans: 'qvVOdfsh',
     defaults: DEFAULTS,
     aliases: {
       B: 'bundler',
@@ -47,6 +45,7 @@ try {
       D: 'dest',
       S: 'src',
       e: 'env',
+      h: 'help',
       c: 'config',
       v: 'version',
       V: 'verbose',
@@ -73,32 +72,37 @@ try {
   die(1);
 }
 
-const logger = require('./lib/logger');
+// nice logs!
+const _level = _.flags.verbose ? 'verbose' : _.flags.debug ? 'debug' : 'info';
+
+const logger = require('log-pose')
+  .setLevel(_.flags.quiet ? false : _level)
+  .getLogger(12, process.stdout, process.stderr);
+
+if (logger.isVerbose()) {
+  require('debug').enable('tarima,tarima:*');
+}
 
 const thisPkg = require(path.join(__dirname, '../package.json'));
 
 _.flags.env = (_.flags.env !== true ? _.flags.env : '') || 'development';
 
 // defaults
-process.name = 'tarima-cli';
+process.name = 'tarima';
 
 process.env.NODE_ENV = _.flags.env;
 
-if (_.flags.version && _.flags.verbose) {
-  logger.printf('{gray|%s}\n', path.dirname(__dirname));
-}
-
-logger.printf('{green|%s v%s} {gray|(node %s)} {gray|+%s}\n',
-  thisPkg.name, thisPkg.version, process.version, $.timeDiff(start));
+logger.printf('{green|%s v%s} {gray|(node %s)}\n',
+  thisPkg.name, thisPkg.version, process.version);
 
 if (_.flags.version) {
-  die(1);
+  die();
 }
 
 const _bin = Object.keys(thisPkg.bin)[0];
 
 if (_.flags.help) {
-  logger.writeln(`
+  logger.write(`
 Usage:
   ${_bin} [OPTIONS]
   ${_bin} [...] js:es6 css:less
@@ -129,6 +133,7 @@ Options:
   -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
   -O, --optimize    Apply optimizations for final sources (google-closure-compiler-js, csso)
 
+  -o, --open        Open browser (requires browser-sync/live-reload, see below)
   -p, --port        Enable custom port for serving files (e.g. tarima-lr)
   -P, --proxy       Enable proxying for local server (e.g. tarima-lr)
   -s, --serve       Enable file serving (e.g. with tarima-lr)
@@ -164,14 +169,6 @@ Options:
   -R, --rename      Custom naming expressions (e.g. -R "**/*:{basedir/1}/{fname}")
 `);
   die(1);
-}
-
-if (!_.flags.quiet) {
-  logger.setLevel(_.flags.verbose ? 'verbose' : _.flags.debug ? 'debug' : 'info');
-
-  if (_.flags.debug && _.flags.verbose) {
-    require('debug').enable('tarima,tarima:*');
-  }
 }
 
 const run = (opts, cb) => {
@@ -253,12 +250,11 @@ if (configFile && configFile.indexOf('.') === -1) {
 
 if (configFile) {
   if (!$.isFile(configFile)) {
-    process.stderr.write(`\r${$.color.red(`Missing '${configFile}' file`)}\n`);
+    logger.info('\r{fail|Missing file: %s}\n', configFile);
     die(1);
   }
 
-  logger.getLogger()
-    .info('{log.gray|Loading tarima configuration from `%s`}', path.relative(cwd, configFile));
+  logger.info('{log|Loading tarima configuration from `%s`}\n', path.relative(cwd, configFile));
 
   $.merge(defaultConfig, $.readJSON(path.resolve(configFile)));
 }
@@ -354,7 +350,7 @@ let child;
 
 function end() {
   if (!(_.flags.server || isDev) || _.flags.reloader) {
-    logger.printf('\n');
+    logger.write('\n');
   }
 }
 
@@ -367,6 +363,7 @@ function infoFiles(result) {
 
   if (!result.output.length) {
     logger.printf('\r\r{ok.cyan|Without changes}');
+    end();
   }
 
   if (!isDev || result.output.length > 1) {
@@ -383,8 +380,6 @@ const _close = process.version.split('.')[1] === '6' ? 'exit' : 'close';
 function exec(onError) {
   function restart() {
     // restart
-    const _start = new Date();
-
     if (child) {
       child.kill('SIGINT');
     }
@@ -412,8 +407,6 @@ function exec(onError) {
     });
 
     child.on(_close, exitCode => {
-      const _end = $.timeDiff(_start);
-
       let message = `${_cmd}\n— `;
       let icon = defaultConfig.notifications.okIcon;
 
@@ -421,7 +414,7 @@ function exec(onError) {
         icon = defaultConfig.notifications.errIcon;
         message += 'Error';
       } else {
-        message += `Done in ${_end}`;
+        message += 'Done';
       }
 
       $.notify(message, defaultConfig.notifications.title, icon);
@@ -430,9 +423,6 @@ function exec(onError) {
         errLog(errors.join('\n'));
         onError({ msg: errors.join('\n') });
       }
-
-      logger.printf('\r\r{%s|%s} {gray|+%s}\n',
-        exitCode || errors.length ? 'red' : 'green', cmd[0], _end);
 
       if (exitCode && !isDev) {
         die(exitCode);
@@ -459,11 +449,9 @@ process.on('SIGINT', () => {
 
 let _restart;
 
-start = new Date();
-
-run(defaultConfig, function done(err, result) {
+run(defaultConfig, logger, function done(err, result) {
   if (err) {
-    logger.printf('\n');
+    logger.write('\n');
 
     errLog((_.flags.debug && err.stack) || err.message || err.toString());
 
@@ -492,7 +480,7 @@ run(defaultConfig, function done(err, result) {
 
   if (isDev) {
     if (result.output.length > 1) {
-      logger.printf('\n');
+      logger.write('\n');
     }
 
     logger.printf('\r\r{wait.yellow|Waiting for changes...} {gray|[press CTRL-C to quit]}');
@@ -507,17 +495,10 @@ run(defaultConfig, function done(err, result) {
 });
 
 if (defaultConfig.src.length > 1) {
-  logger.getLogger()
-    .info('{log.gray|Reading from} {gray|... +%s}\n  %s',
-      $.timeDiff(start),
-      defaultConfig.src.map(src => `{yellow|${src}/**}`).join('\n  '));
+  logger.info('{log|Reading from} {gray|...}\n  %s\n',
+    defaultConfig.src.map(src => `{yellow|${src}/**}`).join('\n  '));
 } else {
-  logger.getLogger()
-    .info('{log.gray|Reading from} {yellow|%s/**} {gray|... +%s}',
-      defaultConfig.src[0],
-      $.timeDiff(start));
+  logger.info('{log|Reading from} {yellow|%s/**}\n', defaultConfig.src[0]);
 }
 
-logger.getLogger()
-  .info('{log.gray|Output to} {yellow|%s} {gray|...}',
-    path.relative(cwd, defaultConfig.dest) || '.');
+logger.info('{log|Output to} {yellow|%s} {gray|...}\n', path.relative(cwd, defaultConfig.dest) || '.');

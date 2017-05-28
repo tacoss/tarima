@@ -7,11 +7,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const clc = require('chalk');
-const prettyMs = require('pretty-ms');
 const micromatch = require('micromatch');
-
-const CLR = '\x1b[K';
 
 let notifier;
 
@@ -23,12 +19,6 @@ function env(value) {
   }
 
   return value;
-}
-
-function echo() {
-  process.stdout.write(Array.prototype.slice.call(arguments).join('')
-    .replace(/\r\r/g, `${CLR}\r`)
-    .replace(/\r\n/g, `${CLR}\n`));
 }
 
 function merge(target, source, keys) {
@@ -120,10 +110,6 @@ function exists(filepath) {
   return isDir(filepath) || isFile(filepath);
 }
 
-function timeDiff(start) {
-  return prettyMs((new Date()) - start);
-}
-
 function mtime(filepath) {
   return exists(filepath) ? +fs.statSync(filepath).mtime : null;
 }
@@ -183,7 +169,6 @@ function makeFilter(any, filters) {
 }
 
 module.exports = {
-  echo,
   makeFilter,
   notify,
   merge,
@@ -191,7 +176,6 @@ module.exports = {
   exists,
   isDir,
   isFile,
-  timeDiff,
   mtime,
   toArray,
   flatten,
@@ -201,5 +185,4 @@ module.exports = {
   writeJSON: fs.outputJsonSync,
   write: fs.outputFileSync,
   read: fs.readFileSync,
-  color: clc,
 };

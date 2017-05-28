@@ -1,1 +1,3 @@
-yarn.lock -diff
+*.lock -diff
+build/** -diff
+public/** -diff

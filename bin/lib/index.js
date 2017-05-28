@@ -3,10 +3,10 @@
 const $ = require('./utils');
 
 const path = require('path');
+const lp = require('log-pose');
 const Promise = require('es6-promise');
 const micromatch = require('micromatch');
 
-const logger = require('./logger');
 const readFiles = require('./read');
 const compileFiles = require('./compile');
 
@@ -85,7 +85,7 @@ function complexFactor(test) {
 }
 
 /* eslint-disable no-nested-ternary */
-module.exports = (options, done) => {
+module.exports = (options, logger, done) => {
   if (!Array.isArray(options.bundle)) {
     options.bundle = options.bundle === true ? ['**'] : options.bundle ? [options.bundle] : [];
   }
@@ -118,6 +118,7 @@ module.exports = (options, done) => {
   // internally used
   context.cache = cacheableSupportAPI(options.cacheFile);
   context.match = $.makeFilter(false, filters);
+  context.logger = logger;
 
   options.pluginOptions = options.pluginOptions || {};
   options.bundleOptions = options.bundleOptions || {};
@@ -302,7 +303,7 @@ module.exports = (options, done) => {
       context.emit('end', err, result);
 
       if (typeof options.reloader === 'string') {
-        logger.getLogger()
+        lp.getLogger()
           .info('{log.gray|Running %s}', options.reloader);
 
         options.reloader = require(options.reloader);
