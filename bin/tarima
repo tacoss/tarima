@@ -84,7 +84,7 @@ try {
 const _level = _.flags.verbose ? 'verbose' : _.flags.debug ? 'debug' : 'info';
 
 logger = require('log-pose')
-  .setLevel(_.flags.quiet ? false : _level)
+  .setLevel((_.flags.quiet && !_.flags.version && !_.flags.help) ? false : _level)
   .getLogger(12, process.stdout, process.stderr);
 
 if (_.flags.debug && _.flags.verbose) {
@@ -183,6 +183,7 @@ Options:
   -E, --extensions  Enable hidden extensions (e.g. -E .es6.js -E .post.css -E .js.hbs.pug)
   -G, --globals     Shorthand for global variables (e.g. -G FOO=BAR -G AKI_PEY=xyz)
   -R, --rename      Custom naming expressions (e.g. -R "**/*:{basedir/1}/{fname}")
+
 `);
   die(1);
 }
