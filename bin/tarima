@@ -401,14 +401,14 @@ function infoFiles(result) {
       defaultConfig.notifications.okIcon);
   }
 
-  if (!result.output.length) {
-    logger.printf('\r\r{% end Without changes %}');
-  }
-
-  if (!isDev || result.output.length > 1) {
-    logger.printf('\r\r{% end %s file%s written %}',
+  if (!isDev) {
+    if (!result.output.length) {
+      logger.printf('\r\r{% end Without changes %}');
+    } else {
+      logger.printf('\r\r{% end %s file%s written? %}',
         result.output.length,
         result.output.length !== 1 ? 's' : '');
+    }
   }
 }
 
@@ -529,6 +529,13 @@ run(defaultConfig, function done(err, result) {
 
   if (!_.flags.reloader) {
     die();
+  }
+});
+
+// clean exit
+process.on('exit', () => {
+  if (!isDev) {
+    logger.write('\r\n');
   }
 });
 

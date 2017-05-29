@@ -130,25 +130,23 @@ module.exports = function _read(cb) {
     }
   });
 
-  files.forEach(file => {
+  cb(undefined, files.filter(file => {
     const entry = self.cache.get(file);
 
-    if (!entry) {
-      return;
+    if (!entry || self.opts.flags.force === true) {
+      return true;
     }
 
     if (!$.exists(file)) {
+      entry.dirty = false;
       entry.deleted = true;
-      return;
+      return false;
     }
 
     if (entry.mtime && ($.mtime(file) > entry.mtime)) {
       sync(file, files, self.cache);
     }
 
-    entry.dirty = (self.opts.flags.force === true)
-      || (entry.deleted || entry.dirty || !entry.mtime);
-  });
-
-  cb(undefined, files);
+    return true;
+  }));
 };

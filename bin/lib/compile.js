@@ -320,7 +320,7 @@ module.exports = function _compile(tarima, files, cb) {
           return logger(_method, src, end =>
             partial[_method]((err, output) => {
               if (err) {
-                end(src, _method, 'fail');
+                end(src, _method, 'failure');
                 return next($.decorateError(err, partial.params));
               }
 
