@@ -394,12 +394,6 @@ const cmd = _.raw || [];
 
 let child;
 
-function end() {
-  if (!(_.flags.server || isDev) || _.flags.reloader) {
-    // logger.write('\n');
-  }
-}
-
 function infoFiles(result) {
   if (isDev && result.output.length) {
     $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''}`,
@@ -409,15 +403,12 @@ function infoFiles(result) {
 
   if (!result.output.length) {
     logger.printf('\r\r{% end Without changes %}');
-    end();
   }
 
   if (!isDev || result.output.length > 1) {
     logger.printf('\r\r{% end %s file%s written %}',
         result.output.length,
         result.output.length !== 1 ? 's' : '');
-
-    end();
   }
 }
 
@@ -506,8 +497,6 @@ run(defaultConfig, function done(err, result) {
     err || 'without errors');
 
   if (err) {
-    // logger.write('\n');
-
     errLog((_.flags.verbose && err.stack) || err.toString());
 
     if (!(_.flags.server || isDev)) {
@@ -534,13 +523,7 @@ run(defaultConfig, function done(err, result) {
   }
 
   if (isDev) {
-    if (result.output.length > 1) {
-      // logger.write('\n');
-    }
-
     logger.printf('\r\r{% log Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
-
-    end();
     return;
   }
 
