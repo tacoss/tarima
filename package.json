@@ -28,16 +28,15 @@
     "node": ">=0.4"
   },
   "scripts": {
-    "dev": "yarn spec -- --verbose --autoTest --watchFolders lib",
+    "dev": "tarima -e -ds",
     "lint": "eslint lib bin",
     "spec": "jasmine-node spec --coffee --noStackTrace --captureExceptions",
     "cover": "istanbul cover --root lib --x '**/spec/**' -- jasmine-node spec --coffee",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
-    "test": "yarn lint && yarn spec"
+    "test": "yarn lint && yarn spec",
+    "dist": "tarima -fqe production"
   },
   "dependencies": {
-    "chalk": "^1.1.3",
-    "cli-width": ">=2.1.0",
     "debug": ">=2.2.0",
     "deindent": "^0.1.0",
     "dotenv": "^2.0.0",
@@ -45,8 +44,8 @@
     "fs-extra": "^1.0.0",
     "glob": "^7.1.1",
     "js-yaml": "^3.7.0",
+    "log-pose": "^0.2.0",
     "micromatch": "^2.3.11",
-    "pretty-ms": ">=2.1.0",
     "redent": "^2.0.0",
     "tosource": ">=1.0.0",
     "wargs": "^0.7.0"
