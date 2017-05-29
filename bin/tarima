@@ -20,7 +20,7 @@ let logger;
 
 function errLog(message) {
   if (logger) {
-    logger.printf('\r{% error %s %}\r\n', message);
+    logger.printf('\r{% error %s %}\r\n', message.replace(/\s*$/, ''));
   } else {
     process.stderr.write(`\r${message}\n`);
   }
@@ -198,7 +198,7 @@ const run = (opts, cb) => {
     try {
       _runner(opts, logger, cb);
     } catch (e) {
-      errLog((_.flags.verbose && e.stack) || e.message || e.toString());
+      errLog((_.flags.verbose && e.stack) || e.toString());
       die(1);
     }
   });
@@ -252,7 +252,7 @@ const defaultConfig = {
 try {
   $.merge(defaultConfig, mainPkg.tarima || {});
 } catch (e) {
-  errLog(`Configuration mismatch: ${(_.flags.verbose && e.stack) || e.message || e.toString()}`);
+  errLog(`Configuration mismatch: ${(_.flags.verbose && e.stack) || e.toString()}`);
   die(1);
 }
 
@@ -508,7 +508,7 @@ run(defaultConfig, function done(err, result) {
   if (err) {
     // logger.write('\n');
 
-    errLog((_.flags.debug && err.stack) || err.message || err.toString());
+    errLog((_.flags.debug && err.stack) || err.toString());
 
     if (!(_.flags.server || isDev)) {
       die(1);

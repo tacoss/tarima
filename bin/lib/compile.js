@@ -473,7 +473,7 @@ module.exports = function _compile(tarima, files, cb) {
         output: $.flatten(data),
       });
     } catch (e) {
-      logger.printf('\r\r{% failure %s %}\n', e.message);
+      logger.printf('\r\r{% failure %s %}\n', e.toString());
     }
   }
 

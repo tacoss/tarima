@@ -159,9 +159,9 @@ module.exports = (options, logger, done) => {
   }
 
   function die(error) {
-    done.call(context, Array.isArray(error) ? error.map(err => {
-      return err.message || err.toString();
-    }).join('\n') : error);
+    done.call(context, Array.isArray(error)
+      ? error.map(err => err.toString()).join('\n')
+      : error);
   }
 
   if (!$.exists(options.dest)) {
