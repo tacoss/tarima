@@ -170,6 +170,8 @@ function makeFilter(any, filters) {
 }
 
 function decorateError(ex, params) {
+  ex.filename = ex.filename || params.filename;
+
   // less
   if (ex.extract && !ex.stack) {
     const E = new Error(ex.message);

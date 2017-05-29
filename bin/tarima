@@ -22,7 +22,7 @@ function errLog(message) {
   if (logger && logger.isEnabled()) {
     logger.printf('\r{% error %s %}\r\n', message.replace(/\s*$/, ''));
   } else {
-    process.stderr.write(`\r${message}\n`);
+    process.stderr.write(`\r\x1b[31m${message}\x1b[0m\n`);
   }
 }
 
@@ -497,6 +497,10 @@ run(defaultConfig, function done(err, result) {
     err || 'without errors');
 
   if (err) {
+    if (_.flags.quiet && err.filename) {
+      errLog(`Error on source ${err.filename}`);
+    }
+
     errLog((_.flags.verbose && err.stack) || err.toString());
 
     if (!(_.flags.server || isDev)) {
@@ -533,8 +537,8 @@ run(defaultConfig, function done(err, result) {
 });
 
 // clean exit
-process.on('exit', () => {
-  if (!isDev) {
+process.on('exit', exitCode => {
+  if (!isDev && !exitCode) {
     logger.write('\r\n');
   }
 });

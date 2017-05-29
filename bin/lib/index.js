@@ -3,7 +3,6 @@
 const $ = require('./utils');
 
 const path = require('path');
-const lp = require('log-pose');
 const Promise = require('es6-promise');
 const micromatch = require('micromatch');
 
@@ -303,9 +302,7 @@ module.exports = (options, logger, done) => {
       context.emit('end', err, result);
 
       if (typeof options.reloader === 'string') {
-        lp.getLogger()
-          .info('{log.gray|Running %s}', options.reloader);
-
+        logger.info('{% log.gray Running %s %}', options.reloader);
         options.reloader = require(options.reloader);
       }
 
