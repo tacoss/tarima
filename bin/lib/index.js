@@ -302,7 +302,7 @@ module.exports = (options, logger, done) => {
       context.emit('end', err, result);
 
       if (typeof options.reloader === 'string') {
-        logger.info('{% log.gray Running %s %}', options.reloader);
+        logger.info('\r{% log Running: %} {% yellow %s %}\r\n', options.reloader);
         options.reloader = require(options.reloader);
       }
 
