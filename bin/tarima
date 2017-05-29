@@ -20,7 +20,7 @@ let logger;
 
 function errLog(message) {
   if (logger) {
-    logger.printf('\r\r{%error|%s%}\n', message);
+    logger.printf('\r{% error %s %}\r\n', message);
   } else {
     process.stderr.write(`\r${message}\n`);
   }
@@ -104,7 +104,7 @@ process.name = 'tarima';
 
 process.env.NODE_ENV = _.flags.env;
 
-logger.printf('{%green|%s v%s%} {%gray|(node %s)%}\n',
+logger.printf('{% green %s v%s %} {% gray (node %s) %}\n',
   thisPkg.name,
   thisPkg.version,
   process.version);
@@ -271,11 +271,11 @@ if (configFile && configFile.indexOf('.') === -1) {
 
 if (configFile) {
   if (!$.isFile(configFile)) {
-    logger.info('\r{%fail|Missing file: %s%}\n', configFile);
+    logger.info('\r{% fail Missing file: %s %}\n', configFile);
     die(1);
   }
 
-  logger.info('{%log|Loading settings from %s%}\n', path.relative(cwd, configFile));
+  logger.info('{% log Loading settings from %s %}\n', path.relative(cwd, configFile));
 
   debug('config %s', configFile);
 
@@ -396,7 +396,7 @@ let child;
 
 function end() {
   if (!(_.flags.server || isDev) || _.flags.reloader) {
-    logger.write('\n');
+    // logger.write('\n');
   }
 }
 
@@ -408,12 +408,12 @@ function infoFiles(result) {
   }
 
   if (!result.output.length) {
-    logger.printf('\r\r{%ok|Without changes%}');
+    logger.printf('\r\r{% end Without changes %}');
     end();
   }
 
   if (!isDev || result.output.length > 1) {
-    logger.printf('\r\r{%end|%s file%s written%}',
+    logger.printf('\r\r{% end %s file%s written %}',
         result.output.length,
         result.output.length !== 1 ? 's' : '');
 
@@ -433,7 +433,7 @@ function exec(onError) {
     const _cmd = cmd
       .map(arg => (arg.indexOf(' ') === -1 ? arg : `"${arg}"`)).join(' ');
 
-    logger.printf('\r\r{%gray|$ %s%}\r\n', _cmd);
+    logger.printf('\r\r{% gray $ %s %}\r\n', _cmd);
 
     debug('exec %s', _cmd);
 
@@ -506,7 +506,7 @@ run(defaultConfig, function done(err, result) {
     err || 'without errors');
 
   if (err) {
-    logger.write('\n');
+    // logger.write('\n');
 
     errLog((_.flags.debug && err.stack) || err.message || err.toString());
 
@@ -535,10 +535,10 @@ run(defaultConfig, function done(err, result) {
 
   if (isDev) {
     if (result.output.length > 1) {
-      logger.write('\n');
+      // logger.write('\n');
     }
 
-    logger.printf('\r\r{%wait|Waiting for changes...%} {%gray|[press CTRL-C to quit]%}\r');
+    logger.printf('\r\r{% wait Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
 
     end();
     return;
@@ -550,10 +550,10 @@ run(defaultConfig, function done(err, result) {
 });
 
 if (defaultConfig.src.length > 1) {
-  logger.info('{%log|Reading from:%}\n  %s\n',
-    defaultConfig.src.map(src => `{%yellow|${src}/**%}`).join('\n  '));
+  logger.info('{% log Reading from: %}\n  %s\n',
+    defaultConfig.src.map(src => `{% yellow ${src}/** %}`).join('\n  '));
 } else {
-  logger.info('{%log|Reading from:%} {%yellow|%s/**%}\n', defaultConfig.src[0]);
+  logger.info('{%log Reading from: %} {% yellow %s/** %}\n', defaultConfig.src[0]);
 }
 
-logger.info('{%log|Output to:%} {%yellow|%s%}\n', path.relative(cwd, defaultConfig.dest) || '.');
+logger.info('{% log Output to: %} {% yellow %s %}\n', path.relative(cwd, defaultConfig.dest) || '.');

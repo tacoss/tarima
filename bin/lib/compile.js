@@ -320,6 +320,7 @@ module.exports = function _compile(tarima, files, cb) {
           return logger(_method, src, end =>
             partial[_method]((err, output) => {
               if (err) {
+                end(src, _method, 'fail');
                 return next(err);
               }
 
@@ -472,7 +473,7 @@ module.exports = function _compile(tarima, files, cb) {
         output: $.flatten(data),
       });
     } catch (e) {
-      logger.printf(`\r\r{%failure|${e.stack}%}\n`);
+      logger.printf('\r\r{% failure %s %}\n', e.message);
     }
   }
 
@@ -496,7 +497,7 @@ module.exports = function _compile(tarima, files, cb) {
     }), Promise.resolve())
     .then(() => {
       if (state('abort')) {
-        logger.printf('\r\r{%important|The build was stopped%}\n');
+        logger.printf('\r\r{% important The build was stopped %}\n');
       }
 
       _end();
