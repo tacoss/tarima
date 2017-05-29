@@ -29,9 +29,9 @@ function dispatch(files, run) {
   });
 
   // process subtasks
-  run(unknown, next => {
-    Promise.all(cb.map((task, k) => {
-      return new Promise((resolve, reject) => {
+  run(unknown, next =>
+    Promise.all(cb.map((task, k) =>
+      new Promise((resolve, reject) => {
         task.call(null, src[k], (err, data) => {
           if (err) {
             reject(err);
@@ -39,24 +39,9 @@ function dispatch(files, run) {
             resolve(data);
           }
         });
-      });
-    }))
-    .then(result => {
-      next(undefined, result.reduce((prev, cur) => {
-        (cur || []).forEach(val => {
-          if (Array.isArray(val)) {
-            Array.prototype.push.appl(prev, val);
-          } else {
-            prev.push(val);
-          }
-        });
-
-        return prev;
-      }, []));
-    }).catch(error => {
-      next(error);
-    });
-  });
+      })))
+    .then(result => next(undefined, $.flatten(result)))
+    .catch(error => next(error)));
 }
 
 function filter(expr, cb) {
@@ -76,7 +61,7 @@ function emit(hook) {
 }
 
 function dist(obj) {
-  this(new Date(), obj, () => {
+  this(obj, () => {
     switch (obj.type) {
       case 'concat':
         $.write(obj.dest, obj.src.map(file => {

@@ -223,30 +223,24 @@ module.exports = function _compile(tarima, files, cb) {
 
   function copy(src) {
     return next => {
-      const out = [];
-
-      Promise.all(src.map(target => {
+      src.forEach(target => {
         const entry = cache.get(target.src);
 
         if ((entry && entry.deleted) || !$.exists(target.src)) {
           target.type = 'delete';
           dist(target);
-          return null;
+          return;
         }
+
+        data.push(target.dest);
 
         target.type = 'copy';
 
-        return logger(target, () => {
-          sync(target.src);
+        sync(target.src);
+        dist(target);
+      });
 
-          out.push(target.dest);
-          entry.dest = target.dest;
-
-          $.copy(target.src, target.dest);
-        });
-      }))
-      .then(() => data.push(out))
-      .then(() => next());
+      next();
     };
   }
 
@@ -323,16 +317,7 @@ module.exports = function _compile(tarima, files, cb) {
           const _method = (partial.params.data.$bundle || isBundle(src)) ? 'bundle' : 'render';
           const _bundler = partial.params.data.$bundler || opts.bundler || 'rollup';
 
-          let file = path.relative(options.cwd, partial.params.filename);
-          let target = dest(file, partial.params.extension);
-
-          const result = {
-            src: file,
-            dest: target,
-            type: _method,
-          };
-
-          return logger(result, end => {
+          return logger(_method, src, end =>
             partial[_method]((err, output) => {
               if (err) {
                 return next(err);
@@ -343,10 +328,14 @@ module.exports = function _compile(tarima, files, cb) {
                 _bundle = output._bundle || _bundle;
               }
 
-              file = result.src = path.relative(options.cwd, output.filename);
-              target = result.dest = dest(file, output.extension);
-
+              const file = path.relative(options.cwd, output.filename);
+              const target = dest(file, output.extension);
               const index = track.bind(null, file);
+
+              const result = {
+                src: file,
+                dest: target,
+              };
 
               ensureRename(result);
 
@@ -380,10 +369,10 @@ module.exports = function _compile(tarima, files, cb) {
               cache.set(file, 'data', prune(output.data));
 
               delete result.output;
-              end(`${_method}:ok`, result.dest);
+
+              end(result.dest);
               next();
-            });
-          });
+            }));
         },
       });
     }
@@ -483,33 +472,31 @@ module.exports = function _compile(tarima, files, cb) {
         output: $.flatten(data),
       });
     } catch (e) {
-      console.log('!', e.stack);
+      logger.printf(`\r\r{%failure|${e.stack}%}\n`);
     }
   }
 
   tasks
   .sort((a, b) => b._offset - a._offset)
-  .reduce((a, b) => {
-    return a.then(() => {
+  .reduce((a, b) =>
+    a.then(() => {
       if (state('abort')) {
         return;
       }
 
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) =>
         b.run((err, _files) => {
           if (err) {
             reject(err);
           } else {
-            resolve();
             data.push(_files);
+            resolve();
           }
-        });
-      });
-    });
-  }, Promise.resolve())
+        }));
+    }), Promise.resolve())
     .then(() => {
       if (state('abort')) {
-        logger.printf('\r\r{gray.diff|The build was stopped}\n');
+        logger.printf('\r\r{%important|The build was stopped%}\n');
       }
 
       _end();
