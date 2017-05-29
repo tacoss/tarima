@@ -508,7 +508,7 @@ run(defaultConfig, function done(err, result) {
   if (err) {
     // logger.write('\n');
 
-    errLog((_.flags.debug && err.stack) || err.toString());
+    errLog((_.flags.verbose && err.stack) || err.toString());
 
     if (!(_.flags.server || isDev)) {
       die(1);

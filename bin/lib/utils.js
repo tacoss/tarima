@@ -169,7 +169,31 @@ function makeFilter(any, filters) {
   };
 }
 
+function decorateError(ex, params) {
+  // less
+  if (ex.extract && !ex.stack) {
+    const E = new Error(ex.message);
+
+    const m = [
+      `Error: ${params.filename}:${ex.line}:${ex.column}`,
+      `    ${ex.line - 1}| ${ex.extract[0]}`,
+      `  > ${ex.line}| ${ex.extract[1]}`,
+      `${new Array(ex.column + 8).join('-')}^`,
+      `    ${ex.line + 1}| ${ex.extract[2]}`,
+      `\n${ex.message}`,
+    ].join('\n');
+
+    E.stack = ex.stack;
+    E.toString = () => m;
+
+    return E;
+  }
+
+  return ex;
+}
+
 module.exports = {
+  decorateError,
   makeFilter,
   notify,
   merge,

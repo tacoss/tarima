@@ -321,7 +321,7 @@ module.exports = function _compile(tarima, files, cb) {
             partial[_method]((err, output) => {
               if (err) {
                 end(src, _method, 'fail');
-                return next(err);
+                return next($.decorateError(err, partial.params));
               }
 
               // cached for later
