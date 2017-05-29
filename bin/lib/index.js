@@ -307,7 +307,7 @@ module.exports = (options, logger, done) => {
       }
 
       if (typeof options.reloader === 'function') {
-        close = options.reloader.call(context, context, options.cwd);
+        close = options.reloader.call(null, context, options);
       }
     } catch (e) {
       _state = 'errored';
