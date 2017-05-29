@@ -405,7 +405,7 @@ function infoFiles(result) {
     if (!result.output.length) {
       logger.printf('\r\r{% end Without changes %}');
     } else {
-      logger.printf('\r\r{% end %s file%s written? %}',
+      logger.printf('\r\r{% end %s file%s written %}',
         result.output.length,
         result.output.length !== 1 ? 's' : '');
     }
