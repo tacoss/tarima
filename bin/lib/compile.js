@@ -342,9 +342,8 @@ module.exports = function _compile(tarima, files, cb) {
 
               data.push(result.dest);
 
-              result.target = result.dest || result.target;
-              result.sourceMap = output.sourceMap;
               result.output = output.source;
+              result.sourceMap = output.sourceMap;
 
               // TODO: only track partials (?)
               const fixedDeps = entry.deps || [];
