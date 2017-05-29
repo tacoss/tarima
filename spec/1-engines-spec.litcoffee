@@ -278,13 +278,13 @@
 
       describe 'Marko', ->
         test ['x.marko', 'div --- OK'], (result) ->
-          expect(result.source).toContain 'require("marko/html")'
+          expect(result.source).toMatch /require\("marko(?:\/dist)?\/html"\)/
 
         test ['x.y.marko', 'div --- OK'], (result) ->
           expect(result.source).toEqual 'div --- OK'
 
         test ['x.js.marko', 'div --- OK', { client: true }], (result) ->
-          expect(result.source).toContain 'require("marko/vdom")'
+          expect(result.source).toMatch /require\("marko(?:\/dist)?\/vdom"\)/
 
       if parseFloat(process.version.substr(1)) >= 6.0
         describe 'Svelte', ->
