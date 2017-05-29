@@ -32,13 +32,17 @@ function dispatch(files, run) {
   run(unknown, next =>
     Promise.all(cb.map((task, k) =>
       new Promise((resolve, reject) => {
-        task.call(null, src[k], (err, data) => {
+        const retval = task.call(null, src[k], (err, data) => {
           if (err) {
             reject(err);
           } else {
             resolve(data);
           }
         });
+
+        if (retval && typeof retval.then === 'function') {
+          retval.then(resolve).catch(next);
+        }
       })))
     .then(result => next(undefined, $.flatten(result)))
     .catch(error => next(error)));
