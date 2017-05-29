@@ -19,7 +19,7 @@ const $ = require('./lib/utils');
 let logger;
 
 function errLog(message) {
-  if (logger) {
+  if (logger && logger.isEnabled()) {
     logger.printf('\r{% error %s %}\r\n', message.replace(/\s*$/, ''));
   } else {
     process.stderr.write(`\r${message}\n`);
@@ -538,7 +538,7 @@ run(defaultConfig, function done(err, result) {
       // logger.write('\n');
     }
 
-    logger.printf('\r\r{% wait Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
+    logger.printf('\r\r{% log Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
 
     end();
     return;
