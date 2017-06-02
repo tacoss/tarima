@@ -70,7 +70,6 @@
     "liquid-node": "^2.6.1",
     "marko": "^4.3.0",
     "memory-fs": "^0.4.1",
-    "moonjs": "^0.8.0",
     "node-sass": "^3.13.0",
     "nodent": "^3.0.17",
     "postcss": "^5.2.6",
