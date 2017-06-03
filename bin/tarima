@@ -543,11 +543,9 @@ process.on('exit', exitCode => {
   }
 });
 
-if (defaultConfig.src.length > 1) {
-  logger.info('{% log Reading from: %}\n  %s\n',
-    defaultConfig.src.map(src => `{% yellow ${src}/** %}`).join('\n  '));
-} else {
-  logger.info('{%log Reading from: %} {% yellow %s/** %}\n', defaultConfig.src[0]);
-}
-
 logger.info('{% log Output to: %} {% yellow %s %}\n', path.relative(cwd, defaultConfig.dest) || '.');
+
+defaultConfig.src
+  .forEach(dir => {
+    logger.info('{%log Reading from: %} {% yellow %s/** %}\n', dir);
+  });
