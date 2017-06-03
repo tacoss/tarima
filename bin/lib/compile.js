@@ -133,21 +133,6 @@ module.exports = function _compile(tarima, files, cb) {
   function ensureWrite(view, index) {
     onWrite(view, index);
 
-    if (options.bundleOptions.compileDebug && view.sourceMap) {
-      if (options.bundleOptions.sourceMapFile === true) {
-        $.write(`${view.dest}.map`, JSON.stringify(view.sourceMap));
-      }
-
-      const _prefix = view.dest.indexOf('.js') > -1 ? '//' : '/*';
-      const _suffix = view.dest.indexOf('.js') > -1 ? '' : ' */';
-
-      view.output += `\n${_prefix}# sourceMappingURL=${
-        (options.bundleOptions.sourceMapFile
-          ? `${path.basename(view.dest)}.map`
-          : support.toUrl(view.sourceMap))
-      }${_suffix}`;
-    }
-
     if (options.bundleOptions.optimize) {
       const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
 
@@ -174,6 +159,10 @@ module.exports = function _compile(tarima, files, cb) {
           applyInputSourceMaps: sourceMaps,
         }).compiledCode;
       }
+    }
+
+    if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
+      $.write(`${view.dest}.map`, JSON.stringify(view.sourceMap));
     }
 
     $.write(view.dest, view.output);
