@@ -9,8 +9,6 @@ const Promise = require('es6-promise');
 
 const support = require('../../lib/support');
 
-const prefix = 'data:application/json;charset=utf-8;base64,';
-
 const styleRe = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
 const scriptRe = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?|marko|svelte|[rs]v|ract|vue)(?=>(?:\.\w+)*|$)$/;
 
@@ -36,10 +34,6 @@ function prune(object) {
   });
 
   return copy;
-}
-
-function toUrl(sourceMap) {
-  return prefix + new Buffer(JSON.stringify(sourceMap)).toString('base64');
 }
 
 module.exports = function _compile(tarima, files, cb) {
@@ -140,22 +134,6 @@ module.exports = function _compile(tarima, files, cb) {
     onWrite(view, index);
 
     if (options.bundleOptions.compileDebug && view.sourceMap) {
-      // TODO: normalize sourceMap
-
-      delete view.sourceMap.sourceRoot;
-      delete view.sourceMap.sourcesContent;
-
-      view.sourceMap.file = view.dest;
-      view.sourceMap.sources = (view.sourceMap.sources || [view.src])
-        .map(src => path.relative(options.cwd, src));
-
-      if (!view.sourceMap.sources[0]) {
-        view.sourceMap.sources[0] = view.src;
-      }
-
-      view.sourceMap.sourcesContent = view.sourceMap.sources
-        .map(src => $.read(src).toString());
-
       if (options.bundleOptions.sourceMapFile === true) {
         $.write(`${view.dest}.map`, JSON.stringify(view.sourceMap));
       }
@@ -166,7 +144,7 @@ module.exports = function _compile(tarima, files, cb) {
       view.output += `\n${_prefix}# sourceMappingURL=${
         (options.bundleOptions.sourceMapFile
           ? `${path.basename(view.dest)}.map`
-          : toUrl(view.sourceMap))
+          : support.toUrl(view.sourceMap))
       }${_suffix}`;
     }
 
