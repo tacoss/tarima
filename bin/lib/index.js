@@ -173,21 +173,35 @@ module.exports = (options, logger, done) => {
 
   let src = [];
 
-  const plugs = Promise.all((options.plugins || [])
+  const plugs = () => Promise.all((options.plugins || [])
     // conditionally load devPlugins
-    .concat(options.flags.env === 'development' ? options.devPlugins || [] : [])
+    .concat((options.flags.env === 'development' ? options.devPlugins || [] : [])
+      .map(devFile => ({ dev: true, src: devFile })))
       .map(file => {
-        const testFile = path.resolve(file);
-
-        return require($.isFile(testFile) ? testFile : file);
-      })
-      .sort((a, b) => b.length - a.length)
-      .map(cb => {
-        if (!cb) {
-          return null;
+        if (typeof file !== 'object') {
+          file = { src: file };
         }
 
-        return new Promise((resolve, reject) => {
+        const testFile = path.resolve(file.src);
+
+        file.fn = require($.isFile(testFile) ? testFile : file.src);
+
+        return file;
+      })
+      .sort((a, b) => {
+        // run dev-plugins at the end
+        if (a.dev && !b.dev) {
+          return 1;
+        }
+
+        if (!a.dev && b.dev) {
+          return -1;
+        }
+
+        return b.fn.length - a.fn.length;
+      })
+      .map(task =>
+        new Promise((resolve, reject) => {
           function next(e) {
             if (e) {
               reject(e);
@@ -197,18 +211,21 @@ module.exports = (options, logger, done) => {
           }
 
           // ES6 interop
-          cb = cb.default || cb;
+          task.fn = task.fn.default || task.fn;
 
-          if (cb.length) {
-            cb.call(context, next);
-          } else {
-            cb.call(context);
-            next();
+          try {
+            if (task.fn.length) {
+              task.fn.call(context, next);
+            } else {
+              task.fn.call(context);
+              next();
+            }
+          } catch (e) {
+            reject(e);
           }
-        });
-      }));
+        })));
 
-  const opts = plugs.then(() => {
+  const opts = () => {
     if (options.ignore) {
       const ignores = options.ignore.slice();
 
@@ -280,7 +297,7 @@ module.exports = (options, logger, done) => {
         view.dest = path.relative(options.cwd, view.dest);
       };
     }
-  });
+  };
 
   let _state = 'pending';
   let close;
@@ -331,20 +348,22 @@ module.exports = (options, logger, done) => {
   }
 
   try {
-    opts
-    .catch(die)
-    .then(() => {
-      readFiles.call(context, (err2, files) => {
-        if (_state === 'working') {
-          _state = 'abort';
-        }
+    Promise.resolve()
+      .then(() => plugs())
+      .then(() => opts())
+      .then(() => {
+        readFiles.call(context, (err2, files) => {
+          if (_state === 'working') {
+            _state = 'abort';
+          }
 
-        if (_state === 'pending') {
-          src = files;
-          build(err2);
-        }
-      });
-    });
+          if (_state === 'pending') {
+            src = files;
+            build(err2);
+          }
+        });
+      })
+      .catch(e => die(e));
   } catch (e) {
     die(e);
   }

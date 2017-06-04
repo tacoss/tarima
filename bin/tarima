@@ -104,10 +104,10 @@ process.name = 'tarima';
 
 process.env.NODE_ENV = _.flags.env;
 
-logger.printf('{% green %s v%s %} {% gray (node %s) %}\n',
+logger.printf('{% green %s v%s %} {% gray (node %s - %s) %}\n',
   thisPkg.name,
   thisPkg.version,
-  process.version);
+  process.version, process.env.NODE_ENV);
 
 debug('v%s - node %s', thisPkg.version, process.version);
 
@@ -491,12 +491,9 @@ process.on('SIGINT', () => {
 let _restart;
 
 run(defaultConfig, function done(err, result) {
-  debug('done %s file%s added - %s',
-    result.output.length,
-    result.output.length === 1 ? '' : 's',
-    err || 'without errors');
-
   if (err) {
+    debug('failed %s', err);
+
     if (_.flags.quiet && err.filename) {
       errLog(`Error on source ${err.filename}`);
     }
@@ -509,6 +506,10 @@ run(defaultConfig, function done(err, result) {
 
     return;
   }
+
+  debug('done %s file%s added',
+    result.output.length,
+    result.output.length === 1 ? '' : 's');
 
   infoFiles(result);
 
