@@ -124,11 +124,13 @@ module.exports = function _read(cb) {
     return cb(e);
   }
 
-  process.nextTick(() => {
-    if (self.opts.flags.env === 'development') {
+  if (self.opts.flags.env === 'development') {
+    try {
       watch.call(self, cb);
+    } catch (e) {
+      return cb(e);
     }
-  });
+  }
 
   cb(undefined, files.filter(file => {
     const entry = self.cache.get(file);
