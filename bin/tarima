@@ -490,51 +490,67 @@ process.on('SIGINT', () => {
 
 let _restart;
 
-run(defaultConfig, function done(err, result) {
-  if (err) {
-    debug('failed %s', err);
+process.nextTick(() => {
+  let _start;
 
-    if (_.flags.quiet && err.filename) {
-      errLog(`Error on source ${err.filename}`);
+  if (!logger.isEnabled()) {
+    _start = new Date();
+
+    process.stdout.write('\rProcessing sources...\r');
+  }
+
+  run(defaultConfig, function done(err, result) {
+    if (err) {
+      debug('failed %s', err);
+
+      if (_.flags.quiet && err.filename) {
+        errLog(`Failed source ${err.filename}`);
+      }
+
+      errLog((_.flags.verbose && err.stack) || err.toString());
+
+      if (!(_.flags.server || isDev)) {
+        die(1);
+      }
+
+      return;
     }
 
-    errLog((_.flags.verbose && err.stack) || err.toString());
+    if (!logger.isEnabled()) {
+      process.stdout.write(`\r${result.output.length} file${
+        result.output.length === 1 ? '' : 's'
+      } built in ${(new Date() - _start) / 1000}s\n`);
+    }
 
-    if (!(_.flags.server || isDev)) {
+    debug('done %s file%s added',
+      result.output.length,
+      result.output.length === 1 ? '' : 's');
+
+    infoFiles(result);
+
+    if (!isDev && err) {
+      if (child) {
+        child.kill();
+      }
+
       die(1);
     }
 
-    return;
-  }
-
-  debug('done %s file%s added',
-    result.output.length,
-    result.output.length === 1 ? '' : 's');
-
-  infoFiles(result);
-
-  if (!isDev && err) {
-    if (child) {
-      child.kill();
+    if (cmd.length && !err) {
+      _restart = _restart || exec(this.emit.bind(null, 'error'));
+      _restart();
+      return;
     }
 
-    die(1);
-  }
+    if (isDev) {
+      logger.printf('\r\r{% log Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
+      return;
+    }
 
-  if (cmd.length && !err) {
-    _restart = _restart || exec(this.emit.bind(null, 'error'));
-    _restart();
-    return;
-  }
-
-  if (isDev) {
-    logger.printf('\r\r{% log Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
-    return;
-  }
-
-  if (!_.flags.reloader) {
-    die();
-  }
+    if (!_.flags.reloader) {
+      die();
+    }
+  });
 });
 
 // clean exit
