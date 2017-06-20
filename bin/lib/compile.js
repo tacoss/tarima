@@ -131,41 +131,43 @@ module.exports = function _compile(tarima, files, cb) {
   }
 
   function ensureWrite(view, index) {
-    onWrite(view, index);
+    return Promise.resolve()
+      .then(() => onWrite(view, index))
+      .then(() => {
+        if (options.bundleOptions.optimize) {
+          const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
 
-    if (options.bundleOptions.optimize) {
-      const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
+          if (view.dest.indexOf('.css') > -1) {
+            cssCompressor = cssCompressor || require('csso').minify;
 
-      if (view.dest.indexOf('.css') > -1) {
-        cssCompressor = cssCompressor || require('csso').minify;
+            view.output = cssCompressor(view.output, {
+              filename: view.dest,
+              sourceMap: sourceMaps,
+            }).css;
+          }
 
-        view.output = cssCompressor(view.output, {
-          filename: view.dest,
-          sourceMap: sourceMaps,
-        }).css;
-      }
+          if (view.dest.indexOf('.js') > -1) {
+            jsCompressor = jsCompressor || require('google-closure-compiler-js').compile;
 
-      if (view.dest.indexOf('.js') > -1) {
-        jsCompressor = jsCompressor || require('google-closure-compiler-js').compile;
+            view.output = jsCompressor({
+              jsCode: [{ src: view.output }],
+              languageIn: 'ECMASCRIPT6',
+              languageOut: 'ECMASCRIPT5',
+              compilationLevel: 'ADVANCED',
+              warningLevel: 'VERBOSE',
+              env: 'CUSTOM',
+              createSourceMap: sourceMaps,
+              applyInputSourceMaps: sourceMaps,
+            }).compiledCode;
+          }
+        }
 
-        view.output = jsCompressor({
-          jsCode: [{ src: view.output }],
-          languageIn: 'ECMASCRIPT6',
-          languageOut: 'ECMASCRIPT5',
-          compilationLevel: 'ADVANCED',
-          warningLevel: 'VERBOSE',
-          env: 'CUSTOM',
-          createSourceMap: sourceMaps,
-          applyInputSourceMaps: sourceMaps,
-        }).compiledCode;
-      }
-    }
+        if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
+          $.write(`${view.dest}.map`, JSON.stringify(view.sourceMap));
+        }
 
-    if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
-      $.write(`${view.dest}.map`, JSON.stringify(view.sourceMap));
-    }
-
-    $.write(view.dest, view.output);
+        $.write(view.dest, view.output);
+      });
   }
 
   function dest(id, ext) {
@@ -329,16 +331,18 @@ module.exports = function _compile(tarima, files, cb) {
               });
 
               index(fixedDeps);
-              ensureWrite(result, index);
+              ensureWrite(result, index)
+                .then(() => {
+                  cache.set(file, 'deps', fixedDeps);
+                  cache.set(file, 'dest', result.dest);
+                  cache.set(file, 'data', prune(output.data));
 
-              cache.set(file, 'deps', fixedDeps);
-              cache.set(file, 'dest', result.dest);
-              cache.set(file, 'data', prune(output.data));
+                  delete result.output;
 
-              delete result.output;
-
-              end(result.dest);
-              next();
+                  end(result.dest);
+                  next();
+                })
+                .catch(next);
             }));
         },
       });

@@ -59,8 +59,8 @@ function emit(hook) {
   if (this[hook]) {
     /* eslint-disable prefer-spread */
     /* eslint-disable prefer-rest-params */
-    this[hook].forEach(cb =>
-      cb.apply(null, Array.prototype.slice.call(arguments, 1)));
+    return this[hook].reduce((prev, cur) =>
+      prev.then(() => cur.apply(null, Array.prototype.slice.call(arguments, 1))), Promise.resolve());
   }
 }
 
