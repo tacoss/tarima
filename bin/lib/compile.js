@@ -285,8 +285,11 @@ module.exports = function _compile(tarima, files, cb) {
 
           const _method = (partial.params.data.$bundle || isBundle(src)) ? 'bundle' : 'render';
           const _bundler = partial.params.data.$bundler || opts.bundler || 'rollup';
+          const _prefix = partial.params.isScript && _method === 'bundle'
+            ? _bundler
+            : _method;
 
-          return logger(_method, src, end =>
+          return logger(_prefix, src, end =>
             partial[_method]((err, output) => {
               if (err) {
                 end(src, _method, 'failure');

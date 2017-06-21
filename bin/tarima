@@ -198,7 +198,7 @@ const run = (opts, cb) => {
     try {
       _runner(opts, logger, cb);
     } catch (e) {
-      errLog((_.flags.verbose && e.stack) || e.toString());
+      errLog((_.flags.debug && e.stack) || e.toString());
       die(1);
     }
   });
@@ -252,7 +252,7 @@ const defaultConfig = {
 try {
   $.merge(defaultConfig, mainPkg.tarima || {});
 } catch (e) {
-  errLog(`Configuration mismatch: ${(_.flags.verbose && e.stack) || e.toString()}`);
+  errLog(`Configuration mismatch: ${(_.flags.debug && e.stack) || e.toString()}`);
   die(1);
 }
 
@@ -507,7 +507,7 @@ process.nextTick(() => {
         errLog(`Failed source ${err.filename}`);
       }
 
-      errLog((_.flags.verbose && err.stack) || err.toString());
+      errLog((_.flags.debug && err.stack) || err.toString());
 
       if (!(_.flags.server || isDev)) {
         die(1);
