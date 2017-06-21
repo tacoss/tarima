@@ -43,9 +43,13 @@ let _;
 try {
   _ = wargs(process.argv.slice(2), {
     arrays: 'SxlLwyREG',
-    booleans: 'qvVOdfsh',
+    booleans: 'qvVOdfshUACI',
     defaults: DEFAULTS,
     aliases: {
+      U: 'umd',
+      A: 'amd',
+      C: 'cjs',
+      I: 'iife',
       B: 'bundler',
       b: 'bundle',
       q: 'quiet',
@@ -157,6 +161,10 @@ Options:
   -f, --force       Force rendering/bundling of all sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
   -B  --bundler     Choose bundler tool: webpack, rollup or fuse-box (e.g. -B webpack)
+  -U, --umd         Save bundles as UMD wrapper
+  -A, --amd         Save bundles as AMD wrapper
+  -C, --cjs         Save bundles as CommonJS wrapper
+  -I, --iife        Save bundles as IIFE wrapper (default)
 
   -q, --quiet       Minimize output logs
   -d, --debug       Enable debug mode when transpiling
@@ -284,6 +292,25 @@ if (configFile) {
 
 // normalize extensions
 $.merge(defaultConfig.bundleOptions.extensions, defaultConfig.extensions || {});
+
+defaultConfig.bundleOptions.rollup = defaultConfig.bundleOptions.rollup || {};
+
+// setup rollup format
+if (_.flags.umd) {
+  defaultConfig.bundleOptions.rollup.format = 'umd';
+}
+
+if (_.flags.amd) {
+  defaultConfig.bundleOptions.rollup.format = 'amd';
+}
+
+if (_.flags.cjs) {
+  defaultConfig.bundleOptions.rollup.format = 'cjs';
+}
+
+if (_.flags.iife) {
+  defaultConfig.bundleOptions.rollup.format = 'iife';
+}
 
 delete defaultConfig.extensions;
 
