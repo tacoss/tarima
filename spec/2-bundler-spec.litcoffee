@@ -5,9 +5,10 @@
         view = tarima('a.js')
         view.bundle (err, result) ->
           expect(err).toBeUndefined()
-          expect(result.source).toContain 'require'
-          expect(result.source).toContain 'runtime'
+          expect(result.source).toContain '"<h1>It works!</h1>"'
           expect(result.source).toContain 'function template'
+          expect(result.source).toContain '[x, template]'
+          expect(result.source).toContain 'runtime'
           done()
 
       it 'should skip non-scripts', (done) ->
