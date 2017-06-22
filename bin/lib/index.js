@@ -299,10 +299,7 @@ module.exports = (options, logger, done) => {
     }
   };
 
-  let _state = 'pending';
   let close;
-
-  context.state = value => _state === value;
 
   function end(err, result) {
     try {
@@ -310,8 +307,6 @@ module.exports = (options, logger, done) => {
         close.call(null, err, result);
         close = null;
       }
-
-      _state = 'pending';
 
       context.cache.save();
 
@@ -327,8 +322,6 @@ module.exports = (options, logger, done) => {
         close = options.reloader.call(null, context, options);
       }
     } catch (e) {
-      _state = 'errored';
-
       done.call(context, e, result);
       context.emit('end', e, result);
     }
@@ -338,7 +331,6 @@ module.exports = (options, logger, done) => {
     if (!err) {
       try {
         compileFiles.call(context, tarima, src, end);
-        _state = 'working';
       } catch (e) {
         end(e);
       }
@@ -351,18 +343,11 @@ module.exports = (options, logger, done) => {
     Promise.resolve()
       .then(() => plugs())
       .then(() => opts())
-      .then(() => {
+      .then(() =>
         readFiles.call(context, (err2, files) => {
-          if (_state === 'working') {
-            _state = 'abort';
-          }
-
-          if (_state === 'pending') {
-            src = files;
-            build(err2);
-          }
-        });
-      })
+          src = files;
+          build(err2);
+        }))
       .catch(e => die(e));
   } catch (e) {
     die(e);

@@ -41,7 +41,6 @@ module.exports = function _compile(tarima, files, cb) {
   const tasks = [];
 
   const cache = this.cache;
-  const state = this.state;
   const options = this.opts;
 
   const dist = this.dist;
@@ -453,27 +452,17 @@ module.exports = function _compile(tarima, files, cb) {
   tasks
   .sort((a, b) => b._offset - a._offset)
   .reduce((a, b) =>
-    a.then(() => {
-      if (state('abort')) {
-        return;
-      }
-
-      return new Promise((resolve, reject) =>
-        b.run((err, _files) => {
-          if (err) {
-            reject(err);
-          } else {
-            data.push(_files);
-            resolve();
-          }
-        }));
-    }), Promise.resolve())
-    .then(() => {
-      if (state('abort')) {
-        logger.printf('\r\r{% important The build was stopped %}\n');
-      }
-
-      _end();
-    })
+    a.then(() =>
+      new Promise((resolve, reject) =>
+        setTimeout(() =>
+          b.run((err, _files) => {
+            if (err) {
+              reject(err);
+            } else {
+              data.push(_files);
+              resolve();
+            }
+          })))), Promise.resolve())
+    .then(_end)
     .catch(_end);
 };
