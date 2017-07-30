@@ -76,7 +76,7 @@
     "pug": ">=2.0.0-beta11",
     "ractive": "^0.8.12",
     "rimraf": ">=2.5.4",
-    "rollup": "^0.41.6",
+    "rollup": "^0.45.2",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-json": ">=2.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
