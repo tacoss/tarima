@@ -80,7 +80,7 @@ try {
     },
   });
 } catch (e) {
-  errLog(`${e.message || e.toString()} (use --help for usage info)`);
+  errLog(`${e.message || e.toString()} (add --help for usage info)`);
   die(1);
 }
 
