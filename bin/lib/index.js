@@ -103,6 +103,17 @@ module.exports = (options, logger, done) => {
     }
   });
 
+  // normalize copy-patterns
+  options.copy = options.copy !== null && typeof options.copy === 'object'
+    ? options.copy
+    : {};
+
+  Object.keys(options.copy).forEach(src => {
+    logger.info('\r\r{% log Copying files from: %} {% yellow %s %}\n', src);
+
+    $.copy(src, path.join(options.dest, options.copy[src]));
+  });
+
   const filters = Array.isArray(options.filter) ? options.filter : ['**'];
   const context = plugableSupportAPI(logger, options);
 
