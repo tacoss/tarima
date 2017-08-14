@@ -368,8 +368,8 @@ if (_.flags.exclude) {
 // apply globals first
 const _globals = defaultConfig.globals || defaultConfig.env || {};
 
-$.merge(env, _globals[_.flags.env] || {});
 $.merge(env, _globals);
+$.merge(env, _globals[_.flags.env] || {});
 
 // package info
 Object.defineProperty(env, 'env', {
