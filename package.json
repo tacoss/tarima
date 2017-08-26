@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "3.7.2",
+  "version": "3.7.3",
   "description": "Templating madness!",
   "main": "lib/index.js",
   "bin": {
@@ -77,7 +77,7 @@
     "ractive": "^0.8.12",
     "rimraf": ">=2.5.4",
     "rollup": "^0.48.2",
-    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-commonjs": "^8.2.0",
     "rollup-plugin-json": ">=2.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "styl": ">=0.2.9",
