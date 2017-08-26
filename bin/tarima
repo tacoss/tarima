@@ -371,13 +371,14 @@ const _globals = defaultConfig.globals || defaultConfig.env || {};
 $.merge(env, _globals);
 $.merge(env, _globals[_.flags.env] || {});
 
-// package info
-Object.defineProperty(env, 'env', {
-  configurable: false,
-  enumerable: false,
-  get: () => $.extend({}, process.env),
+// merge only ENV_VARS_IN_CAPS
+Object.keys(process.env).forEach(key => {
+  if (/^[A-Z_]+$/.test(key) && typeof env[key] === 'undefined') {
+    env[key] = process.env[key];
+  }
 });
 
+// package info
 Object.defineProperty(env, 'pkg', {
   configurable: false,
   enumerable: false,
