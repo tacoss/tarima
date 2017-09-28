@@ -287,7 +287,7 @@ if (configFile) {
 
   debug('config %s', configFile);
 
-  $.merge(defaultConfig, $.readJSON(path.resolve(configFile)));
+  $.merge(defaultConfig, require(path.resolve(configFile)));
 }
 
 // normalize extensions
