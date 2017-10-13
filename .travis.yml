@@ -12,10 +12,10 @@ node_js:
   - 6
   - 7
 before_script:
-  - '(node -v | grep -e "v[67]") && yarn add svelte fuse-box || echo SKIP'
+  - '(node -v | grep -e "v[67]") && npm install svelte fuse-box || echo SKIP'
 script:
-  - 'yarn cover'
+  - 'npm run cover'
 after_success:
-  - 'yarn cover:up'
+  - 'npm run cover:up'
 notifications:
   email: false
