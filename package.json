@@ -36,18 +36,18 @@
     "test": "npm run lint && npm run spec"
   },
   "dependencies": {
-    "debug": ">=2.2.0",
+    "debug": "^3.1.0",
     "deindent": "^0.1.0",
     "dotenv": "^2.0.0",
-    "es6-promise": "^4.0.5",
+    "es6-promise": "^4.1.1",
     "fs-extra": "^1.0.0",
-    "glob": "^7.1.1",
-    "js-yaml": "^3.7.0",
-    "log-pose": "^0.2.4",
+    "glob": "^7.1.2",
+    "js-yaml": "^3.10.0",
+    "log-pose": "^0.2.5",
     "memory-fs": "^0.4.1",
     "micromatch": "^2.3.11",
     "redent": "^2.0.0",
-    "tosource": ">=1.0.0",
+    "tosource": "^1.0.0",
     "wargs": "^0.7.1"
   },
   "devDependencies": {
