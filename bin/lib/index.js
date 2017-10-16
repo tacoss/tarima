@@ -311,26 +311,43 @@ module.exports = (options, logger, done) => {
   };
 
   let close;
+  let closing;
 
   function end(err, result) {
-    try {
-      if (close) {
-        close.call(null, err, result);
-        close = null;
+    function _next() {
+      let reloader = options.reloader;
+
+      if (typeof options.reloader === 'string') {
+        logger.info('\r{% log Running: %} {% yellow %s %}\r\n', options.reloader);
+        reloader = require(reloader);
       }
+
+      if (typeof reloader === 'function') {
+        close = reloader.call(null, context, options);
+      }
+
+      closing = false;
 
       context.cache.save();
 
       done.call(context, err, result);
       context.emit('end', err, result);
+    }
 
-      if (typeof options.reloader === 'string') {
-        logger.info('\r{% log Running: %} {% yellow %s %}\r\n', options.reloader);
-        options.reloader = require(options.reloader);
-      }
+    try {
+      if (close && !closing) {
+        closing = true;
 
-      if (typeof options.reloader === 'function') {
-        close = options.reloader.call(null, context, options);
+        if (close.length === 1) {
+          close(_next);
+        } else {
+          close();
+          _next();
+        }
+
+        close = null;
+      } else {
+        _next();
       }
     } catch (e) {
       done.call(context, e, result);
