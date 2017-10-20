@@ -312,21 +312,26 @@ module.exports = (options, logger, done) => {
 
   let close;
   let closing;
+  let _started;
 
   function end(err, result) {
     function _next() {
-      let reloader = options.reloader;
+      if (result.output.length || !_started) {
+        let reloader = options.reloader;
 
-      if (typeof options.reloader === 'string') {
-        logger.info('\r{% log Running: %} {% yellow %s %}\r\n', options.reloader);
-        reloader = require(reloader);
+        if (typeof reloader === 'string') {
+          logger.info('\r{% log Running: %} {% yellow %s %}\r\n', reloader);
+          reloader = require(reloader);
+        }
+
+        if (typeof reloader === 'function') {
+          close = reloader.call(context, result, options);
+        }
+
+        closing = false;
       }
 
-      if (typeof reloader === 'function') {
-        close = reloader.call(null, context, options);
-      }
-
-      closing = false;
+      _started = true;
 
       context.cache.save();
 
@@ -335,7 +340,7 @@ module.exports = (options, logger, done) => {
     }
 
     try {
-      if (close && !closing) {
+      if (typeof close === 'function' && !closing) {
         closing = true;
 
         if (close.length === 1) {
