@@ -327,10 +327,9 @@ module.exports = (options, logger, done) => {
         if (typeof reloader === 'function') {
           close = reloader.call(context, result, options);
         }
-
-        closing = false;
       }
 
+      closing = false;
       _started = true;
 
       context.cache.save();
@@ -340,7 +339,7 @@ module.exports = (options, logger, done) => {
     }
 
     try {
-      if (typeof close === 'function' && !closing) {
+      if (result.output.length && close && !closing) {
         closing = true;
 
         if (close.length === 1) {
