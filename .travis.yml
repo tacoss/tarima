@@ -10,7 +10,7 @@ addons:
 node_js:
   - 4
   - 6
-  - 7
+  - 8
 before_script:
   - '(node -v | grep -e "v[68]") && npm install svelte fuse-box || echo SKIP'
 script:
