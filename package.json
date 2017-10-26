@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "3.9.1",
+  "version": "3.9.2",
   "description": "Templating madness!",
   "main": "lib/index.js",
   "bin": {
@@ -43,7 +43,7 @@
     "fs-extra": "^1.0.0",
     "glob": "^7.1.2",
     "js-yaml": "^3.10.0",
-    "log-pose": "^0.2.5",
+    "log-pose": "^0.2.6",
     "memory-fs": "^0.4.1",
     "micromatch": "^2.3.11",
     "redent": "^2.0.0",
@@ -86,7 +86,19 @@
     "vue-template-compiler": "^2.2.6",
     "webpack": "^3.8.1"
   },
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org"
-  }
+  "bundledDependencies": [
+    "debug",
+    "deindent",
+    "dotenv",
+    "es6-promise",
+    "fs-extra",
+    "glob",
+    "js-yaml",
+    "log-pose",
+    "memory-fs",
+    "micromatch",
+    "redent",
+    "tosource",
+    "wargs"
+  ]
 }
