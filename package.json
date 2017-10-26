@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "3.9.2",
+  "version": "3.10.0",
   "description": "Templating madness!",
   "main": "lib/index.js",
   "bin": {
@@ -43,7 +43,7 @@
     "fs-extra": "^1.0.0",
     "glob": "^7.1.2",
     "js-yaml": "^3.10.0",
-    "log-pose": "^0.2.6",
+    "log-pose": "^0.3.0",
     "memory-fs": "^0.4.1",
     "micromatch": "^2.3.11",
     "redent": "^2.0.0",
@@ -85,20 +85,5 @@
     "typescript": "^2.2.2",
     "vue-template-compiler": "^2.2.6",
     "webpack": "^3.8.1"
-  },
-  "bundledDependencies": [
-    "debug",
-    "deindent",
-    "dotenv",
-    "es6-promise",
-    "fs-extra",
-    "glob",
-    "js-yaml",
-    "log-pose",
-    "memory-fs",
-    "micromatch",
-    "redent",
-    "tosource",
-    "wargs"
-  ]
+  }
 }
