@@ -438,15 +438,17 @@ module.exports = function _compile(tarima, files, cb) {
     _cache = null;
     _bundle = null;
 
-    try {
-      cb(err, {
-        cache: cache.all(),
-        input: Object.keys(seen),
-        output: $.flatten(data),
-      });
-    } catch (e) {
-      logger.printf('\r\r{% failure %s %}\n', e.toString());
-    }
+    setTimeout(() => {
+      try {
+        cb(err, {
+          cache: cache.all(),
+          input: Object.keys(seen),
+          output: $.flatten(data),
+        });
+      } catch (e) {
+        logger.printf('\r\r{% failure %s %}\n', e.toString());
+      }
+    });
   }
 
   tasks
