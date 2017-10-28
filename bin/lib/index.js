@@ -316,7 +316,7 @@ module.exports = (options, logger, done) => {
 
   function end(err, result) {
     function _next() {
-      if (result.output.length || !_started) {
+      if (result && result.output.length || !_started) {
         let reloader = options.reloader;
 
         if (typeof reloader === 'string') {
@@ -339,7 +339,7 @@ module.exports = (options, logger, done) => {
     }
 
     try {
-      if (result.output.length && close && !closing) {
+      if (result && result.output.length && close && !closing) {
         closing = true;
 
         if (close.length === 1) {
