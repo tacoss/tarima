@@ -316,7 +316,7 @@ module.exports = (options, logger, done) => {
 
   function end(err, result) {
     function _next() {
-      if (result && result.output.length || !_started) {
+      if ((result && result.output.length) || !_started) {
         let reloader = options.reloader;
 
         if (typeof reloader === 'string') {
