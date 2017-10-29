@@ -373,7 +373,7 @@ $.merge(env, _globals[_.flags.env] || {});
 
 // merge only ENV_VARS_IN_CAPS
 Object.keys(process.env).forEach(key => {
-  if (/^[A-Z_]+$/.test(key) && typeof env[key] === 'undefined') {
+  if (key.indexOf('npm_') !== 0 && typeof env[key] === 'undefined') {
     env[key] = process.env[key];
   }
 });
