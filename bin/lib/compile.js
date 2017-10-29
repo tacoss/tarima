@@ -400,13 +400,13 @@ module.exports = function _compile(tarima, files, cb) {
     }
 
     if (!seen[src]) {
-      debug('ADD %s', src);
       seen[src] = true;
 
       if (match(src)) {
+        debug('ADD %s', src);
         append(src, compile);
       } else {
-        debug('NOMATCH %s', src);
+        debug('SKIP %s', src);
       }
     } else {
       debug('SEEN %s', src);
