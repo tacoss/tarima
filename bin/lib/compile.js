@@ -441,6 +441,7 @@ module.exports = function _compile(tarima, files, cb) {
     setTimeout(() => {
       try {
         cb(err, {
+          files,
           cache: cache.all(),
           input: Object.keys(seen),
           output: $.flatten(data),
