@@ -129,6 +129,7 @@ module.exports = (options, logger, done) => {
   context.cache = cacheableSupportAPI(options.cacheFile);
   context.match = $.makeFilter(false, filters);
   context.logger = logger;
+  context.started = true;
 
   options.pluginOptions = options.pluginOptions || {};
   options.bundleOptions = options.bundleOptions || {};
@@ -312,44 +313,60 @@ module.exports = (options, logger, done) => {
 
   let close;
   let closing;
-  let _started;
+  let reloader;
+
+  function runner(main, result) {
+    if (context.started) {
+      return main.call(context, result, options);
+    }
+
+    for (let i = 0; i < options.watch.length; i += 1) {
+      for (let j = 0; j < result.files.length; j += 1) {
+        if (result.files[j].indexOf(options.watch[i]) === 0) {
+          return main.call(context, result, options);
+        }
+      }
+    }
+  }
 
   function end(err, result) {
     function _next() {
-      if ((result && result.output.length) || !_started) {
-        let reloader = options.reloader;
+      if (!reloader && options.reloader) {
+        reloader = options.reloader;
 
         if (typeof reloader === 'string') {
-          logger.info('\r{% log Running: %} {% yellow %s %}\r\n', reloader);
+          logger.info('\r{% log Reloader: %} {% yellow %s %}\r\n', reloader);
           reloader = require(reloader);
-        }
-
-        if (typeof reloader === 'function') {
-          close = reloader.call(context, result, options);
         }
       }
 
+      if (typeof reloader === 'function' && (result && !result.output.length)) {
+        close = runner(reloader, result);
+      }
+
       closing = false;
-      _started = true;
 
       context.cache.save();
+      context.started = false;
 
       done.call(context, err, result);
       context.emit('end', err, result);
     }
 
     try {
-      if (result && result.output.length && close && !closing) {
+      if (!closing && (result && !result.output.length)) {
         closing = true;
 
-        if (close.length === 1) {
-          close(_next);
+        if (typeof close === 'function') {
+          if (close.length === 1) {
+            close(_next);
+          } else {
+            close();
+            _next();
+          }
         } else {
-          close();
           _next();
         }
-
-        close = null;
       } else {
         _next();
       }
