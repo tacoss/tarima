@@ -51,30 +51,30 @@ function makeReplacement(obj, test, rename) {
           if (/^\d+$/.test(b)) {
             parts.splice(j, +b);
             j = 0;
-            h++;
+            h += 1;
             continue;
           }
 
           if (a === b) {
-            h++;
+            h += 1;
             parts[j] = keys[h];
-            h++;
-            j++;
+            h += 1;
+            j += 1;
             continue;
           }
 
           _test.push(a);
-          j++;
+          j += 1;
         }
 
         return _test.join('/');
       })
       // backward compat
-      .replace('{filename}', path.basename(rel, ext))
-      .replace('{extname}', ext.substr(1)))
-      .replace('{fname}', path.basename(rel))
-      .replace('{name}', path.basename(rel, ext))
-      .replace('{ext}', ext.substr(1));
+        .replace('{filename}', path.basename(rel, ext))
+        .replace('{extname}', ext.substr(1)))
+        .replace('{fname}', path.basename(rel))
+        .replace('{name}', path.basename(rel, ext))
+        .replace('{ext}', ext.substr(1));
     }
   };
 }
@@ -189,53 +189,53 @@ module.exports = (options, logger, done) => {
     // conditionally load devPlugins
     .concat((options.flags.env === 'development' ? options.devPlugins || [] : [])
       .map(devFile => ({ dev: true, src: devFile })))
-      .map(file => {
-        if (typeof file !== 'object') {
-          file = { src: file };
-        }
+    .map(file => {
+      if (typeof file !== 'object') {
+        file = { src: file };
+      }
 
-        const testFile = path.resolve(file.src);
+      const testFile = path.resolve(file.src);
 
-        file.fn = require($.isFile(testFile) ? testFile : file.src);
+      file.fn = require($.isFile(testFile) ? testFile : file.src);
 
-        return file;
-      })
-      .sort((a, b) => {
-        // run dev-plugins at the end
-        if (a.dev && !b.dev) {
-          return 1;
-        }
+      return file;
+    })
+    .sort((a, b) => {
+      // run dev-plugins at the end
+      if (a.dev && !b.dev) {
+        return 1;
+      }
 
-        if (!a.dev && b.dev) {
-          return -1;
-        }
+      if (!a.dev && b.dev) {
+        return -1;
+      }
 
-        return b.fn.length - a.fn.length;
-      })
-      .map(task =>
-        new Promise((resolve, reject) => {
-          function next(e) {
-            if (e) {
-              reject(e);
-            } else {
-              resolve();
-            }
-          }
-
-          // ES6 interop
-          task.fn = task.fn.default || task.fn;
-
-          try {
-            if (task.fn.length) {
-              task.fn.call(context, next);
-            } else {
-              task.fn.call(context);
-              next();
-            }
-          } catch (e) {
+      return b.fn.length - a.fn.length;
+    })
+    .map(task =>
+      new Promise((resolve, reject) => {
+        function next(e) {
+          if (e) {
             reject(e);
+          } else {
+            resolve();
           }
-        })));
+        }
+
+        // ES6 interop
+        task.fn = task.fn.default || task.fn;
+
+        try {
+          if (task.fn.length) {
+            task.fn.call(context, next);
+          } else {
+            task.fn.call(context);
+            next();
+          }
+        } catch (e) {
+          reject(e);
+        }
+      })));
 
   const opts = () => {
     if (options.ignore) {

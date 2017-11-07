@@ -84,14 +84,14 @@ function watch(cb) {
       ignorePermissionErrors: true,
       followSymlinks: options.followSymlinks,
     })
-    .on('all', (evt, file) => {
-      if (evt === 'add' || evt === 'change' || evt === 'unlink') {
-        debug(`${evt} ${file}`);
-        add.call(this, file);
-      }
-    })
-    .on('error', e => next.call(this, e))
-    .add(options.watch);
+      .on('all', (evt, file) => {
+        if (evt === 'add' || evt === 'change' || evt === 'unlink') {
+          debug(`${evt} ${file}`);
+          add.call(this, file);
+        }
+      })
+      .on('error', e => next.call(this, e))
+      .add(options.watch);
   } catch (e) {
     next.call(this, e);
   }

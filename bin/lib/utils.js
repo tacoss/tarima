@@ -154,15 +154,17 @@ function makeFilter(any, filters) {
     let res = false;
     let pass = 0;
 
-    while (length--) {
+    while (length) {
       if (filters[length](filepath)) {
         if (any) {
           res = true;
           break;
         }
 
-        pass++;
+        pass += 1;
       }
+
+      length -= 1;
     }
 
     return res || pass === filters.length;

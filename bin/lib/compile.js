@@ -101,7 +101,7 @@ module.exports = function _compile(tarima, files, cb) {
     _cache = {};
   }
 
-  for (let i = 0, c = fixedBundle.length; i < c; i++) {
+  for (let i = 0, c = fixedBundle.length; i < c; i += 1) {
     if (fixedBundle[i] === true) {
       fixedBundle = [];
 
@@ -453,19 +453,19 @@ module.exports = function _compile(tarima, files, cb) {
   }
 
   tasks
-  .sort((a, b) => b._offset - a._offset)
-  .reduce((a, b) =>
-    a.then(() =>
-      new Promise((resolve, reject) =>
-        setTimeout(() =>
-          b.run((err, _files) => {
-            if (err) {
-              reject(err);
-            } else {
-              data.push(_files);
-              resolve();
-            }
-          })))), Promise.resolve())
+    .sort((a, b) => b._offset - a._offset)
+    .reduce((a, b) =>
+      a.then(() =>
+        new Promise((resolve, reject) =>
+          setTimeout(() =>
+            b.run((err, _files) => {
+              if (err) {
+                reject(err);
+              } else {
+                data.push(_files);
+                resolve();
+              }
+            })))), Promise.resolve())
     .then(_end)
     .catch(_end);
 };

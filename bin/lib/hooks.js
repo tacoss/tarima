@@ -44,8 +44,8 @@ function dispatch(files, run) {
           retval.then(resolve).catch(next);
         }
       })))
-    .then(result => next(undefined, $.flatten(result)))
-    .catch(error => next(error)));
+      .then(result => next(undefined, $.flatten(result)))
+      .catch(error => next(error)));
 }
 
 function filter(expr, cb) {
