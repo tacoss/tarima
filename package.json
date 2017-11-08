@@ -44,7 +44,7 @@
     "glob": "^7.1.2",
     "global-or-local": "^0.1.0",
     "js-yaml": "^3.10.0",
-    "log-pose": "^0.3.0",
+    "log-pose": "^0.3.1",
     "memory-fs": "^0.4.1",
     "micromatch": "^3.1.4",
     "redent": "^2.0.0",
