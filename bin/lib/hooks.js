@@ -4,8 +4,6 @@
 
 const $ = require('./utils');
 
-const Promise = require('es6-promise').Promise;
-
 function dispatch(files, run) {
   const cb = [];
   const src = [];

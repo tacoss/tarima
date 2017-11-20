@@ -3,7 +3,6 @@
 const $ = require('./utils');
 
 const path = require('path');
-const Promise = require('es6-promise');
 const micromatch = require('micromatch');
 
 const readFiles = require('./read');
