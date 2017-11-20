@@ -150,11 +150,11 @@ function makeFilter(any, filters) {
 
   // micromatch.filter() didn't work as expected
   return filepath => {
-    let length = filters.length;
+    let length = filters.length - 1;
     let res = false;
     let pass = 0;
 
-    while (length) {
+    while (length >= 0) {
       if (filters[length](filepath)) {
         if (any) {
           res = true;
