@@ -373,17 +373,15 @@ $.merge(env, _globals[_.flags.env] || {});
 
 // merge only ENV_VARS_IN_CAPS
 Object.keys(process.env).forEach(key => {
-  if (key.indexOf('npm_') !== 0 && typeof env[key] === 'undefined') {
+  if (/^[A-Z][A-Z\d_]*$/.test(key) && typeof env[key] === 'undefined') {
     env[key] = process.env[key];
   }
 });
 
 // package info
-Object.defineProperty(env, 'pkg', {
-  configurable: false,
-  enumerable: false,
-  get: () => mainPkg,
-});
+defaultConfig.bundleOptions.locals = defaultConfig.bundleOptions.locals || {};
+defaultConfig.bundleOptions.locals.env = env;
+defaultConfig.bundleOptions.locals.pkg = mainPkg;
 
 Object.keys(env).forEach(key => {
   defaultConfig.bundleOptions.globals[key] = env[key];
