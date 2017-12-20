@@ -39,7 +39,7 @@
     "debug": "^3.1.0",
     "deindent": "^0.1.0",
     "dotenv": "^4.0.0",
-    "fs-extra": "^4.0.2",
+    "fs-extra": "^5.0.0",
     "glob": "^7.1.2",
     "global-or-local": "^0.1.0",
     "js-yaml": "^3.10.0",
@@ -48,13 +48,13 @@
     "micromatch": "^3.1.4",
     "redent": "^2.0.0",
     "tosource": "^1.0.0",
-    "wargs": "^0.7.1"
+    "wargs": "^0.8.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.6",
     "babel-core": "^6.18.2",
     "babel-preset-es2015": "^6.24.0",
-    "buble": "^0.17.0",
+    "buble": "^0.18.0",
     "codecov": "^3.0.0",
     "coffeescript": "^1.12.7",
     "ejs": "^2.5.2",
@@ -76,7 +76,7 @@
     "pug": ">=2.0.0-beta11",
     "ractive": "^0.9.9",
     "rimraf": ">=2.5.4",
-    "rollup": "^0.50.0",
+    "rollup": "^0.52.3",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": ">=2.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
