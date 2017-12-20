@@ -30,9 +30,8 @@ const DEFAULTS = {
   bundler: 'rollup',
   bundle: '**/index.js',
   public: 'public',
+  src: 'src',
   dest: 'build',
-  config: 'config',
-  reloader: 'index.js',
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
   proxy: 'localhost:8080',
@@ -42,10 +41,9 @@ let _;
 
 try {
   _ = wargs(process.argv.slice(2), {
-    arrays: 'SxlLwyREG',
-    booleans: 'qvVOdfshUACI',
-    defaults: DEFAULTS,
-    aliases: {
+    boolean: 'qvVOdfshUACI',
+    default: DEFAULTS,
+    alias: {
       U: 'umd',
       A: 'amd',
       C: 'cjs',
@@ -127,12 +125,12 @@ Usage:
   ${_bin} [OPTIONS]
   ${_bin} [...] js:es6 css:less
   ${_bin} [...] API_KEY=*secret* PORT=3000
-  ${_bin} [...] "**/*:{basedir/1}/{fname}" "**/mock:{basedir/2}/api/{fname}"
+  ${_bin} [...] -R "**/*:{basedir/1}/{fname}" -R "**/mock:{basedir/2}/api/{fname}"
 
 Options:
-  -S, --src         Sources files, comma separated (e.g. -S app -S public )
-  -D, --dest        Destination directory (e.g. -D build/dist)
-  -W, --public      Public directory for relative sources
+  -S, --src         Source directories to process
+  -D, --dest        Destination for generated files
+  -W, --public      Public directory for serving assets
 
   -e, --env         Customization per environment (e.g. -e production)
 
@@ -231,12 +229,12 @@ if ($.isFile(pkg)) {
 
 const defaultConfig = {
   cwd,
-  src: $.toArray(_.flags.src),
+  src: $.toArray(_.flags.src).concat(_._),
   watch: $.toArray(_.flags.watch),
   bundle: $.toArray(_.flags.bundle),
   plugins: $.toArray(_.flags.plugins),
   devPlugins: $.toArray(_.flags.devPlugins),
-  rename: _._.concat($.toArray(_.flags.rename)),
+  rename: $.toArray(_.flags.rename),
   dest: _.flags.dest || DEFAULTS.dest,
   public: _.flags.public || DEFAULTS.public,
   cacheFile: '.tarima',
