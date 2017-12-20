@@ -30,7 +30,6 @@ const DEFAULTS = {
   bundler: 'rollup',
   bundle: '**/index.js',
   public: 'public',
-  src: 'src',
   dest: 'build',
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
