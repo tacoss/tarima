@@ -8,7 +8,7 @@
 ![Tarima](tarima.png)
 
 ```bash
-$ yarn add tarima --dev
+$ npm install tarima --save-dev
 ```
 
 **Tarima** is a pre-processing tool based on filename extensions.
@@ -147,25 +147,25 @@ Tarima use some predefined keys in order to customize certain aspects of renderi
 
 You can install the following dependencies for specific support:
 
-- `yarn add vue-template-compiler` &rarr; `.vue` component files and templates
-- `yarn add coffee-script` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
-- `yarn add postcss` &rarr; `.post.css` sources (experimental)
-- `yarn add pug` &rarr; `.pug` and `.jade` (legacy)
-- `yarn add sass-node` &rarr; `.sass` and `.scss`
-- `yarn add less` &rarr; `.less`
-- `yarn add ejs` &rarr; `.ejs`
-- `yarn add styl` &rarr; `.styl`
-- `yarn add handlebars` &rarr; `.hbs`
-- `yarn add ractive` &rarr; `.ract` and `.rv`
-- `yarn add kramed` &rarr; `.md`, `.mkd`
-- `yarn add moonjs` &rarr; `.sv` and `.moon`
-- `yarn add marko` &rarr; `.sv` and `.marko`
-- `yarn add svelte` &rarr; `.sv` and `.svelte`
-- `yarn add buble` &rarr; `.jsx` and `.es6.js`
-- `yarn add traceur` &rarr; `.jsx` and `.es6.js`
-- `yarn add typescript` &rarr; `.ts` and `.tsx`
-- `yarn add liquid-node` &rarr; `.sv` and `.liquid`
-- `yarn add babel-core@^5` &rarr; `.jsx` and `.es6.js`
+- `npm install vue-template-compiler` &rarr; `.vue` component files and templates
+- `npm install coffee-script` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
+- `npm install postcss` &rarr; `.post.css` sources (experimental)
+- `npm install pug` &rarr; `.pug` and `.jade` (legacy)
+- `npm install sass-node` &rarr; `.sass` and `.scss`
+- `npm install less` &rarr; `.less`
+- `npm install ejs` &rarr; `.ejs`
+- `npm install styl` &rarr; `.styl`
+- `npm install handlebars` &rarr; `.hbs`
+- `npm install ractive` &rarr; `.ract` and `.rv`
+- `npm install kramed` &rarr; `.md`, `.mkd`
+- `npm install moonjs` &rarr; `.sv` and `.moon`
+- `npm install marko` &rarr; `.sv` and `.marko`
+- `npm install svelte` &rarr; `.sv` and `.svelte`
+- `npm install buble` &rarr; `.jsx` and `.es6.js`
+- `npm install traceur` &rarr; `.jsx` and `.es6.js`
+- `npm install typescript` &rarr; `.ts` and `.tsx`
+- `npm install liquid-node` &rarr; `.sv` and `.liquid`
+- `npm install babel-core@^5` &rarr; `.jsx` and `.es6.js`
 
 > Tarima doesn't ship any dependency for the supported engines, is your responsibility to install whatever you will need.
 
@@ -173,7 +173,7 @@ You can install the following dependencies for specific support:
 
 Tarima supports `.es6` through [Bublé](http://buble.surge.sh/) which is so damn fast and lot constrained than Babel, of course you can use Traceur too.
 
-Babel &mdash; `yarn add babel-core@^6 babel-preset-es2015` to get the latest babel version with `es2015` as default preset:
+Babel &mdash; `npm install babel-core@^6 babel-preset-es2015` to get the latest babel version with `es2015` as default preset:
 
 ```json
 {
@@ -501,24 +501,110 @@ All `plugins` are loaded automatically by Tarima on the startup.
 
 ### 3.11 - Settings
 
-- `cwd` &mdash;
-- `src`
-- `dest`
-- `public`
-- `cacheFile`
-- `rename`
-- `filter`
-- `ignore`
-- `ignoreFiles`
-- `watch`
-- `bundle`
-- `bundleOptions`
-- `plugins`
-- `devPlugins`
-- `pluginOptions`
-- `flags`
-- `locals`
-- `reloader`
-- `notifications`
+- `cwd` &mdash; project's directory
+- `src` &mdash; source directories to process
+- `dest` &mdash; destination for generated files
+- `public` &mdash; public directory for serving assets
+- `cacheFile` &mdash; store processed details from files
+- `rename` &mdash; declare single rename operations, e.g. `M:N`
+- `filter` &mdash; set which files will be ignored from processing
+- `ignore` &mdash; skip sources, files, directories or globs from anything
+- `ignoreFiles` &mdash; extract `ignore` patterns from these files (see above)
+- `watch` &mdash; additional files and directories to watch, globs will not work!
+- `bundle` &mdash; enable bundling if it's `true`, or just files matching this
+- `bundleOptions` &mdash; enable settings for all processed sources (see above)
+- `plugins` &mdash; enable plugins for further processing, e.g. `talavera`
+- `devPlugins` &mdash; same as above, but only if `NODE_ENV=development` (e.g. `tarima-lr`)
+- `pluginOptions` &mdash; specific options for all enabled plugins
+- `flags` &mdash; given flags from CLI (or custom)
+- `locals` &mdash; data passed to all rendered sources
+- `reloader` &mdash; this script is invoked after any change
+- `notifications` &mdash; custom settings for `node-notifier`
 
-WIP: this document is being updated...
+**Example of "tarima" settings**
+
+```json
+{
+  "cwd": ".",
+  "src": [
+    "lib/myapp/templates",
+    "lib/myapp_web/assets"
+  ],
+  "watch": [
+    "lib/myapp/application.js",
+    "lib/myapp/chat",
+    "lib/myapp/models",
+    "lib/myapp/services",
+    "lib/myapp_web/controllers",
+    "lib/myapp_web/middlewares",
+    "lib/myapp_web/middlewares.js",
+    "lib/myapp_web/policies.js",
+    "lib/myapp_web/routes.js",
+    "config",
+    ".env",
+    "package.json"
+  ],
+  "filter": [
+    "!_*",
+    "!**/_*",
+    "!**/_*/**"
+  ],
+  "bundle": [
+    "**/templates/**",
+    "**/javascripts/**"
+  ],
+  "rename": [
+    "**/templates/**:{fullpath/2}",
+    "**/assets/**:public/{fullpath/3}"
+  ],
+  "ignoreFiles": [
+    ".gitignore"
+  ],
+  "devPlugins": [
+    "tarima-lr"
+  ],
+  "plugins": [
+    "talavera",
+    "tarima-bower"
+  ],
+  "pluginOptions": {
+    "talavera": {
+      "dest": "public/images"
+    },
+    "tarima-lr": {
+      "serve": "build/public",
+      "timeout": 1000
+    },
+    "tarima-bower": {
+      "vendor": "build/public/vendor",
+      "bundle": true
+    }
+  },
+  "bundleOptions": {
+    "sourceMapFile": false,
+    "bundleCache": false,
+    "entryCache": false,
+    "extensions": {
+      "js": "es6",
+      "css": "less"
+    },
+    "less": {
+      "plugins": [
+        "less-plugin-autoprefix"
+      ]
+    },
+    "rollup": {
+      "plugins": [
+        "rollup-plugin-node-resolve",
+        "rollup-plugin-commonjs"
+      ],
+      "rollup-plugin-node-resolve": {
+        "module": true,
+        "jsnext": true,
+        "main": true,
+        "browser": true
+      }
+    }
+  }
+}
+```
