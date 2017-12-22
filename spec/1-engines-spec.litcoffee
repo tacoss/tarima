@@ -1,3 +1,18 @@
+    describe 'Data', ->
+      describe 'JSON', ->
+        json_block = JSON.stringify(foo: 'bar')
+
+        test ['x.json', json_block], (result) ->
+          expect(result.source).toEqual 'module.exports = {"foo":"bar"}'
+
+      describe 'YAML', ->
+        yaml_block = '''
+          foo: bar
+        '''
+
+        test ['x.yaml', yaml_block], (result) ->
+          expect(result.source).toEqual 'module.exports = { foo:"bar" }'
+
     describe 'Markup', ->
       describe 'Liquid', ->
         test ['x.liquid', '{% assign x = "y" %}{{x}}'], (result) ->
