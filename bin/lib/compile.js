@@ -2,8 +2,6 @@
 
 const debug = require('debug')('tarima:compile');
 
-const $ = require('./utils');
-
 const path = require('path');
 
 const support = require('../../lib/support');
@@ -12,42 +10,17 @@ const workerFarm = require('worker-farm');
 
 const workers = workerFarm(require.resolve('./_compiler'));
 
-module.exports = function _compile(tarima, files, cb) {
+const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
+const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?|marko|svelte|[rs]v|ract|vue)(?=>(?:\.\w+)*|$)$/;
+
+module.exports = (context, files, cb) => {
   const tasks = [];
 
-  const cache = this.cache;
-  const match = this.match;
-  const options = this.opts;
+  const cache = context.cache;
+  const match = context.match;
+  const options = context.opts;
 
-  options.bundleOptions.cache = cache.all() || {};
-
-  // built-in helpers
-  options.bundleOptions.helpers.destFile = id => $.read(path.join(options.dest, id));
-  options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
-
-  /* eslint-disable prefer-rest-params */
-  /* eslint-disable prefer-spread */
-
-  options.bundleOptions.helpers.includeTag = function _include() {
-    return Array.prototype.slice.call(arguments)
-      .map(src => {
-        if (String(src).indexOf('.css') > -1) {
-          return `<link rel="stylesheet" href="${src}">`;
-        }
-
-        if (String(src).indexOf('.js') > -1) {
-          return `<script src="${src}"></script>`;
-        }
-
-        throw new Error(`Unsupported source for <@include>: ${src}`);
-      })
-      .join('\n');
-  };
-
-  if ($.isFile(this.opts.rollupFile)) {
-    /* eslint-disable global-require */
-    $.merge(options.bundleOptions.rollup, require(path.resolve(this.opts.rollupFile)));
-  }
+  const onDelete = context.emit.bind(null, 'delete');
 
   const seen = {};
   const unknown = [];
@@ -79,7 +52,33 @@ module.exports = function _compile(tarima, files, cb) {
   }
 
   function compile(src) {
-    tasks.push({ src });
+    const entry = cache.get(src) || {};
+
+    // override
+    entry.main = true;
+
+    if (entry.deleted) {
+      context.dist({
+        src,
+        type: 'delete',
+        dest: entry.dest,
+      });
+
+      cache.rm(src);
+      onDelete(src, entry);
+    } else {
+      let ascDesc = src.split('/').length * -1;
+
+      if (RE_STYLES.test(src)) {
+        ascDesc = 2;
+      }
+
+      if (RE_SCRIPTS.test(src)) {
+        ascDesc = 1;
+      }
+
+      tasks.push({ src, _offset: ascDesc });
+    }
   }
 
   function dest(id, ext) {
@@ -134,6 +133,7 @@ module.exports = function _compile(tarima, files, cb) {
       const _target = {
         src: file,
         dest: dest(file),
+        _offset: 3,
       };
 
       if (typeof options.rename === 'function') {
@@ -153,17 +153,27 @@ module.exports = function _compile(tarima, files, cb) {
     });
   }
 
-  Promise.all(tasks.map(data => new Promise((resolve, reject) => {
-    workers(data, options, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  })))
-    .then(result => {
-      _end(null, result.filter(Boolean));
+  const _files = [];
+
+  Promise.all(tasks
+    .sort((a, b) => b._offset - a._offset)
+    .map(task => new Promise((resolve, reject) => {
+      workers(task, options, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          result.forEach(x => {
+            if (_files.indexOf(x) === -1) {
+              _files.push(x);
+            }
+          });
+
+          resolve();
+        }
+      });
+    })))
+    .then(() => {
+      _end(null, _files);
     })
     .catch(_end);
 };

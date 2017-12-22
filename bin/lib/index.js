@@ -11,10 +11,6 @@ const compileFiles = require('./compile');
 const plugableSupportAPI = require('./hooks');
 const cacheableSupportAPI = require('./caching');
 
-// initialize meta-bundler
-/* eslint-disable global-require */
-const tarima = require('../../lib');
-
 function makeReplacement(obj, test, rename) {
   return value => {
     const dir = obj.dest || obj.cwd;
@@ -378,7 +374,7 @@ module.exports = (options, logger, done) => {
   function build(err) {
     if (!err) {
       try {
-        compileFiles.call(context, tarima, src, end);
+        compileFiles(context, src, end);
       } catch (e) {
         end(e);
       }
@@ -392,7 +388,7 @@ module.exports = (options, logger, done) => {
       .then(() => plugs())
       .then(() => opts())
       .then(() =>
-        readFiles.call(context, (err2, files) => {
+        readFiles(context, (err2, files) => {
           src = files;
           build(err2);
         }))

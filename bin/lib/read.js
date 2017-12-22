@@ -51,11 +51,11 @@ function sync(id, src, cache) {
   }
 }
 
-function watch(cb) {
+function watch(context, cb) {
   chokidar = chokidar || require('chokidar');
 
-  const cache = this.cache;
-  const options = this.opts;
+  const cache = context.cache;
+  const options = context.opts;
 
   let timeout;
   let src = [];
@@ -72,7 +72,7 @@ function watch(cb) {
     }
 
     clearTimeout(timeout);
-    timeout = setTimeout(next.bind(this), options.interval || 200);
+    timeout = setTimeout(next, options.interval || 200);
   }
 
   try {
@@ -87,26 +87,24 @@ function watch(cb) {
       .on('all', (evt, file) => {
         if (evt === 'add' || evt === 'change' || evt === 'unlink') {
           debug(`${evt} ${file}`);
-          add.call(this, file);
+          add(file);
         }
       })
-      .on('error', e => next.call(this, e))
+      .on('error', next)
       .add(options.watch);
   } catch (e) {
-    next.call(this, e);
+    next(e);
   }
 }
 
-module.exports = function _read(cb) {
-  if (!this.opts.src.length) {
-    return cb(new Error(`Missing sources, given '${this.opts.src}'`));
+module.exports = (context, cb) => {
+  if (!context.opts.src.length) {
+    return cb(new Error(`Missing sources, given '${context.opts.src}'`));
   }
 
-  const filter = this.opts.src.length > 1
-    ? `{${this.opts.src}}/**`
-    : `${this.opts.src}/**`;
-
-  const self = this;
+  const filter = context.opts.src.length > 1
+    ? `{${context.opts.src}}/**`
+    : `${context.opts.src}/**`;
 
   let files = [];
 
@@ -117,25 +115,25 @@ module.exports = function _read(cb) {
       dot: true,
       nodir: true,
       nosort: true,
-      cwd: this.opts.cwd,
-      ignore: this.opts.ignore,
+      cwd: context.opts.cwd,
+      ignore: context.opts.ignore,
     });
   } catch (e) {
     return cb(e);
   }
 
-  if (self.opts.flags.env === 'development') {
+  if (context.opts.flags.env === 'development') {
     try {
-      watch.call(self, cb);
+      watch(context, cb);
     } catch (e) {
       return cb(e);
     }
   }
 
   cb(undefined, files.filter(file => {
-    const entry = self.cache.get(file);
+    const entry = context.cache.get(file);
 
-    if (!entry || self.opts.flags.force === true) {
+    if (!entry || context.opts.flags.force === true) {
       return true;
     }
 
@@ -146,7 +144,7 @@ module.exports = function _read(cb) {
     }
 
     if (entry.mtime && ($.mtime(file) > entry.mtime)) {
-      sync(file, files, self.cache);
+      sync(file, files, context.cache);
     }
 
     return true;
