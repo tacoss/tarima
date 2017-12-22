@@ -48,7 +48,8 @@
     "micromatch": "^3.1.4",
     "redent": "^2.0.0",
     "tosource": "^1.0.0",
-    "wargs": "^0.8.0"
+    "wargs": "^0.8.0",
+    "worker-farm": "^1.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.6",
