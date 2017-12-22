@@ -124,7 +124,7 @@ module.exports = (options, logger, done) => {
   context.cache = cacheableSupportAPI(options.cacheFile);
   context.match = $.makeFilter(false, filters);
   context.logger = logger;
-  context.started = true;
+  context.started = new Date();
 
   options.pluginOptions = options.pluginOptions || {};
   options.bundleOptions = options.bundleOptions || {};

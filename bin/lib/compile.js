@@ -8,7 +8,8 @@ const support = require('../../lib/support');
 
 const workerFarm = require('worker-farm');
 
-const workers = workerFarm(require.resolve('./_compiler'));
+const _compiler = require('./_compiler');
+const _compilerWorker = workerFarm(require.resolve('./_compiler'));
 
 const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
 const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?|marko|svelte|[rs]v|ract|vue)(?=>(?:\.\w+)*|$)$/;
@@ -153,12 +154,17 @@ module.exports = (context, files, cb) => {
     });
   }
 
+  // FIXME: avoid workers for fast initial compilations!
+  const _worker = options.flags.workers === true
+    ? _compilerWorker
+    : _compiler;
+
   const _files = [];
 
   Promise.all(tasks
     .sort((a, b) => b._offset - a._offset)
     .map(task => new Promise((resolve, reject) => {
-      workers(task, options, (err, result) => {
+      _worker(task, options, (err, result) => {
         if (err) {
           reject(err);
         } else {
