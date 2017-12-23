@@ -3,14 +3,9 @@
 const debug = require('debug')('tarima:compile');
 
 const path = require('path');
-
-const support = require('../../lib/support');
-
 const workerFarm = require('worker-farm');
 
-const _compiler = require('./_compiler');
-
-const _compilerWorker = workerFarm(require.resolve('./_compiler'));
+const support = require('../../lib/support');
 
 const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
 const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?|marko|svelte|[rs]v|ract|vue)(?=>(?:\.\w+)*|$)$/;
@@ -155,21 +150,17 @@ module.exports = (context, files, cb) => {
     });
   }
 
-  // FIXME: avoid workers for fast initial compilations!
-  const useWorkers = options.flags.workers === true;
-
-  const _worker = useWorkers
-    ? _compilerWorker
-    : _compiler;
+  const _compilerWorker = workerFarm(require.resolve('./_compiler'));
 
   const _files = [];
 
   Promise.all(tasks
     .sort((a, b) => b._offset - a._offset)
-    .map(task => new Promise((resolve, reject) => {
-      _worker(task, options, (err, result) => {
+    .map(task => new Promise(next => {
+      _compilerWorker(task, options, (err, result) => {
         if (err) {
-          reject(err);
+          context.logger.info('\r{% fail %s %}\n', err);
+          next();
         } else {
           result.forEach(x => {
             if (_files.indexOf(x) === -1) {
@@ -177,13 +168,13 @@ module.exports = (context, files, cb) => {
             }
           });
 
-          resolve();
+          next();
         }
       });
     })))
     .then(() => {
-      if (!options.watch && useWorkers) {
-        workerFarm.end(_worker);
+      if (!options.watch) {
+        workerFarm.end(_compilerWorker);
       }
 
       _end(null, _files);

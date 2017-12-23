@@ -142,7 +142,7 @@ function notify(message, title, icon) {
 }
 
 function makeFilter(any, filters) {
-  filters = filters.map(filter => {
+  filters = filters.filter(Boolean).map(filter => {
     if (typeof filter === 'function') {
       return filter;
     }
@@ -178,11 +178,17 @@ function makeFilter(any, filters) {
 function decorateError(ex, params) {
   ex.filename = ex.filename || params.filename;
 
+  // rollup
+  if (ex.frame && ex.loc) {
+    return [
+      `Error: ${params.filename}:${ex.loc.line}:${ex.loc.column}`,
+      `${ex.frame}\n${ex.message}`,
+    ].join('\n');
+  }
+
   // less
   if (ex.extract && !ex.stack) {
-    const E = new Error(ex.message);
-
-    const m = [
+    return [
       `Error: ${params.filename}:${ex.line}:${ex.column}`,
       `    ${ex.line - 1}| ${ex.extract[0]}`,
       `  > ${ex.line}| ${ex.extract[1]}`,
@@ -190,11 +196,6 @@ function decorateError(ex, params) {
       `    ${ex.line + 1}| ${ex.extract[2]}`,
       `\n${ex.message}`,
     ].join('\n');
-
-    E.stack = ex.stack;
-    E.toString = () => m;
-
-    return E;
   }
 
   return ex;

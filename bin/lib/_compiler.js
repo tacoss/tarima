@@ -36,7 +36,7 @@ function prune(object) {
 
 let ctx;
 
-function getContext(options) {
+function initContext(options) {
   let _level;
 
   _level = (options.flags.verbose && 'verbose') || (options.flags.debug ? 'debug' : 'info');
@@ -130,7 +130,7 @@ function getContext(options) {
     Promise.resolve()
       .then(() => ctx.onWrite(view, index))
       .then(() => {
-        if (options.bundleOptions.optimize) {
+        if (options.bundleOptions.optimizations) {
           const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
 
           if (view.dest.indexOf('.css') > -1) {
@@ -308,12 +308,12 @@ function getContext(options) {
           .catch(cb);
       }));
   };
-
-  return ctx;
 }
 
 module.exports = (data, options, callback) => {
-  ctx = ctx || getContext(options);
+  if (!ctx) {
+    initContext(options);
+  }
 
   Promise.resolve()
     .then(() => {

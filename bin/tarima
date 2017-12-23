@@ -60,8 +60,8 @@ try {
       x: 'exclude',
       l: 'plugins',
       L: 'devPlugins',
-      O: 'optimize',
       r: 'reloader',
+      m: 'minify',
       d: 'debug',
       f: 'force',
       w: 'watch',
@@ -88,7 +88,7 @@ logger = require('log-pose')
   .getLogger(12, process.stdout, process.stderr);
 
 if (_.flags.debug && _.flags.verbose) {
-  require('debug').enable('tarima,tarima:*,grown,grown:*,talavera:*');
+  require('debug').enable('*');
   require('log-pose').setLevel(false);
 }
 
@@ -130,31 +130,21 @@ Examples:
 Options:
   -e, --env         Customization per environment (e.g. -e production)
 
-                    - NODE_ENV=development is required for watching
-                    - Values are exported as globals depending on the environment:
-
-                      "globals": {
-                        "development": { ... },
-                        "production": { ... },
-                        "FOO": "bar"
-                      }
-
   -D, --dest        Destination for generated files
   -W, --public      Public directory for serving assets
-
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
 
+  -m, --minify      Apply optimizations for final sources (google-closure-compiler-js, csso)
   -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower -l talavera)
   -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
-  -O, --optimize    Apply optimizations for final sources (google-closure-compiler-js, csso)
 
   -o, --open        Open browser (requires browser-sync/live-reload, see below)
   -p, --port        Enable custom port for serving files (e.g. tarima-lr)
   -P, --proxy       Enable proxying for local server (e.g. tarima-lr)
   -s, --serve       Enable file serving (e.g. with tarima-lr)
 
-  -f, --force       Force rendering/bundling of all sources
+  -f, --force       Force rendering/bundling of all given sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
   -B  --bundler     Choose bundler tool: webpack, rollup or fuse-box (e.g. -B webpack)
   -U, --umd         Save bundles as UMD wrapper
@@ -251,8 +241,8 @@ const defaultConfig = {
   bundleOptions: {
     bundler: _.flags.bundler,
     globals: _.data,
-    optimize: _.flags.optimize,
     extensions: _.params,
+    optimizations: _.flags.minify,
   },
   flags: _.flags,
   reloader: _.flags.reloader,
