@@ -1,6 +1,7 @@
 #!/bin/sh
+
 ':' // ; exec "$(command -v nodejs || command -v node)" "$0" "$@"
-;
+; // eslint-disable-line semi-style
 
 'use strict';
 
@@ -14,17 +15,6 @@ const wargs = require('wargs');
 const die = process.exit.bind(process);
 
 const $ = require('./lib/utils');
-
-// safe
-let logger;
-
-function errLog(message) {
-  if (logger && logger.isEnabled()) {
-    logger.printf('\r{% error %s %}\r\n', message.replace(/\s*$/, ''));
-  } else {
-    process.stderr.write(`\r\x1b[31m${message}\x1b[0m\n`);
-  }
-}
 
 const DEFAULTS = {
   bundler: 'rollup',
@@ -76,14 +66,14 @@ try {
     },
   });
 } catch (e) {
-  errLog(`${e.message || e.toString()} (add --help for usage info)`);
+  $.errLog(`${e.message || e.toString()} (add --help for usage info)`);
   die(1);
 }
 
 // nice logs!
 const _level = _.flags.verbose ? 'verbose' : _.flags.debug ? 'debug' : 'info';
 
-logger = require('log-pose')
+const logger = require('log-pose')
   .setLevel((_.flags.quiet && !_.flags.version && !_.flags.help) ? false : _level)
   .getLogger(12, process.stdout, process.stderr);
 
@@ -187,7 +177,7 @@ const run = (opts, cb) => {
     try {
       _runner(opts, logger, cb);
     } catch (e) {
-      errLog((_.flags.debug && e.stack) || e.toString());
+      $.errLog((_.flags.debug && e.stack) || e.toString());
       die(1);
     }
   });
@@ -252,7 +242,7 @@ const defaultConfig = {
 try {
   $.merge(defaultConfig, mainPkg.tarima || {});
 } catch (e) {
-  errLog(`Configuration mismatch: ${(_.flags.debug && e.stack) || e.toString()}`);
+  $.errLog(`Configuration mismatch: ${(_.flags.debug && e.stack) || e.toString()}`);
   die(1);
 }
 
@@ -479,7 +469,7 @@ function exec(onError) {
       debug('exec %s - %s', exitCode, _cmd);
 
       if (errors.length) {
-        errLog(errors.join('\n'));
+        $.errLog(errors.join('\n'));
         onError({ msg: errors.join('\n') });
       }
 
@@ -522,12 +512,12 @@ process.nextTick(() => {
       debug('failed %s', err);
 
       if (_.flags.quiet && err.filename) {
-        errLog(`Failed source ${err.filename}`);
+        $.errLog(`Failed source ${err.filename}`);
       }
 
-      errLog((_.flags.debug && err.stack) || err.toString());
+      $.errLog((_.flags.debug && err.stack) || err.toString());
 
-      if (!(_.flags.server || isDev)) {
+      if (!isWatching) {
         die(1);
       }
 

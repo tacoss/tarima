@@ -155,15 +155,14 @@ module.exports = (context, files, cb) => {
 
   Promise.all(tasks
     .sort((a, b) => b._offset - a._offset)
-    .map(task => new Promise(next => {
+    .map(task => new Promise((resolve, reject) => {
       const _worker = _compiler.getShared(options);
 
       _workers.push(_worker);
 
       _worker.run(task, options, (err, result) => {
         if (err) {
-          context.logger.info('\r{% fail %s %}\n', err);
-          next();
+          reject(err);
         } else {
           result.forEach(x => {
             if (_files.indexOf(x) === -1) {
@@ -171,7 +170,7 @@ module.exports = (context, files, cb) => {
             }
           });
 
-          next();
+          resolve();
         }
       });
     })))
@@ -185,7 +184,6 @@ module.exports = (context, files, cb) => {
       _end(null, _files);
     })
     .catch(e => {
-      console.log(e);
       _end(e, _files);
     });
 };

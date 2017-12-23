@@ -11,6 +11,11 @@ const micromatch = require('micromatch');
 
 let notifier;
 
+// safe error logs
+function errLog(message) {
+  process.stderr.write(`\r\x1b[31m${message}\x1b[0m\n`);
+}
+
 function env(value) {
   if (typeof value === 'string') {
     return value.replace(/\$\{(\w+)\}/g, (match, key) => {
@@ -213,6 +218,7 @@ module.exports = {
   mtime,
   toArray,
   flatten,
+  errLog,
   copy: fs.copySync,
   unlink: fs.unlinkSync,
   readJSON: fs.readJsonSync,
