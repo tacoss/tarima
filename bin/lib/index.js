@@ -182,7 +182,7 @@ module.exports = (options, logger, done) => {
 
   const plugs = () => Promise.all((options.plugins || [])
     // conditionally load devPlugins
-    .concat((options.flags.env === 'development' ? options.devPlugins || [] : [])
+    .concat((options.watch ? options.devPlugins || [] : [])
       .map(devFile => ({ dev: true, src: devFile })))
     .map(file => {
       if (typeof file !== 'object') {

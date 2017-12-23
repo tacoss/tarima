@@ -9,6 +9,7 @@ const support = require('../../lib/support');
 const workerFarm = require('worker-farm');
 
 const _compiler = require('./_compiler');
+
 const _compilerWorker = workerFarm(require.resolve('./_compiler'));
 
 const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
@@ -26,9 +27,9 @@ module.exports = (context, files, cb) => {
   const seen = {};
   const unknown = [];
 
-  const watchers = !Array.isArray(options.watch)
-    ? [options.watch]
-    : options.watch;
+  const watchers = !Array.isArray(options.watching)
+    ? [options.watching]
+    : options.watching;
 
   const watching = file => {
     for (let i = 0, c = watchers.length; i < c; i += 1) {

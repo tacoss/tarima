@@ -52,7 +52,6 @@ try {
       q: 'quiet',
       W: 'public',
       D: 'dest',
-      S: 'src',
       e: 'env',
       h: 'help',
       c: 'config',
@@ -121,16 +120,14 @@ const _bin = Object.keys(thisPkg.bin)[0];
 if (_.flags.help) {
   logger.write(`
 Usage:
-  ${_bin} [OPTIONS]
-  ${_bin} [...] js:es6 css:less
-  ${_bin} [...] API_KEY=*secret* PORT=3000
-  ${_bin} [...] -R "**/*:{basedir/1}/{fname}" -R "**/mock:{basedir/2}/api/{fname}"
+  ${_bin} [watch] ...
+
+Examples:
+  ${_bin} app/assets js:es6 css:less
+  ${_bin} src/**/*.js API_KEY=*secret* PORT=3000
+  ${_bin} watch lib -R "**/*:{basedir/1}/{fname}" -R "**/mock:{basedir/2}/api/{fname}"
 
 Options:
-  -S, --src         Source directories to process
-  -D, --dest        Destination for generated files
-  -W, --public      Public directory for serving assets
-
   -e, --env         Customization per environment (e.g. -e production)
 
                     - NODE_ENV=development is required for watching
@@ -142,7 +139,9 @@ Options:
                         "FOO": "bar"
                       }
 
-  -w, --watch       Enable custom file watching (e.g. -w _src -w bin)
+  -D, --dest        Destination for generated files
+  -W, --public      Public directory for serving assets
+
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
 
@@ -170,7 +169,7 @@ Options:
   -y, --only        Filter out non-matching sources using src.indexOf("substr")
   -x, --exclude     Filter out sources using globs (e.g. -x test/broken -x .coffee)
 
-                    Example patterns:
+                    Exclude patterns:
                       - *foo     -> !*foo
                       - .bar     -> !**/*.bar
                       - x.y      -> !**/x.y
@@ -178,12 +177,7 @@ Options:
                       - foo/bar  -> !**/foo/bar/**
 
   -r, --reloader    Load module for reset stuff on changes (e.g. -r bin/server)
-
-                    Imported modules should be like:
-
-                    module.exports = function start() {
-                      return function stop() {};
-                    };
+  -w, --watching    Append additional directories for watch (e.g. -w _src -w bin)
 
   -E, --extensions  Enable hidden extensions (e.g. -E .es6.js -E .post.css -E .js.hbs.pug)
   -G, --globals     Shorthand for global variables (e.g. -G FOO=BAR -G AKI_PEY=xyz)
@@ -226,12 +220,22 @@ if ($.isFile(pkg)) {
   mainPkg = $.readJSON(pkg);
 }
 
+let isWatching = false;
+
+const _src = [];
+
+if (_._[0] === 'watch') {
+  isWatching = true;
+  _._.shift();
+}
+
 const defaultConfig = {
   cwd,
-  src: $.toArray(_.flags.src).concat(_._),
-  watch: $.toArray(_.flags.watch),
+  src: _src,
+  watch: isWatching,
   bundle: $.toArray(_.flags.bundle),
   plugins: $.toArray(_.flags.plugins),
+  watching: $.toArray(_.flags.watching),
   devPlugins: $.toArray(_.flags.devPlugins),
   rename: $.toArray(_.flags.rename),
   dest: _.flags.dest || DEFAULTS.dest,
@@ -589,6 +593,8 @@ logger.info('{% log Reading from %} {% yellow %s %} {% gray source%s %}\n',
   defaultConfig.src.length,
   defaultConfig.src.length === 1 ? '' : 's');
 
-logger.info('{% log Watching from %} {% yellow %s %} {% gray source%s %}\n',
-  defaultConfig.watch.length,
-  defaultConfig.watch.length === 1 ? '' : 's');
+if (isWatching) {
+  logger.info('{% log Watching from %} {% yellow %s %} {% gray source%s %}\n',
+    defaultConfig.watching.length,
+    defaultConfig.watching.length === 1 ? '' : 's');
+}

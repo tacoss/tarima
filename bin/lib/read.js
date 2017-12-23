@@ -91,7 +91,7 @@ function watch(context, cb) {
         }
       })
       .on('error', next)
-      .add(options.watch);
+      .add(options.watching);
   } catch (e) {
     next(e);
   }
@@ -122,7 +122,7 @@ module.exports = (context, cb) => {
     return cb(e);
   }
 
-  if (context.opts.flags.env === 'development') {
+  if (context.opts.watch) {
     try {
       watch(context, cb);
     } catch (e) {
@@ -133,7 +133,7 @@ module.exports = (context, cb) => {
   cb(undefined, files.filter(file => {
     const entry = context.cache.get(file);
 
-    if (!entry || context.opts.flags.force === true) {
+    if (!entry || context.opts.force === true) {
       return true;
     }
 
