@@ -335,7 +335,7 @@ module.exports = (options, logger, done) => {
         }
       }
 
-      if (typeof reloader === 'function' && (result && !result.output.length)) {
+      if (typeof reloader === 'function') {
         close = runner(reloader, result);
       }
 
