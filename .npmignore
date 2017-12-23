@@ -8,6 +8,7 @@
 .gitignore
 
 Gruntfile.js
+/spec/fixtures/build
 /node_modules
 /generated
 /coverage
