@@ -177,12 +177,7 @@ module.exports.init = options => {
     const entry = ctx.cache.get(id) || {};
 
     entry.mtime = $.mtime(id);
-
-    delete entry.dirty;
-
-    if (resolve) {
-      resolve(entry);
-    }
+    entry.dirty = false;
 
     ctx.cache.set(id, entry);
 
@@ -192,6 +187,10 @@ module.exports.init = options => {
     _timeout = setTimeout(() => {
       ctx.cache.save();
     }, 100);
+
+    if (resolve) {
+      resolve(entry);
+    }
   };
 
   ctx.copy = target => {
