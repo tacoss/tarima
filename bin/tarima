@@ -233,6 +233,7 @@ const defaultConfig = {
   cwd,
   src: _src,
   watch: isWatching,
+  force: _.flags.force === true,
   bundle: $.toArray(_.flags.bundle),
   plugins: $.toArray(_.flags.plugins),
   watching: $.toArray(_.flags.watching),
@@ -428,11 +429,11 @@ function infoFiles(result) {
       defaultConfig.notifications.okIcon);
   }
 
-  if (!isDev) {
+  if (!isWatching) {
     if (!result.output.length) {
-      logger.printf('\r\r{% end Without changes %}');
+      logger.printf('\r\r{% end Without changes %}\n');
     } else {
-      logger.printf('\r\r{% end %s file%s written %}',
+      logger.printf('\r\r{% end %s file%s written %}\n',
         result.output.length,
         result.output.length !== 1 ? 's' : '');
     }
