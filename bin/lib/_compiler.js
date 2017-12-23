@@ -171,6 +171,8 @@ function getContext(options) {
       : id));
   };
 
+  let _timeout;
+
   ctx.sync = (id, resolve) => {
     const entry = ctx.cache.get(id) || {};
 
@@ -183,6 +185,13 @@ function getContext(options) {
     }
 
     ctx.cache.set(id, entry);
+
+    clearTimeout(_timeout);
+
+    // delay a bit
+    _timeout = setTimeout(() => {
+      ctx.cache.save();
+    }, 100);
   };
 
   ctx.copy = target => {

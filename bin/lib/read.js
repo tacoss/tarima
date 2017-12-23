@@ -147,6 +147,6 @@ module.exports = (context, cb) => {
       sync(file, files, context.cache);
     }
 
-    return true;
+    return entry.dirty;
   }));
 };

@@ -78,7 +78,9 @@ module.exports = cacheFile => {
           }
         });
 
-        $.writeJSON(cacheFile, cache);
+        $.writeJSON(cacheFile, cache, {
+          spaces: 2,
+        });
       }
     },
     reset() {

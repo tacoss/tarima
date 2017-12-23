@@ -143,6 +143,10 @@ function notify(message, title, icon) {
 
 function makeFilter(any, filters) {
   filters = filters.map(filter => {
+    if (typeof filter === 'function') {
+      return filter;
+    }
+
     return micromatch.matcher(filter, {
       dot: true,
     });
