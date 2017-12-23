@@ -3,8 +3,8 @@
 const debug = require('debug')('tarima:compile');
 
 const path = require('path');
-const workerFarm = require('worker-farm');
 
+const _compiler = require('./_compiler');
 const support = require('../../lib/support');
 
 const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
@@ -150,14 +150,17 @@ module.exports = (context, files, cb) => {
     });
   }
 
-  const _compilerWorker = workerFarm(require.resolve('./_compiler'));
-
+  const _workers = [];
   const _files = [];
 
   Promise.all(tasks
     .sort((a, b) => b._offset - a._offset)
     .map(task => new Promise(next => {
-      _compilerWorker(task, options, (err, result) => {
+      const _worker = _compiler.getShared(options);
+
+      _workers.push(_worker);
+
+      _worker.run(task, options, (err, result) => {
         if (err) {
           context.logger.info('\r{% fail %s %}\n', err);
           next();
@@ -174,10 +177,15 @@ module.exports = (context, files, cb) => {
     })))
     .then(() => {
       if (!options.watch) {
-        workerFarm.end(_compilerWorker);
+        _workers.forEach(x => {
+          x.end();
+        });
       }
 
       _end(null, _files);
     })
-    .catch(_end);
+    .catch(e => {
+      console.log(e);
+      _end(e, _files);
+    });
 };
