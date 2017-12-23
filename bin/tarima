@@ -222,12 +222,12 @@ if ($.isFile(pkg)) {
 
 let isWatching = false;
 
-const _src = [];
-
 if (_._[0] === 'watch') {
   isWatching = true;
   _._.shift();
 }
+
+const _src = _._;
 
 const defaultConfig = {
   cwd,
@@ -594,7 +594,7 @@ logger.info('{% log Reading from %} {% yellow %s %} {% gray source%s %}\n',
   defaultConfig.src.length,
   defaultConfig.src.length === 1 ? '' : 's');
 
-if (isWatching) {
+if (isWatching && defaultConfig.watching.length) {
   logger.info('{% log Watching from %} {% yellow %s %} {% gray source%s %}\n',
     defaultConfig.watching.length,
     defaultConfig.watching.length === 1 ? '' : 's');

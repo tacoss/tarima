@@ -156,7 +156,9 @@ module.exports = (context, files, cb) => {
   }
 
   // FIXME: avoid workers for fast initial compilations!
-  const _worker = options.flags.workers === true
+  const useWorkers = options.flags.workers === true;
+
+  const _worker = useWorkers
     ? _compilerWorker
     : _compiler;
 
@@ -180,6 +182,10 @@ module.exports = (context, files, cb) => {
       });
     })))
     .then(() => {
+      if (!options.watch && useWorkers) {
+        workerFarm.end(_worker);
+      }
+
       _end(null, _files);
     })
     .catch(_end);
