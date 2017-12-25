@@ -449,15 +449,13 @@ You can provide a configuration file for [rollup](https://github.com/rollup/roll
 }
 ```
 
-The `src` and `dest` options are ignored since tarima will override them internally.
-
 You can setup the specific behavior of bundling using `bundleOptions`:
 
 ```json
 {
   "tarima": {
     "bundleOptions": {
-      "transpiler": "babel"
+      "transpiler": "babel",
       "less": { "plugins": [] }
     }
   }
