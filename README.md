@@ -261,30 +261,38 @@ It comes with basic dependency tracking, so any change will affect only its depe
 
 The best way is adding tarima as dependency, global or locally, and then setup your `package.json` for using it:
 
-```javascript
-{ // package.json
-  "scripts": {
-    "dev": "tarima -w",
-    "build": "tarima -f"
-  }
-}
-```
-
-Now calling `yarn dev` will start in watch-mode and `yarn build` will force a complete rebuild of all sources.
-
-The default source directory is `./src` if you need anything else you can provide arguments, e.g. `tarima -S foo -S bar` which will watch more directories.
-
-> Use directory names only without globs as they will be compiled like `{foo,bar}/**`
-
-Also you can specify this option in your `package.json` file:
-
-```javascript
+```json
 {
-  "tarima": {
-    "src": ["foo", "bar"]
+  "scripts": {
+    "dev": "tarima watch src",
+    "build": "tarima src -fe production"
   }
 }
 ```
+
+Now calling `npm run dev` will start in watch-mode and `npm run build` will set `NODE_ENV=production` and force a complete rebuild of all sources.
+
+You can pass many source directories as arguments, but they can be difficult to maintain, so you can use the `tarima` object for settings:
+
+```json
+{
+  "scripts": {
+    "dev": "tarima watch",
+    "build": "tarima -fe production"
+  },
+  "tarima": {
+    "from": [
+      "src",
+      "tests"
+    ],
+    "output": "lib"
+  }
+}
+```
+
+You can read sources `from` multiple directories.
+
+If no `output` is given `./build` will be used instead.
 
 ### 3.2 - Handling sources
 
@@ -298,8 +306,8 @@ Basically you can write `./src/index.md` and obtain `./build/src/index.html` as 
 
 You can use the `rename` option for cut-off directories from the destination filepath:
 
-```javascript
-{ // package.json
+```
+{
   "tarima": {
     "rename": [
       "**:{basedir/1}/{fname}"
@@ -322,8 +330,8 @@ Tarima will use `node-notifier` to display some feedback about the process.
 
 You can customize some values of the notification popup:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "notifications": {
       "title": "My app",
@@ -340,8 +348,8 @@ Tarima is efficient by tracking dependencies using a json-file for caching, this
 
 By default the cache file is `.tarima`, but you use a different file specifying the `cacheFile` option:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "cacheFile": "tmp/cache.json"
   }
@@ -400,8 +408,8 @@ You can use the `ignoreFiles` to provide a glob-based file with patterns to be i
 
 Example:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "ignoreFiles": [".gitignore"]
   }
@@ -416,8 +424,8 @@ Filtered sources are watched but not used for any transpilation process, they ar
 
 A common pattern is ignoring everything which starts with underscore:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "filter": [
       "!_*",
@@ -433,8 +441,8 @@ A common pattern is ignoring everything which starts with underscore:
 
 You can provide a configuration file for [rollup](https://github.com/rollup/rollup) using the `rollupFile` option:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "rollupFile": "rollup.config.js"
   }
@@ -445,8 +453,8 @@ The `src` and `dest` options are ignored since tarima will override them interna
 
 You can setup the specific behavior of bundling using `bundleOptions`:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "bundleOptions": {
       "transpiler": "babel"
@@ -462,8 +470,8 @@ All given options are passed directly when calling the `view.bundle()` method.
 
 You can pass a global `locals` object accesible for all parsed templates, this way you can reuse anything do you need:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "locals": {
       "title": "My project"
@@ -485,8 +493,8 @@ Using the `plugins` option you can declare scripts or modules to be loaded and p
 
 Some plugins can take its configuration from `pluginOptions` or directly from the main configuration:
 
-```javascript
-{ // package.json
+```json
+{
   "tarima": {
     "pluginOptions": {
       "bower": { "bundle": true }
@@ -497,28 +505,28 @@ Some plugins can take its configuration from `pluginOptions` or directly from th
 
 All `plugins` are loaded automatically by Tarima on the startup.
 
-> `devPlugins` are loaded only if the dev-mode is enabled (aka `NODE_ENV=development`)
+> `devPlugins` are loaded only if the watch-mode is enabled from CLI
 
 ### 3.11 - Settings
 
 - `cwd` &mdash; project's directory
-- `src` &mdash; source directories to process
-- `dest` &mdash; destination for generated files
+- `from` &mdash; source directories to process, not globs!
+- `output` &mdash; destination for generated files
 - `public` &mdash; public directory for serving assets
 - `cacheFile` &mdash; store processed details from files
 - `rename` &mdash; declare single rename operations, e.g. `M:N`
 - `filter` &mdash; set which files will be ignored from processing
 - `ignore` &mdash; skip sources, files, directories or globs from anything
 - `ignoreFiles` &mdash; extract `ignore` patterns from these files (see above)
-- `watch` &mdash; additional files and directories to watch, globs will not work!
 - `bundle` &mdash; enable bundling if it's `true`, or just files matching this
 - `bundleOptions` &mdash; enable settings for all processed sources (see above)
 - `plugins` &mdash; enable plugins for further processing, e.g. `talavera`
-- `devPlugins` &mdash; same as above, but only if `NODE_ENV=development` (e.g. `tarima-lr`)
+- `devPlugins` &mdash; same as above, but only on watch-mode (e.g. `tarima-lr`)
 - `pluginOptions` &mdash; specific options for all enabled plugins
 - `flags` &mdash; given flags from CLI (or custom)
 - `locals` &mdash; data passed to all rendered sources
 - `reloader` &mdash; this script is invoked after any change
+- `watching` &mdash; additional files and directories to watch, globs will not work!
 - `notifications` &mdash; custom settings for `node-notifier`
 
 **Example of "tarima" settings**
@@ -526,11 +534,11 @@ All `plugins` are loaded automatically by Tarima on the startup.
 ```json
 {
   "cwd": ".",
-  "src": [
+  "from": [
     "lib/myapp/templates",
     "lib/myapp_web/assets"
   ],
-  "watch": [
+  "watching": [
     "lib/myapp/application.js",
     "lib/myapp/chat",
     "lib/myapp/models",
