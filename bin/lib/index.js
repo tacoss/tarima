@@ -106,7 +106,7 @@ module.exports = (options, logger, done) => {
   Object.keys(options.copy).forEach(src => {
     logger.info('\r\r{% log Copying files from: %} {% yellow %s %}\n', src);
 
-    $.copy(src, path.join(options.dest, options.copy[src]));
+    $.copy(src, path.join(options.output, options.copy[src]));
   });
 
   const filters = Array.isArray(options.filter) ? options.filter : ['**'];

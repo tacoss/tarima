@@ -218,7 +218,7 @@ const defaultConfig = {
   watching: $.toArray(_.flags.watching),
   devPlugins: $.toArray(_.flags.devPlugins),
   rename: $.toArray(_.flags.rename),
-  source: _src,
+  from: _src,
   output: _.flags.output || DEFAULTS.output,
   public: _.flags.public || DEFAULTS.public,
   cacheFile: '.tarima',
@@ -571,8 +571,8 @@ process.on('exit', exitCode => {
 logger.info('{% log Output to: %} {% yellow %s %}\n', path.relative(cwd, defaultConfig.output) || '.');
 
 logger.info('{% log Reading from %} {% yellow %s %} {% gray source%s %}\n',
-  defaultConfig.source.length,
-  defaultConfig.source.length === 1 ? '' : 's');
+  defaultConfig.from.length,
+  defaultConfig.from.length === 1 ? '' : 's');
 
 if (isWatching && defaultConfig.watching.length) {
   logger.info('{% log Watching from %} {% yellow %s %} {% gray source%s %}\n',
