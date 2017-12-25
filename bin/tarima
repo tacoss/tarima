@@ -20,7 +20,7 @@ const DEFAULTS = {
   bundler: 'rollup',
   bundle: '**/index.js',
   public: 'public',
-  dest: 'build',
+  output: 'build',
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
   proxy: 'localhost:8080',
@@ -41,7 +41,7 @@ try {
       b: 'bundle',
       q: 'quiet',
       W: 'public',
-      D: 'dest',
+      O: 'output',
       e: 'env',
       h: 'help',
       c: 'config',
@@ -120,7 +120,7 @@ Examples:
 Options:
   -e, --env         Customization per environment (e.g. -e production)
 
-  -D, --dest        Destination for generated files
+  -O, --output      Destination for generated files
   -W, --public      Public directory for serving assets
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
@@ -211,7 +211,6 @@ const _src = _._;
 
 const defaultConfig = {
   cwd,
-  src: _src,
   watch: isWatching,
   force: _.flags.force === true,
   bundle: $.toArray(_.flags.bundle),
@@ -219,7 +218,8 @@ const defaultConfig = {
   watching: $.toArray(_.flags.watching),
   devPlugins: $.toArray(_.flags.devPlugins),
   rename: $.toArray(_.flags.rename),
-  dest: _.flags.dest || DEFAULTS.dest,
+  source: _src,
+  output: _.flags.output || DEFAULTS.output,
   public: _.flags.public || DEFAULTS.public,
   cacheFile: '.tarima',
   filter: [],
@@ -437,7 +437,7 @@ function exec(onError) {
     debug('exec %s', _cmd);
 
     child = spawn(cmd[0], cmd.slice(1), {
-      cwd: defaultConfig.cwd || defaultConfig.dest,
+      cwd: defaultConfig.cwd || defaultConfig.output,
       detached: true,
     });
 
@@ -568,11 +568,11 @@ process.on('exit', exitCode => {
   }
 });
 
-logger.info('{% log Output to: %} {% yellow %s %}\n', path.relative(cwd, defaultConfig.dest) || '.');
+logger.info('{% log Output to: %} {% yellow %s %}\n', path.relative(cwd, defaultConfig.output) || '.');
 
 logger.info('{% log Reading from %} {% yellow %s %} {% gray source%s %}\n',
-  defaultConfig.src.length,
-  defaultConfig.src.length === 1 ? '' : 's');
+  defaultConfig.source.length,
+  defaultConfig.source.length === 1 ? '' : 's');
 
 if (isWatching && defaultConfig.watching.length) {
   logger.info('{% log Watching from %} {% yellow %s %} {% gray source%s %}\n',

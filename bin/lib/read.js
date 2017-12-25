@@ -76,7 +76,7 @@ function watch(context, cb) {
   }
 
   try {
-    chokidar.watch(options.src, {
+    chokidar.watch(options.source, {
       cwd: options.cwd,
       ignored: options.ignore,
       persistent: true,
@@ -98,13 +98,13 @@ function watch(context, cb) {
 }
 
 module.exports = (context, cb) => {
-  if (!context.opts.src.length) {
-    return cb(new Error(`Missing sources, given '${context.opts.src}'`));
+  if (!context.opts.source.length) {
+    return cb(new Error(`Missing sources, given '${context.opts.source}'`));
   }
 
-  const filter = context.opts.src.length > 1
-    ? `{${context.opts.src}}/**`
-    : `${context.opts.src}/**`;
+  const filter = context.opts.source.length > 1
+    ? `{${context.opts.source}}/**`
+    : `${context.opts.source}/**`;
 
   let files = [];
 

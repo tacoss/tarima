@@ -90,7 +90,7 @@ module.exports = (options, logger, done) => {
     : process.cwd();
 
   // resolve all relative paths
-  ['dest', 'public', 'reloader', 'cacheFile', 'rollupFile'].forEach(subpath => {
+  ['output', 'public', 'reloader', 'cacheFile', 'rollupFile'].forEach(subpath => {
     if (options[subpath]) {
       options[subpath] = Array.isArray(options[subpath])
         ? options[subpath].map(subdir => path.resolve(options.cwd, subdir))
@@ -170,7 +170,7 @@ module.exports = (options, logger, done) => {
       : error);
   }
 
-  if (!$.exists(options.dest)) {
+  if (!$.exists(options.output)) {
     options.flags.force = true;
   }
 
