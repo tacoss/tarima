@@ -69,7 +69,7 @@ module.exports.init = options => {
   options.bundleOptions.cache = ctx.cache.all() || {};
 
   // built-in helpers
-  options.bundleOptions.helpers.destFile = id => $.read(path.join(options.dest, id));
+  options.bundleOptions.helpers.destFile = id => $.read(path.join(options.output, id));
   options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
 
   /* eslint-disable prefer-rest-params */
@@ -166,7 +166,7 @@ module.exports.init = options => {
       });
 
   ctx.dest = (id, ext) => {
-    return path.relative(options.cwd, path.join(options.dest, ext
+    return path.relative(options.cwd, path.join(options.output, ext
       ? id.replace(/\.[\w.]+$/, `.${ext}`)
       : id));
   };

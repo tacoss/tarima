@@ -79,7 +79,7 @@ module.exports = (context, files, cb) => {
   }
 
   function dest(id, ext) {
-    return path.relative(options.cwd, path.join(options.dest, ext
+    return path.relative(options.cwd, path.join(options.output, ext
       ? id.replace(/\.[\w.]+$/, `.${ext}`)
       : id));
   }
