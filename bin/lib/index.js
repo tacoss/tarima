@@ -13,13 +13,12 @@ const cacheableSupportAPI = require('./caching');
 
 function makeReplacement(obj, test, rename) {
   return value => {
-    const dir = obj.dest || obj.cwd;
+    const dir = obj.output || obj.cwd;
     const rel = value ? path.relative(dir, value) : path.relative(obj.cwd, dir);
+    const ext = path.extname(rel);
     const ok = test(rel);
 
     if (ok) {
-      const ext = path.extname(rel);
-
       // support for dynamic path slicing and rename strategy
       return path.join(dir, (rename || ok).replace(/\{(basedir|filepath|fullpath)(?:\/(.+?))?\}/, (_, type, match) => {
         const parts = type !== 'fullpath' ? path.dirname(rel).split('/') : rel.split('/');
