@@ -23,7 +23,6 @@ const DEFAULTS = {
   output: 'build',
   env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
-  proxy: 'localhost:8080',
 };
 
 let _;
@@ -198,6 +197,8 @@ if (env.error && env.error.code !== 'ENOENT') {
   $.errLog(env.error);
   die(1);
 }
+
+delete env.error;
 
 if ($.isFile(pkg)) {
   debug('config %s', pkg);
