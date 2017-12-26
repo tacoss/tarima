@@ -181,7 +181,7 @@ module.exports = (options, logger, done) => {
 
   const plugs = () => Promise.all((options.plugins || [])
     // conditionally load devPlugins
-    .concat((options.watch ? options.devPlugins || [] : [])
+    .concat((options.watch === true ? options.devPlugins || [] : [])
       .map(devFile => ({ dev: true, src: devFile })))
     .map(file => {
       if (typeof file !== 'object') {
@@ -314,9 +314,9 @@ module.exports = (options, logger, done) => {
       return main.call(context, result, options);
     }
 
-    for (let i = 0; i < options.watch.length; i += 1) {
+    for (let i = 0; i < options.watching.length; i += 1) {
       for (let j = 0; j < result.files.length; j += 1) {
-        if (result.files[j].indexOf(options.watch[i]) === 0) {
+        if (result.files[j].indexOf(options.watching[i]) === 0) {
           return main.call(context, result, options);
         }
       }

@@ -122,7 +122,7 @@ module.exports = (context, cb) => {
     return cb(e);
   }
 
-  if (context.opts.watch) {
+  if (context.opts.watch === true) {
     try {
       watch(context, cb);
     } catch (e) {
