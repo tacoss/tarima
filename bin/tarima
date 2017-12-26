@@ -192,7 +192,12 @@ const cwd = process.cwd();
 const pkg = path.join(cwd, 'package.json');
 
 // load .env
-const env = require('dotenv').config({ silent: true }) || {};
+const env = require('dotenv').config();
+
+if (env.error && env.error.code !== 'ENOENT') {
+  $.errLog(env.error);
+  die(1);
+}
 
 if ($.isFile(pkg)) {
   debug('config %s', pkg);
