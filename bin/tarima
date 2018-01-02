@@ -29,7 +29,7 @@ let _;
 
 try {
   _ = wargs(process.argv.slice(2), {
-    boolean: 'qvVOdfshUACI',
+    boolean: 'qvVOdfhUACI',
     default: DEFAULTS,
     alias: {
       U: 'umd',
@@ -58,7 +58,6 @@ try {
       o: 'open',
       p: 'port',
       P: 'proxy',
-      s: 'serve',
       R: 'rename',
       G: 'globals',
       E: 'extensions',
@@ -131,7 +130,6 @@ Options:
   -o, --open        Open browser (requires browser-sync/live-reload, see below)
   -p, --port        Enable custom port for serving files (e.g. tarima-lr)
   -P, --proxy       Enable proxying for local server (e.g. tarima-lr)
-  -s, --serve       Enable file serving (e.g. with tarima-lr)
 
   -f, --force       Force rendering/bundling of all given sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
