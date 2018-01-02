@@ -153,9 +153,9 @@ module.exports = (context, files, cb) => {
   const _workers = [];
   const _files = [];
 
-  Promise.all(tasks
+  tasks
     .sort((a, b) => b._offset - a._offset)
-    .map(task => new Promise((resolve, reject) => {
+    .map(task => () => new Promise((resolve, reject) => {
       const _worker = _compiler.getShared(options);
 
       _workers.push(_worker);
@@ -173,7 +173,8 @@ module.exports = (context, files, cb) => {
           resolve();
         }
       });
-    })))
+    }))
+    .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve())
     .then(() => {
       if (!options.watch) {
         _workers.forEach(x => {
