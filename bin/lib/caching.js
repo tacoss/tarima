@@ -26,6 +26,16 @@ module.exports = cacheFile => {
         }
 
         cache[key][val] = x;
+      } else if (typeof val === 'object') {
+        if (Array.isArray(val)) {
+          cache[key] = [].concat(cache[key] || []).concat(val);
+        } else {
+          cache[key] = cache[key] || {};
+
+          Object.keys(val).forEach(k => {
+            cache[key][k] = val[k];
+          });
+        }
       } else {
         cache[key] = val;
       }
