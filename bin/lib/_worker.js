@@ -171,8 +171,6 @@ module.exports.init = options => {
       : id));
   };
 
-  let _timeout;
-
   ctx.sync = (id, resolve) => {
     const entry = ctx.cache.get(id) || {};
 
@@ -180,13 +178,6 @@ module.exports.init = options => {
     entry.dirty = false;
 
     ctx.cache.set(id, entry);
-
-    clearTimeout(_timeout);
-
-    // delay a bit
-    _timeout = setTimeout(() => {
-      ctx.cache.save();
-    }, 100);
 
     if (resolve) {
       resolve(entry);
@@ -221,6 +212,8 @@ module.exports.init = options => {
           if (_entry.deps.indexOf(src) === -1) {
             _entry.deps.push(src);
           }
+
+          ctx.cache.set(dep, _entry);
         });
       });
     });
@@ -327,7 +320,7 @@ module.exports.run = (data, options, callback) => {
       ctx.copy(data);
     })
     .then(() => {
-      callback(null, ctx._data);
+      callback(null, ctx._data, ctx.cache.all());
     })
     .catch(e => {
       callback(e);
