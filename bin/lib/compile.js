@@ -160,10 +160,14 @@ module.exports = (context, files, cb) => {
 
       _workers.push(_worker);
 
-      _worker.run(task, options, (err, result) => {
+      _worker.run(task, options, (err, result, dependencies) => {
         if (err) {
           reject(err);
         } else {
+          Object.keys(dependencies).forEach(dep => {
+            cache.set(dep, dependencies[dep]);
+          });
+
           result.forEach(x => {
             if (_files.indexOf(x) === -1) {
               _files.push(x);
