@@ -20,7 +20,7 @@ module.exports = cacheFile => {
       return cache[key];
     },
     set(key, val, x) {
-      if (x) {
+      if (typeof x !== 'undefined') {
         if (!cache[key]) {
           cache[key] = {};
         }

@@ -164,8 +164,18 @@ module.exports = (context, files, cb) => {
         if (err) {
           reject(err);
         } else {
-          Object.keys(dependencies).forEach(dep => {
-            cache.set(dep, dependencies[dep]);
+          cache.set(task.src, 'dirty', false);
+          cache.set(task.src, 'deps', dependencies);
+
+          dependencies.forEach(dep => {
+            const parent = cache.get(dep);
+            const deps = parent.deps || [];
+
+            if (deps.indexOf(task.src) === -1) {
+              deps.push(task.src);
+              cache.set(dep, 'deps', deps);
+              cache.set(dep, 'dirty', false);
+            }
           });
 
           result.forEach(x => {
