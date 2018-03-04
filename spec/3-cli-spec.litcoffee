@@ -14,8 +14,11 @@
           expect(cmd.stdout).toContain require('../package.json').version
 
       describe 'quick check', ->
+        afterEach ->
+          rmdir 'build'
+
         it 'should copy unsupported files (default)', (done) ->
-          rmdir 'build'; cmd 'a -fy sample.txt', ->
+          cmd 'a -fy sample.txt', ->
             expect(cmd.exitStatus).toEqual 0
             expect(cmd.stderr).toEqual ''
             expect(cmd.stdout).toMatch /copy.+?sample\.txt/
@@ -24,7 +27,7 @@
             done()
 
         it 'should fail on broken sources when bundling', (done) ->
-          rmdir 'build'; cmd 'a -fby bad.js', ->
+          cmd 'a -fby bad.js', ->
             expect(cmd.exitStatus).toEqual 1
             expect(cmd.stderr).toContain 'export default `42'
             expect(cmd.stderr).toContain 'Unterminated template'
@@ -32,7 +35,7 @@
             done()
 
         it 'should bundle without mixed modules', (done) ->
-          rmdir 'build'; cmd 'a -fby good.js', ->
+          cmd 'a -fby good.js', ->
             # FIXME: expect(cmd.exitStatus).toEqual 0
             expect(cmd.stderr).toEqual ''
             expect(cmd.stdout).toContain 'build/a/good.js'

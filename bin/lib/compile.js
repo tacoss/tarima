@@ -160,21 +160,22 @@ module.exports = (context, files, cb) => {
 
       _workers.push(_worker);
 
-      _worker.run(task, options, (err, result, dependencies) => {
+      _worker.run(task, options, (err, result, caching) => {
         if (err) {
           reject(err);
         } else {
+          cache.set(task.src, caching);
           cache.set(task.src, 'dirty', false);
-          cache.set(task.src, 'deps', dependencies);
 
-          dependencies.forEach(dep => {
+          (caching.deps || []).forEach(dep => {
             const parent = cache.get(dep);
             const deps = parent.deps || [];
+
+            cache.set(dep, 'dirty', false);
 
             if (deps.indexOf(task.src) === -1) {
               deps.push(task.src);
               cache.set(dep, 'deps', deps);
-              cache.set(dep, 'dirty', false);
             }
           });
 
