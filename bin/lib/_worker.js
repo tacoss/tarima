@@ -174,10 +174,7 @@ module.exports.init = options => {
   ctx.sync = (id, resolve) => {
     const entry = ctx.cache.get(id) || {};
 
-    entry.mtime = $.mtime(id);
     entry.dirty = false;
-
-    ctx.cache.set(id, entry);
 
     if (resolve) {
       resolve(entry);
