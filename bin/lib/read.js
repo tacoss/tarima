@@ -27,8 +27,9 @@ function sync(id, src, cache) {
       }
 
       if (dep.dest === entry.dest) {
+        dep.dirty = true;
+
         if (src.indexOf(_id) === -1) {
-          dep.dirty = true;
           src.push(_id);
         }
       }
@@ -40,8 +41,9 @@ function sync(id, src, cache) {
       const _entry = cache.get(dep);
 
       if (_entry && _entry.main) {
+        _entry.dirty = true;
+
         if (src.indexOf(dep) === -1) {
-          _entry.dirty = true;
           src.push(dep);
         }
       }
