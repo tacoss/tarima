@@ -317,7 +317,7 @@ module.exports.run = (data, options, callback) => {
       ctx.copy(data);
     })
     .then(() => {
-      callback(null, ctx._data, ctx.cache.get(data.src));
+      callback(null, ctx._data, ctx.cache.get(data.src) || {});
     })
     .catch(e => {
       callback(e);
