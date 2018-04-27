@@ -168,7 +168,7 @@ module.exports = (context, files, cb) => {
           cache.set(task.src, 'dirty', false);
 
           (caching.deps || []).forEach(dep => {
-            const parent = cache.get(dep);
+            const parent = cache.get(dep) || {};
             const deps = parent.deps || [];
 
             cache.set(dep, 'dirty', false);
