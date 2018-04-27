@@ -51,7 +51,12 @@ module.exports = cacheFile => {
         };
       }
 
-      for (const file in cache) {
+      const keys = Object.keys(cache);
+      const max = keys.length;
+
+      for (let i = 0; i < max; i += 1) {
+        const file = keys[i];
+
         if (cache[file].id === key) {
           return {
             id: file,
