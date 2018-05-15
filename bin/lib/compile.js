@@ -162,45 +162,46 @@ module.exports = (context, files, cb) => {
     });
   }
 
-  const sources = tasks
-    .sort((a, b) => b._offset - a._offset)
-    .map(task => () => new Promise((resolve, reject) => {
-      const _worker = _compiler.getShared(options);
+  Promise.all(_subtasks)
+    .then(() => {
+      return tasks
+        .sort((a, b) => b._offset - a._offset)
+        .map(task => () => new Promise((resolve, reject) => {
+          const _worker = _compiler.getShared(options);
 
-      _workers.push(_worker);
+          _workers.push(_worker);
 
-      _worker.run(task, options, (err, result, caching) => {
-        if (err) {
-          reject(err);
-        } else {
-          cache.set(task.src, caching);
-          cache.set(task.src, 'dirty', false);
+          _worker.run(task, options, (err, result, caching) => {
+            if (err) {
+              reject(err);
+            } else {
+              cache.set(task.src, caching);
+              cache.set(task.src, 'dirty', false);
 
-          (caching.deps || []).forEach(dep => {
-            const parent = cache.get(dep) || {};
-            const deps = parent.deps || [];
+              (caching.deps || []).forEach(dep => {
+                const parent = cache.get(dep) || {};
+                const deps = parent.deps || [];
 
-            cache.set(dep, 'dirty', false);
+                cache.set(dep, 'dirty', false);
 
-            if (deps.indexOf(task.src) === -1) {
-              deps.push(task.src);
-              cache.set(dep, 'deps', deps);
+                if (deps.indexOf(task.src) === -1) {
+                  deps.push(task.src);
+                  cache.set(dep, 'deps', deps);
+                }
+              });
+
+              result.forEach(x => {
+                if (_files.indexOf(x) === -1) {
+                  _files.push(x);
+                }
+              });
+
+              resolve();
             }
           });
-
-          result.forEach(x => {
-            if (_files.indexOf(x) === -1) {
-              _files.push(x);
-            }
-          });
-
-          resolve();
-        }
-      });
-    }))
-    .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
-
-  Promise.all(_subtasks.concat(sources))
+        }))
+        .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
+    })
     .then(() => {
       if (!options.watch) {
         _workers.forEach(x => {
