@@ -87,29 +87,21 @@
           done()
 
       it 'should bundle commonjs sources through plugins', (done) ->
-        partial = try
-          tarima('entry.js', rollup: {
-            onwarn: (warning) ->
-              return if warning.code is 'MISSING_EXPORT'
-              console.log warning.message
-            plugins:
-              'rollup-plugin-node-resolve':
-                jsnext: true
-                main: true
-                module: true
-                browser: true
-                preferBuiltins: false
-              'rollup-plugin-commonjs':
-                include: ['node_modules/**', '**/*.js']
-          })
-        catch e
-          console.log e
-
-        if partial
-          partial.bundle (err, result) ->
-            expect(err).toBeUndefined()
-            expect(result.source).toContain 'createCommonjsModule'
-            expect(result.source).toContain './component.marko'
-            done()
-        else
+        tarima('entry.js', rollup: {
+          onwarn: (warning) ->
+            return if warning.code is 'MISSING_EXPORT'
+            return if warning.code is 'MIXED_EXPORTS'
+            console.log warning.message
+          plugins:
+            'rollup-plugin-node-resolve':
+              jsnext: true
+              main: true
+              module: true
+              browser: true
+              preferBuiltins: false
+            'rollup-plugin-commonjs':
+              include: ['node_modules/**', '**/*.js']
+        }).bundle (err, result) ->
+          expect(err).toBeUndefined()
+          expect(result.source).toContain 'exports.default = entry'
           done()
