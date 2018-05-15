@@ -268,13 +268,13 @@
         test ['x.js.marko', 'div --- OK', { client: true }], (result) ->
           expect(result.source).toMatch /require\("marko(?:\/dist)?\/vdom"\)/
 
-      # if parseFloat(process.version.substr(1)) >= 6.0
-      #   describe 'Svelte', ->
-      #     test ['x.svelte', '<div>{{value}}</div>'], (result) ->
-      #       expect(result.source).toContain 'module.exports = X;'
+      if parseFloat(process.version.substr(1)) >= 6.0
+        describe 'Svelte', ->
+          test ['x.svelte', '<div>{{value}}</div>'], (result) ->
+            expect(result.source).toContain 'module.exports = X;'
 
-      #     test ['x.y.svelte', '<div>{{value}}</div>'], (result) ->
-      #       expect(result.source).toContain '<div>{{value}}</div>'
+          test ['x.y.svelte', '<div>{{value}}</div>'], (result) ->
+            expect(result.source).toContain '<div>{{value}}</div>'
 
-      #     test ['x.js.svelte', '<div>{{value}}</div>', { client: true }], (result) ->
-      #       expect(result.source).toMatch /module\.exports[\s\S]*=[\s\S]*X;/
+          test ['x.js.svelte', '<div>{{value}}</div>', { client: true }], (result) ->
+            expect(result.source).toMatch /module\.exports[\s\S]*=[\s\S]*X;/
