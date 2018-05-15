@@ -13,6 +13,7 @@ const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?|marko|svelte|[rs]v|
 module.exports = (context, files, cb) => {
   const tasks = [];
 
+  const dispatch = context.dispatch;
   const cache = context.cache;
   const match = context.match;
   const options = context.opts;
@@ -125,19 +126,30 @@ module.exports = (context, files, cb) => {
     }
   });
 
+  const _subtasks = [];
+  const _workers = [];
+  const _files = [];
+
   if (unknown.length) {
-    unknown.forEach(file => {
+    dispatch(options, unknown.map(file => {
       const _target = {
+        _offset: 3,
         src: file,
         dest: dest(file),
-        _offset: 3,
       };
 
-      if (typeof options.rename === 'function') {
-        options.rename(_target);
-      }
+      return _target;
+    }), (result, next) => {
+      Array.prototype.push.apply(tasks, result.map(x => {
+        if (typeof options.rename === 'function') {
+          options.rename(x);
+        }
+        return x;
+      }));
 
-      tasks.push(_target);
+      _subtasks.push(next((err, _result) => {
+        Array.prototype.push.apply(_files, _result.map(x => x.dest));
+      }));
     });
   }
 
@@ -150,10 +162,7 @@ module.exports = (context, files, cb) => {
     });
   }
 
-  const _workers = [];
-  const _files = [];
-
-  tasks
+  const sources = tasks
     .sort((a, b) => b._offset - a._offset)
     .map(task => () => new Promise((resolve, reject) => {
       const _worker = _compiler.getShared(options);
@@ -189,7 +198,9 @@ module.exports = (context, files, cb) => {
         }
       });
     }))
-    .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve())
+    .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
+
+  Promise.all(_subtasks.concat(sources))
     .then(() => {
       if (!options.watch) {
         _workers.forEach(x => {

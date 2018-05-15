@@ -4,7 +4,7 @@
 
 const $ = require('./utils');
 
-function dispatch(files, run) {
+function dispatch(options, files, run) {
   const cb = [];
   const src = [];
   const unknown = [];
@@ -16,6 +16,10 @@ function dispatch(files, run) {
         if (!src[k]) {
           cb[k] = filters[k].finish;
           src[k] = [];
+        }
+
+        if (typeof options.rename === 'function') {
+          options.rename(file);
         }
 
         src[k].push(file);
@@ -63,7 +67,7 @@ function emit(hook) {
 }
 
 function dist(obj) {
-  this(obj, () => {
+  const run = () => {
     switch (obj.type) {
       case 'concat':
         $.write(obj.dest, obj.src.map(file => {
@@ -94,7 +98,13 @@ function dist(obj) {
       default:
         throw new Error(`Unsupported action: ${obj.type}`);
     }
-  });
+  };
+
+  if (!obj.quiet) {
+    this(obj, run);
+  } else {
+    run();
+  }
 }
 
 function on(hook, cb) {

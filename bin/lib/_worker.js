@@ -120,11 +120,11 @@ module.exports.init = options => {
   ctx.onWrite = ctx.emit.bind(null, 'write');
   ctx.onDelete = ctx.emit.bind(null, 'delete');
 
-  ctx.ensureRename = view => {
+  function ensureRename(view) {
     if (typeof options.rename === 'function') {
       options.rename(view);
     }
-  };
+  }
 
   ctx.ensureWrite = (view, index) =>
     Promise.resolve()
@@ -260,7 +260,7 @@ module.exports.init = options => {
           dest: target,
         };
 
-        ctx.ensureRename(result);
+        ensureRename(result);
         ctx._data.push(result.dest);
 
         result.output = output.source;
