@@ -148,7 +148,9 @@ module.exports = (context, files, cb) => {
       }));
 
       _subtasks.push(next((err, _result) => {
-        Array.prototype.push.apply(_files, _result.map(x => x.dest));
+        if (!err) {
+          Array.prototype.push.apply(_files, _result.map(x => x.dest));
+        }
       }));
     });
   }
