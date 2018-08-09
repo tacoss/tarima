@@ -11,8 +11,9 @@ node_js:
   - 4
   - 6
   - 8
+  - 10
 before_script:
-  - '(node -v | grep -e "v[68]") && npm install svelte fuse-box || echo SKIP'
+  - '(node -v | grep -e "v[681]") && npm install svelte sucrase fuse-box || echo SKIP'
 script:
   - 'npm run cover'
 after_success:

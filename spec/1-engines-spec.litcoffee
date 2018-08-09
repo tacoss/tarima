@@ -271,10 +271,24 @@
       if parseFloat(process.version.substr(1)) >= 6.0
         describe 'Svelte', ->
           test ['x.svelte', '<div>{{value}}</div>'], (result) ->
-            expect(result.source).toContain 'module.exports = X;'
+            expect(result.source).toMatch /module.exports\s+=\s+X;/
 
           test ['x.y.svelte', '<div>{{value}}</div>'], (result) ->
             expect(result.source).toContain '<div>{{value}}</div>'
 
           test ['x.js.svelte', '<div>{{value}}</div>', { client: true }], (result) ->
             expect(result.source).toMatch /module\.exports[\s\S]*=[\s\S]*X;/
+
+        describe 'Sucrase', ->
+          test [
+            'x.es6'
+            '''
+              /**
+              ---
+              $transpiler: sucrase
+              ---
+              */
+              export class { foo = 'bar' }
+            '''
+          ], (result) ->
+            expect(result.source).toContain "this.foo = 'bar'"
