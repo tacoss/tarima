@@ -68,7 +68,7 @@
     "istanbul": ">=0.4.3",
     "jasmine-node": "2.0.0-beta4",
     "kramed": ">=0.5.5",
-    "less": "^3.0.1",
+    "less": "^2.7.3",
     "liquid-node": "^3.0.0",
     "marko": "^4.5.4",
     "node-sass": "^4.6.0",
