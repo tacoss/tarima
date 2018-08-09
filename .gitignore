@@ -3,6 +3,7 @@
 .env
 *~
 *.log
+.fusebox
 /build
 /public
 /coverage

@@ -6,6 +6,10 @@
   "bin": {
     "tarima": "bin/tarima"
   },
+  "files": [
+    "lib/**",
+    "bin/**"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tacoss/tarima.git"
