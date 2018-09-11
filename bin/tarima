@@ -29,7 +29,7 @@ let _;
 
 try {
   _ = wargs(process.argv.slice(2), {
-    boolean: 'qvVOdfhUACI',
+    boolean: 'qvVmdfhUACI',
     default: DEFAULTS,
     alias: {
       U: 'umd',
@@ -123,7 +123,7 @@ Options:
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
 
-  -m, --minify      Apply optimizations for final sources (google-closure-compiler-js, csso)
+  -m, --minify      Apply optimizations for final sources (uglify, csso)
   -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower -l talavera)
   -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
 

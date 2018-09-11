@@ -143,18 +143,18 @@ module.exports.init = options => {
           }
 
           if (view.dest.indexOf('.js') > -1) {
-            jsCompressor = jsCompressor || require('google-closure-compiler-js').compile;
+            jsCompressor = jsCompressor || require('uglify-es').minify;
 
-            view.output = jsCompressor({
-              jsCode: [{ src: view.output }],
-              languageIn: 'ECMASCRIPT6',
-              languageOut: 'ECMASCRIPT5',
-              compilationLevel: 'ADVANCED',
-              warningLevel: 'VERBOSE',
-              env: 'CUSTOM',
-              createSourceMap: sourceMaps,
-              applyInputSourceMaps: sourceMaps,
-            }).compiledCode;
+            view.output = jsCompressor(view.output, {
+              ie8: true,
+              compress: {
+                warnings: true,
+                drop_console: true,
+                unsafe_proto: true,
+                unsafe_undefined: true,
+              },
+              sourceMap: sourceMaps,
+            }).code;
           }
         }
 
