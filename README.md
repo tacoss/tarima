@@ -84,35 +84,17 @@ view.bundle(locals, (err, result) => {
 - `cwd` &mdash; Save all file paths relative to this directory
 - `cache` &mdash; Cache object being used by Rollup.js
 - `rollup` &mdash; Configuration object used by Rollup.js
-- `fusebox` &mdash; Configuration object used by FuseBox
-- `webpack` &mdash; Configuration object used by Webpack
-- `bundler` &mdash; Shortcut for setting the given bundler as default
 
-You can enable an specific bundler in several ways:
+You can enable specific settings as:
 
 ```bash
-# from any source
-/**
----
-$bundler: fusebox
----
-*/
-
 # from settings
 {
   "bundleOptions": {
-    "bundler": "fusebox",
-    "webpack": {},
+    "buble": {},
   }
 }
-
-# from command-line
-$ tarima -B fusebox
 ```
-
-Settings under `bundleOptions.webpack` has precedence over `bundleOptions.bundler` and therefore `webpack` is used as bundler.
-
-The former option (`bundleOptions.bundler`) is preferred if no advanced settings are needed.
 
 ### 1.4 - Front Matter
 
@@ -138,7 +120,6 @@ Tarima use some predefined keys in order to customize certain aspects of renderi
 - `$format` &mdash; This value is passed directly as `format` option for rollup, [available formats](https://github.com/rollup/rollup/wiki/JavaScript-API#format) are: `amd`, `js`, `es6`, `iife`, `umd`
 - `$bundle` &mdash; This value will be used as the exported symbol on bundles
 - `$render` &mdash; Render the current output as `yield` for the given source file
-- `$bundler` &mdash; Set a custom bundler (instead of the default) for this source only
 - `$globals` &mdash; Global variables to bundle explicitly
 - `$external` &mdash; External modules to bundle explicitly
 - `$transpiler` &mdash; Set the transpiler for all ES6 sources

@@ -4,10 +4,9 @@
 /* eslint-disable global-require */
 
 const debug = require('debug')('tarima:read');
+const glob = require('glob');
 
 const $ = require('./utils');
-
-const glob = require('glob');
 
 let chokidar;
 

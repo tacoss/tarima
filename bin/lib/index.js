@@ -1,10 +1,9 @@
 'use strict';
 
-const $ = require('./utils');
-
 const path = require('path');
 const micromatch = require('micromatch');
 
+const $ = require('./utils');
 const readFiles = require('./read');
 const compileFiles = require('./compile');
 

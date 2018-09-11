@@ -36,7 +36,6 @@ try {
       A: 'amd',
       C: 'cjs',
       I: 'iife',
-      B: 'bundler',
       b: 'bundle',
       q: 'quiet',
       W: 'public',
@@ -133,7 +132,6 @@ Options:
 
   -f, --force       Force rendering/bundling of all given sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
-  -B  --bundler     Choose bundler tool: webpack, rollup or fuse-box (e.g. -B webpack)
   -U, --umd         Save bundles as UMD wrapper
   -A, --amd         Save bundles as AMD wrapper
   -C, --cjs         Save bundles as CommonJS wrapper

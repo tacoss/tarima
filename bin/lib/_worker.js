@@ -1,8 +1,7 @@
 'use strict';
 
-const $ = require('./utils');
-
 const path = require('path');
+const $ = require('./utils');
 
 // initialize meta-bundler
 const tarima = require('../../lib');
