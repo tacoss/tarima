@@ -3,6 +3,7 @@
 .env
 *~
 *.log
+*.todo
 .fusebox
 /build
 /public
