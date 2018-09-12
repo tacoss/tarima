@@ -129,24 +129,25 @@ Tarima use some predefined keys in order to customize certain aspects of renderi
 You can install the following dependencies for specific support:
 
 - `npm install vue-template-compiler` &rarr; `.vue` component files and templates
-- `npm install coffee-script` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
+- `npm install coffeescript` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
 - `npm install postcss` &rarr; `.post.css` sources (experimental)
 - `npm install pug` &rarr; `.pug` and `.jade` (legacy)
 - `npm install sass-node` &rarr; `.sass` and `.scss`
 - `npm install less` &rarr; `.less`
-- `npm install ejs` &rarr; `.ejs`
 - `npm install styl` &rarr; `.styl`
-- `npm install handlebars` &rarr; `.hbs`
 - `npm install ractive` &rarr; `.ract` and `.rv`
 - `npm install kramed` &rarr; `.md`, `.mkd`
-- `npm install moonjs` &rarr; `.sv` and `.moon`
 - `npm install marko` &rarr; `.sv` and `.marko`
 - `npm install svelte` &rarr; `.sv` and `.svelte`
 - `npm install buble` &rarr; `.jsx` and `.es6.js`
 - `npm install traceur` &rarr; `.jsx` and `.es6.js`
+- `npm install sucrase` &rarr; `.jsx` and `.es6.js`
 - `npm install typescript` &rarr; `.ts` and `.tsx`
 - `npm install liquid-node` &rarr; `.sv` and `.liquid`
 - `npm install babel-core@^5` &rarr; `.jsx` and `.es6.js`
+- `npm install nodent` &rarr; to transpile `async/await` down to ES5
+
+Imported sources through Rollup.js will be processed anyway regardless they're supported or not.
 
 > Tarima doesn't ship any dependency for the supported engines, is your responsibility to install whatever you will need.
 
@@ -467,7 +468,6 @@ Using the `plugins` option you can declare scripts or modules to be loaded and p
 
 - `talavera` &mdash; support for sprites and lazy loading
 - `tarima-lr` &mdash; LiveReload integration (light-weight)
-- `tarima-bower` &mdash; quick support for optional bower files
 - `tarima-browser-sync` &mdash; BrowserSync integration (heavy)
 
 Some plugins can take its configuration from `pluginOptions` or directly from the main configuration:
@@ -476,7 +476,7 @@ Some plugins can take its configuration from `pluginOptions` or directly from th
 {
   "tarima": {
     "pluginOptions": {
-      "bower": { "bundle": true }
+      "buble": { "jsx": "h" }
     }
   }
 }
@@ -551,8 +551,7 @@ All `plugins` are loaded automatically by Tarima on the startup.
     "tarima-lr"
   ],
   "plugins": [
-    "talavera",
-    "tarima-bower"
+    "talavera"
   ],
   "pluginOptions": {
     "talavera": {
@@ -561,10 +560,6 @@ All `plugins` are loaded automatically by Tarima on the startup.
     "tarima-lr": {
       "serve": "build/public",
       "timeout": 1000
-    },
-    "tarima-bower": {
-      "vendor": "build/public/vendor",
-      "bundle": true
     }
   },
   "bundleOptions": {
