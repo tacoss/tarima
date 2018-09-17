@@ -233,12 +233,8 @@ module.exports.init = options => {
     }
 
     const _method = (partial.params.data.$bundle || ctx.isBundle(src)) ? 'bundle' : 'render';
-    const _bundler = partial.params.data.$bundler || opts.bundler || 'rollup';
-    const _prefix = partial.params.isScript && _method === 'bundle'
-      ? _bundler
-      : _method;
 
-    return logger(_prefix, src, end =>
+    return logger(_method, src, end =>
       partial[_method]((err, output) => {
         if (err) {
           end(src, _method, 'failure');
@@ -246,13 +242,14 @@ module.exports.init = options => {
         }
 
         // cached for later
-        if (options.bundleOptions.bundleCache && _bundler === 'rollup') {
+        if (options.bundleOptions.bundleCache) {
           ctx._bundle = output._bundle || ctx._bundle;
         }
 
         const file = path.relative(options.cwd, output.filename);
         const target = ctx.dest(file, output.extension);
         const index = ctx.track.bind(null, file);
+        const tasks = [];
 
         const result = {
           src: file,
@@ -260,6 +257,19 @@ module.exports.init = options => {
         };
 
         ensureRename(result);
+
+        if (output.chunks) {
+          Object.keys(output.chunks).forEach(key => {
+            tasks.push(() => {
+              ctx.dist({
+                dest: path.relative(options.cwd, path.resolve(result.dest, '..', key)),
+                data: output.chunks[key].source,
+                type: 'write',
+              });
+            });
+          });
+        }
+
         ctx._data.push(result.dest);
 
         result.output = output.source;
@@ -283,6 +293,7 @@ module.exports.init = options => {
 
         index(fixedDeps);
         ctx.ensureWrite(result, index)
+          .then(() => tasks.map(x => x()))
           .then(() => {
             ctx.cache.set(file, 'deps', fixedDeps);
             ctx.cache.set(file, 'dest', result.dest);

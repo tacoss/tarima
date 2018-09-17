@@ -17,7 +17,6 @@ const die = process.exit.bind(process);
 const $ = require('./lib/utils');
 
 const DEFAULTS = {
-  bundler: 'rollup',
   bundle: '**/index.js',
   public: 'public',
   output: 'build',
@@ -235,7 +234,6 @@ const defaultConfig = {
     errIcon: path.join(__dirname, 'err.png'),
   },
   bundleOptions: {
-    bundler: _.flags.bundler,
     globals: _.data,
     extensions: _.params,
     optimizations: _.flags.minify,
