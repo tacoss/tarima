@@ -104,7 +104,6 @@ Once the last extension is reached it will be compiled for server or client side
 - `test.less` &rarr; `test.css.less` (default extension: `.css`)
 - `test.pug` &rarr; `test.html.pug` (default extension: `.html`)
 - `test.vue` &rarr; `test.js.vue` (default extension: `.js`)
-- `test.marko` &rarr; `test.js.marko` (default extension: `.js`)
 - `test.svelte` &rarr; `test.js.svelte` (default extension: `.js`)
 - `test.litcoffee` &rarr; `test.coffee.md` (default extension: `.js`)
 

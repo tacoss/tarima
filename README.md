@@ -135,9 +135,9 @@ You can install the following dependencies for specific support:
 - `npm install sass-node` &rarr; `.sass` and `.scss`
 - `npm install less` &rarr; `.less`
 - `npm install styl` &rarr; `.styl`
+- `npm install handlebars` &rarr; `.hbs`
 - `npm install ractive` &rarr; `.ract` and `.rv`
 - `npm install kramed` &rarr; `.md`, `.mkd`
-- `npm install marko` &rarr; `.sv` and `.marko`
 - `npm install svelte` &rarr; `.sv` and `.svelte`
 - `npm install buble` &rarr; `.jsx` and `.es6.js`
 - `npm install traceur` &rarr; `.jsx` and `.es6.js`

@@ -258,26 +258,6 @@
           expect(result.source).toContain '"*[vue-x] {\\n  color: red;\\n}\\n"'
           # expect(result.source).toMatch /module\.exports[\s\S]*Vue\.component\('X', __x\$v\)/
 
-      describe 'Marko', ->
-        test ['x.marko', 'div --- OK'], (result) ->
-          expect(result.source).toMatch /require\("marko(?:\/dist)?\/html"\)/
-
-        test ['x.y.marko', 'div --- OK'], (result) ->
-          expect(result.source).toEqual 'div --- OK'
-
-        test ['x.js.marko', 'div --- OK', { client: true }], (result) ->
-          expect(result.source).toMatch /require\("marko(?:\/dist)?\/vdom"\)/
-
-      describe 'Svelte', ->
-        test ['x.svelte', '<div>{{value}}</div>'], (result) ->
-          expect(result.source).toMatch /module.exports\s+=\s+X;/
-
-        test ['x.y.svelte', '<div>{{value}}</div>'], (result) ->
-          expect(result.source).toContain '<div>{{value}}</div>'
-
-        test ['x.js.svelte', '<div>{{value}}</div>', { client: true }], (result) ->
-          expect(result.source).toMatch /module\.exports[\s\S]*=[\s\S]*X;/
-
       describe 'Sucrase', ->
         test [
           'x.es6'
