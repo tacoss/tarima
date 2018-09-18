@@ -261,11 +261,14 @@ module.exports.init = options => {
         if (output.chunks) {
           Object.keys(output.chunks).forEach(key => {
             tasks.push(() => {
-              ctx.dist({
+              const sub = {
                 dest: path.relative(options.cwd, path.resolve(result.dest, '..', key)),
                 data: output.chunks[key].source,
                 type: 'write',
-              });
+              };
+
+              ctx._data.push(sub.dest);
+              ctx.dist(sub);
             });
           });
         }
