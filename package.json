@@ -86,6 +86,7 @@
     "styl": ">=0.2.9",
     "sucrase": "^3.4.2",
     "svelte": "^2.13.4",
+    "terser": "^3.10.11",
     "traceur": "^0.0.111",
     "typescript": "^3.0.3",
     "vue-template-compiler": "^2.2.6"

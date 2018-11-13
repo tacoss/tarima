@@ -142,7 +142,7 @@ module.exports.init = options => {
           }
 
           if (view.dest.indexOf('.js') > -1) {
-            jsCompressor = jsCompressor || require('uglify-es').minify;
+            jsCompressor = jsCompressor || require('terser').minify;
 
             view.output = jsCompressor(view.output, {
               ie8: true,
