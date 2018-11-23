@@ -23,6 +23,11 @@
           expect(result.source).toEqual 'y'
           expect(result.extension).toEqual 'html'
 
+      describe 'AsciiDoc', ->
+        test ['x.adoc', '= Hello world'], (result) ->
+          expect(result.source).toMatch /<h1[<>]*?>Hello world<\/h1>/
+          expect(result.extension).toEqual 'html'
+
       describe 'Markdown', ->
         test ['x.md', '# ok'], (result) ->
           expect(result.source).toContain '</h1>'
