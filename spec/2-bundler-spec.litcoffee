@@ -58,3 +58,10 @@
           expect(err).toBeUndefined()
           expect(result.source).toContain 'exports.default = entry'
           done()
+
+      it 'should bundle remote dependencies', (done) ->
+        tarima('remote.js').bundle (err, result) ->
+          expect(err).toBeUndefined()
+          expect(result.source).toContain 'function noop'
+          expect(result.source).toContain 'console.log(createElement)'
+          done()
