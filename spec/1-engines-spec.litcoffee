@@ -59,6 +59,11 @@
           expect(result.extension).toEqual 'js'
 
     describe 'Scripting', ->
+      describe 'TypeScript', ->
+        test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
+          expect(result.source).toContain 'var foo'
+          expect(result.source).toContain '(x)'
+
       describe 'CoffeeScript', ->
         test ['x.coffee', 'foo bar'], (result) ->
           expect(result.source).toContain 'foo(bar)'
@@ -136,10 +141,19 @@
           expect(result.source).toContain 'new Promise'
           expect(result.source).toContain 'module.exports ='
 
-      describe 'TypeScript', ->
-        test ['x.ts', 'let foo = (x: string) => {}'], (result) ->
-          expect(result.source).toContain 'var foo'
-          expect(result.source).toContain '(x)'
+      describe 'ES6 (sucrase)', ->
+        test [
+          'x.es6'
+          '''
+            /**
+            ---
+            $transpiler: sucrase
+            ---
+            */
+            export class { foo = 'bar' }
+          '''
+        ], (result) ->
+          expect(result.source).toContain "this.foo = 'bar'"
 
     describe 'Mixed', ->
       describe 'EJS', ->
@@ -237,6 +251,11 @@
           expect(result.source).toContain 'function'
           expect(result.extension).toEqual 'js'
 
+      describe 'Svelte', ->
+        test ['x.svelte', '<h1>OK</h1>'], (result) ->
+          expect(result.source).toContain 'create_main_fragment'
+          expect(result.extension).toEqual 'js'
+
       describe 'Vue', ->
         test ['x.vue', '<h1>OK{{x}}</h1>'], (result) ->
           expect(result.source).toContain "'h1'"
@@ -266,17 +285,3 @@
           expect(result.source).toContain "_c('h1',[_v(_s(x))])"
           expect(result.source).toContain '"*[vue-x] {\\n  color: red;\\n}\\n"'
           # expect(result.source).toMatch /module\.exports[\s\S]*Vue\.component\('X', __x\$v\)/
-
-      describe 'Sucrase', ->
-        test [
-          'x.es6'
-          '''
-            /**
-            ---
-            $transpiler: sucrase
-            ---
-            */
-            export class { foo = 'bar' }
-          '''
-        ], (result) ->
-          expect(result.source).toContain "this.foo = 'bar'"
