@@ -155,6 +155,20 @@
         ], (result) ->
           expect(result.source).toContain "this.foo = 'bar'"
 
+      describe 'ES6 (swc)', ->
+        test [
+          'x.es6',
+          '''
+            const x = async () => 42;
+            export default async () => await x();
+          '''
+          {
+            swc: true
+          }
+        ], (result) ->
+          expect(result.source).toContain 'var x = async function'
+          expect(result.source).toContain 'module.exports = async'
+
     describe 'Mixed', ->
       describe 'EJS', ->
         test ['x.ejs', '<%= 1 %>'], (result) ->
