@@ -9,10 +9,8 @@ addons:
       - g++-4.8
 node_js:
   - 8
-  - 9
   - 10
-before_script:
-  - '(node -v | grep -e "v[681]") && npm install svelte sucrase fuse-box || echo SKIP'
+  - 11
 script:
   - 'npm run cover'
 after_success:
