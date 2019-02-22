@@ -37,7 +37,7 @@
     "spec": "jasmine-node spec --coffee --noStackTrace --captureExceptions",
     "cover": "istanbul cover --root lib --x '**/spec/**' -- jasmine-node spec --coffee",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
-    "test": "npm run lint && npm run spec"
+    "test": "npm run lint && npm run spec --"
   },
   "dependencies": {
     "debug": "^4.0.1",
