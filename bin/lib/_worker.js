@@ -258,14 +258,16 @@ module.exports.init = options => {
 
         ensureRename(result);
 
-        if (output.chunks) {
-          Object.keys(output.chunks).forEach(key => {
+        if (output._chunks) {
+          output._chunks.forEach(chunk => {
             tasks.push(() => {
               const sub = {
-                dest: path.relative(options.cwd, path.resolve(result.dest, '..', key)),
-                data: output.chunks[key].source,
+                dest: path.relative(options.cwd, path.resolve(result.dest, '..', chunk.filename)),
+                data: chunk.source,
                 type: 'write',
               };
+
+              ensureRename(sub);
 
               ctx._data.push(sub.dest);
               ctx.dist(sub);
