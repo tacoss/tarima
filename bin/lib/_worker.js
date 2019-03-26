@@ -68,15 +68,15 @@ module.exports.init = options => {
   options.bundleOptions.cache = ctx.cache.all() || {};
 
   // built-in helpers
-  options.bundleOptions.helpers.srcFile = (id, params) => $.read(path.join(params.dirname, id));
-  options.bundleOptions.helpers.destFile = id => $.read(path.join(options.output, id));
+  options.bundleOptions.helpers.srcFile = (_, self) => $.read(path.join(self.dirname, _.id || _.src[0]));
+  options.bundleOptions.helpers.destFile = _ => $.read(path.join(options.output, _.id || _.src[0]));
   options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
 
   /* eslint-disable prefer-rest-params */
   /* eslint-disable prefer-spread */
 
-  options.bundleOptions.helpers.includeTag = function _include() {
-    return Array.prototype.slice.call(arguments)
+  options.bundleOptions.helpers.includeTag = function _include(_) {
+    return _.src
       .map(src => {
         if (String(src).indexOf('.css') > -1) {
           return `<link rel="stylesheet" href="${src}">`;
