@@ -42,11 +42,11 @@
   "dependencies": {
     "debug": "^4.0.1",
     "deindent": "^0.1.0",
-    "dotenv": "^6.0.0",
+    "dotenv": "^7.0.0",
     "fs-extra": "^7.0.0",
     "glob": "^7.1.2",
     "global-or-local": "^0.1.2",
-    "js-yaml": "^3.10.0",
+    "js-yaml": "^3.13.0",
     "log-pose": "^0.3.4",
     "memory-fs": "^0.4.1",
     "micromatch": "^3.1.10",
