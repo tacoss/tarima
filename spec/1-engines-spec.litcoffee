@@ -203,15 +203,17 @@
         test ['x.sass', '$x: red;\n*\n  color: $x'], (result) ->
           expect(result.source).toContain 'color: red'
 
+      # FIXME: why this?
+      # Error.call = (x) -> new Error(x)
+
       describe 'LESS', ->
-        test ['x.less', '&*{x:@x}'], (result) ->
+        test ['x.less', '@x:y;&*{x:@x}'], (result) ->
           expect(result.source).toContain '''
             * {
               x: y;
             }
           '''
           expect(result.extension).toEqual 'css'
-        , { x: 'y', a: [] }
 
         test ['x.y.less', '&*{x:y}'], (result) ->
           expect(result.source).toEqual '&*{x:y}'

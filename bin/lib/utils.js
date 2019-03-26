@@ -195,7 +195,7 @@ function decorateError(ex, params) {
   if (ex.extract && !ex.stack) {
     return [
       `Error: ${params.filename}:${ex.line}:${ex.column}`,
-      `    ${ex.line - 1}| ${ex.extract[0]}`,
+      ex.line > 1 ? `\n    ${ex.line - 1}| ${ex.extract[0]}` : '',
       `  > ${ex.line}| ${ex.extract[1]}`,
       `${new Array(ex.column + 8).join('-')}^`,
       `    ${ex.line + 1}| ${ex.extract[2]}`,
