@@ -68,8 +68,8 @@ module.exports.init = options => {
   options.bundleOptions.cache = ctx.cache.all() || {};
 
   // built-in helpers
-  options.bundleOptions.helpers.srcFile = (_, self) => $.read(path.join(self.dirname, _.id || _.src[0]));
-  options.bundleOptions.helpers.destFile = _ => $.read(path.join(options.output, _.id || _.src[0]));
+  options.bundleOptions.helpers.srcFile = (_, self) => $.read(path.join(self.dirname, _.src[0]));
+  options.bundleOptions.helpers.destFile = _ => $.read(path.join(options.output, _.src[0]));
   options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
 
   /* eslint-disable prefer-rest-params */
