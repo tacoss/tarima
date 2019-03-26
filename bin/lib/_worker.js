@@ -68,9 +68,7 @@ module.exports.init = options => {
   options.bundleOptions.cache = ctx.cache.all() || {};
 
   // built-in helpers
-  options.bundleOptions.helpers.srcFile = id =>
-    $.read(path.join(options.cwd, Object.keys(options.bundleOptions.cache).filter(x => x.indexOf(id) !== -1)[0]));
-
+  options.bundleOptions.helpers.srcFile = (id, params) => $.read(path.join(params.dirname, id));
   options.bundleOptions.helpers.destFile = id => $.read(path.join(options.output, id));
   options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
 
