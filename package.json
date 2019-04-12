@@ -51,6 +51,8 @@
     "memory-fs": "^0.4.1",
     "micromatch": "^3.1.10",
     "redent": "^2.0.0",
+    "rewrite-exports": "0.0.1",
+    "rewrite-imports": "^2.0.3",
     "tosource": "^1.0.0",
     "wargs": "^0.8.2",
     "worker-farm": "^1.5.2"
