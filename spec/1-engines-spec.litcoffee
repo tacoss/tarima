@@ -273,6 +273,11 @@
           expect(result.source).toMatch /create_(?:main_)?fragment/
           expect(result.extension).toEqual 'js'
 
+        test ['x-y.js.svelte', '<h1>OK</h1>'], (result) ->
+          expect(result.source).toMatch /(?:var|const) XY/
+          expect(result.source).toContain 'module.exports = XY'
+          expect(result.extension).toEqual 'js'
+
       describe 'Vue', ->
         test ['x.vue', '<h1>OK{{x}}</h1>'], (result) ->
           expect(result.source).toContain "'h1'"
