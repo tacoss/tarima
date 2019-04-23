@@ -268,8 +268,9 @@
           expect(result.extension).toEqual 'js'
 
       describe 'Svelte', ->
-        test ['x.svelte', '<h1>OK</h1>'], (result) ->
-          expect(result.source).toContain 'create_main_fragment'
+        test ['x-y.svelte', '<h1>OK</h1>'], (result) ->
+          expect(result.source).toMatch /class XY extends SvelteComponent|function XY/
+          expect(result.source).toMatch /create_(?:main_)?fragment/
           expect(result.extension).toEqual 'js'
 
       describe 'Vue', ->
