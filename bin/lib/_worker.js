@@ -126,36 +126,41 @@ module.exports.init = options => {
     }
   }
 
+  function ensureOptimize(name, contents, sourceMaps) {
+    if (name.indexOf('.css') > -1) {
+      cssCompressor = cssCompressor || require('csso').minify;
+
+      return cssCompressor(contents, {
+        filename: name,
+        sourceMap: sourceMaps,
+      }).css;
+    }
+
+    if (name.indexOf('.js') > -1) {
+      jsCompressor = jsCompressor || require('terser').minify;
+
+      return jsCompressor(contents, {
+        ie8: true,
+        compress: {
+          warnings: true,
+          drop_console: true,
+          unsafe_proto: true,
+          unsafe_undefined: true,
+        },
+        sourceMap: sourceMaps,
+      }).code;
+    }
+  }
+
   ctx.ensureWrite = (view, index) =>
     Promise.resolve()
       .then(() => ctx.onWrite(view, index))
       .then(() => {
         if (options.bundleOptions.optimizations) {
           const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
+          const fixedOutput = ensureOptimize(view.dest, view.output, sourceMaps);
 
-          if (view.dest.indexOf('.css') > -1) {
-            cssCompressor = cssCompressor || require('csso').minify;
-
-            view.output = cssCompressor(view.output, {
-              filename: view.dest,
-              sourceMap: sourceMaps,
-            }).css;
-          }
-
-          if (view.dest.indexOf('.js') > -1) {
-            jsCompressor = jsCompressor || require('terser').minify;
-
-            view.output = jsCompressor(view.output, {
-              ie8: true,
-              compress: {
-                warnings: true,
-                drop_console: true,
-                unsafe_proto: true,
-                unsafe_undefined: true,
-              },
-              sourceMap: sourceMaps,
-            }).code;
-          }
+          view.output = fixedOutput || view.output;
         }
 
         if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
@@ -269,6 +274,10 @@ module.exports.init = options => {
               };
 
               ensureRename(sub);
+
+              if (options.bundleOptions.optimizations) {
+                sub.data = ensureOptimize(chunk.filename, chunk.source) || sub.data;
+              }
 
               ctx._data.push(sub.dest);
               ctx.dist(sub);
