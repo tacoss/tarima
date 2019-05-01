@@ -90,12 +90,14 @@ process.name = 'tarima';
 
 process.env.NODE_ENV = _.flags.env;
 
-logger.printf('{% green %s v%s %} {% gray (node %s - %s) %}\n',
+const gitDir = path.join(__dirname, '../.git');
+
+logger.printf('{% green %s v%s %} {% gray (node %s - %s%s) %}\n',
   thisPkg.name,
   thisPkg.version,
-  process.version, process.env.NODE_ENV);
+  process.version, $.isDir(gitDir) ? 'git:' : '', process.env.NODE_ENV);
 
-debug('v%s - node %s', thisPkg.version, process.version);
+debug('v%s - node %s%s', thisPkg.version, process.version);
 
 if (_.flags.version) {
   die();
