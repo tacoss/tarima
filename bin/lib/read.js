@@ -75,49 +75,55 @@ function watch(context, cb) {
     timeout = setTimeout(next, options.interval || 200);
   }
 
-  try {
-    let all = [];
+  function on(evt, skip) {
+    let type = (evt.action === 1 || evt.action === 2)
+      ? 'changed'
+      : null;
 
-    options.from.forEach(dir => {
-      const base = path.join(options.cwd, dir);
+    type = type || (evt.action === 0 ? 'add' : null);
+    type = type || (evt.action === 3 ? 'unlink' : null);
 
-      all.push(nsfw(base, evts => {
-        evts.forEach(evt => {
-          let type = (evt.action === 1 || evt.action === 2)
-            ? 'changed'
-            : null;
+    const fullpath = path.join(evt.newDirectory || evt.directory, evt.newFile || evt.file);
+    const file = path.relative(options.cwd, fullpath);
 
-          type = type || (evt.action === 0 ? 'add' : null);
-          type = type || (evt.action === 3 ? 'unlink' : null);
+    type = (skip && skip(file)) ? 'ignore' : type;
 
-          const fullpath = path.join(evt.newDirectory || evt.directory, evt.newFile || evt.file);
-          const file = path.relative(options.cwd, fullpath);
+    debug(`${type} ${file}`);
 
-          // FIXME: implements options.ignored
-          // FIXME: implements options.watching
-
-          debug(`${type} ${file}`);
-
-          add(file);
-        });
-      }, {
-        debounceMS: 250,
-        errorCallback: next,
-      }));
-    });
-
-    Promise.all(all).then(_all => {
-      all = _all;
-      all.forEach(x => x.start());
-    });
-
-    process.on('exit', () => {
-      all.forEach(x => x.stop());
-    });
-
-  } catch (e) {
-    next(e);
+    if (type !== 'ignore') {
+      add(file);
+    }
   }
+
+  const isIgnore = !(options.ignore && options.ignore.length)
+    ? $.makeFilter(true, options.ignore)
+    : false;
+
+  const sources = options.from.concat(options.watching);
+
+  const opts = {
+    debounceMS: 250,
+    errorCallback: next,
+  };
+
+  let all = [];
+
+  sources.forEach(dir => {
+    const base = path.join(options.cwd, dir);
+
+    all.push(nsfw(base, evts => {
+      evts.forEach(evt => on(evt, isIgnore));
+    }, opts));
+  });
+
+  Promise.all(all).then(_all => {
+    all = _all;
+    all.forEach(x => x.start());
+  }).catch(next);
+
+  process.on('exit', () => {
+    all.forEach(x => x.stop());
+  });
 }
 
 module.exports = (context, cb) => {
