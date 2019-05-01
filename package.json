@@ -96,7 +96,7 @@
     "vue-template-compiler": "^2.2.6"
   },
   "optionalDependencies": {
-    "chokidar": "^2.0.1",
-    "node-notifier": "^5.1.2"
+    "node-notifier": "^5.1.2",
+    "nsfw": "^1.2.2"
   }
 }

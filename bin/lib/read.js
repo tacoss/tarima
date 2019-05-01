@@ -4,11 +4,12 @@
 /* eslint-disable global-require */
 
 const debug = require('debug')('tarima:read');
+const path = require('path');
 const glob = require('glob');
 
 const $ = require('./utils');
 
-let chokidar;
+let nsfw;
 
 function sync(id, src, cache) {
   const entry = cache.get(id) || {};
@@ -51,7 +52,7 @@ function sync(id, src, cache) {
 }
 
 function watch(context, cb) {
-  chokidar = chokidar || require('chokidar');
+  nsfw = nsfw || require('nsfw');
 
   const cache = context.cache;
   const options = context.opts;
@@ -75,22 +76,45 @@ function watch(context, cb) {
   }
 
   try {
-    chokidar.watch(options.from, {
-      cwd: options.cwd,
-      ignored: options.ignore,
-      persistent: true,
-      ignoreInitial: true,
-      ignorePermissionErrors: true,
-      followSymlinks: options.followSymlinks,
-    })
-      .on('all', (evt, file) => {
-        if (evt === 'add' || evt === 'change' || evt === 'unlink') {
-          debug(`${evt} ${file}`);
+    let all = [];
+
+    options.from.forEach(dir => {
+      const base = path.join(options.cwd, dir);
+
+      all.push(nsfw(base, evts => {
+        evts.forEach(evt => {
+          let type = (evt.action === 1 || evt.action === 2)
+            ? 'changed'
+            : null;
+
+          type = type || (evt.action === 0 ? 'add' : null);
+          type = type || (evt.action === 3 ? 'unlink' : null);
+
+          const fullpath = path.join(evt.newDirectory || evt.directory, evt.newFile || evt.file);
+          const file = path.relative(options.cwd, fullpath);
+
+          // FIXME: implements options.ignored
+          // FIXME: implements options.watching
+
+          debug(`${type} ${file}`);
+
           add(file);
-        }
-      })
-      .on('error', next)
-      .add(options.watching);
+        });
+      }, {
+        debounceMS: 250,
+        errorCallback: next,
+      }));
+    });
+
+    Promise.all(all).then(_all => {
+      all = _all;
+      all.forEach(x => x.start());
+    });
+
+    process.on('exit', () => {
+      all.forEach(x => x.stop());
+    });
+
   } catch (e) {
     next(e);
   }
