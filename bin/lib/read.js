@@ -113,16 +113,19 @@ function watch(context, cb) {
 
     all.push(nsfw(base, evts => {
       evts.forEach(evt => on(evt, isIgnore));
-    }, opts));
+    }, opts).catch(e => {
+      throw new Error(`Failed to watch '${dir}' source. ${e.message}`);
+    }));
   });
 
   Promise.all(all).then(_all => {
-    all = _all;
-    all.forEach(x => x.start());
+    _all.forEach(x => x.start());
   }).catch(next);
 
   process.on('exit', () => {
-    all.forEach(x => x.stop());
+    Promise.all(all).then(_all => {
+      _all.forEach(x => x.stop());
+    }).catch(next);
   });
 }
 
