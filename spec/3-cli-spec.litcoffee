@@ -19,7 +19,7 @@
 
         it 'should copy unsupported files (default)', (done) ->
           cmd 'a -fy sample.txt', ->
-            expect(cmd.exitStatus).toEqual 0
+            expect(!cmd.exitStatus).toBe true
             expect(cmd.stderr).toEqual ''
             expect(cmd.stdout).toMatch /copy.+?sample\.txt/
             expect(cmd.stdout).toContain '1 file written'
@@ -36,7 +36,7 @@
 
         it 'should bundle without mixed modules', (done) ->
           cmd 'a -fby good.js', ->
-            # FIXME: expect(cmd.exitStatus).toEqual 0
+            expect(!cmd.exitStatus).toBe true
             expect(cmd.stderr).toEqual ''
             expect(cmd.stdout).toContain 'build/a/good.js'
             expect(cmd.stdout).toContain '1 file written'

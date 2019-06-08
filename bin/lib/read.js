@@ -106,7 +106,7 @@ function watch(context, cb) {
     errorCallback: next,
   };
 
-  let all = [];
+  const all = [];
 
   sources.forEach(dir => {
     const base = path.join(options.cwd, dir);

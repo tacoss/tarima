@@ -45,10 +45,7 @@
             console.log warning.message
           plugins:
             'rollup-plugin-node-resolve':
-              jsnext: true
-              main: true
-              module: true
-              browser: true
+              mainFields: ['js:next', 'main', 'module', 'browser']
               preferBuiltins: false
             'rollup-plugin-commonjs':
               include: ['node_modules/**', '**/*.js']
