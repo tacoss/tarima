@@ -15,9 +15,9 @@ $ npm install tarima --save-dev
 
 ## 1.0 - How it works
 
-Lets say `view.js.rv.pug` will produce a pre-compiled template for Ractive, which is rendered from pug, etc.
+Lets say `view.js.pug` will produce a pre-compiled Pug template, which is rendered from pug, etc.
 
-If you omit the `js` extension then `view.rv.pug` will produce markup, since `html` is the default extension for the Ractive engine.
+If you omit the `js` extension then `view.pug` will produce markup, since `html` is the default extension for the Pug engine.
 
 > You can add as many extensions you want, whilst the output is valid input for the next renderer in the chain.
 
@@ -39,10 +39,10 @@ The resulting object will contain a `render()` callback and `params` object, res
 
 ```javascript
 {
-  "filename": "view.rv.pug",
+  "filename": "view.js.pug",
   "options": {}, // passed options to the factory
   "source": "<x>y</x>",
-  "parts": ["ract", "pug"],
+  "parts": ["js", "pug"],
   "name": "view",
   "data": {}, // any data passed as front-matter
   "deps": [], // all imported-or-required sources
@@ -128,7 +128,6 @@ Tarima use some predefined keys in order to customize certain aspects of renderi
 
 You can install the following dependencies for specific support:
 
-- `npm install vue-template-compiler` &rarr; `.vue` component files and templates
 - `npm install coffeescript` &rarr; `.coffee` and `.litcoffee` (aka `.coffee.md`)
 - `npm install postcss` &rarr; `.post.css` sources (experimental)
 - `npm install pug` &rarr; `.pug` and `.jade` (legacy)
@@ -136,9 +135,7 @@ You can install the following dependencies for specific support:
 - `npm install less` &rarr; `.less`
 - `npm install styl` &rarr; `.styl`
 - `npm install handlebars` &rarr; `.hbs`
-- `npm install ractive` &rarr; `.ract` and `.rv`
 - `npm install kramed` &rarr; `.md`, `.mkd`
-- `npm install svelte` &rarr; `.sv` and `.svelte`
 - `npm install buble` &rarr; `.jsx` and `.es6.js`
 - `npm install traceur` &rarr; `.jsx` and `.es6.js`
 - `npm install sucrase` &rarr; `.jsx` and `.es6.js`

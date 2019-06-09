@@ -8,7 +8,7 @@ const _compiler = require('./_compiler');
 const support = require('../../lib/support');
 
 const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
-const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?|svelte|[rs]v|ract|vue)(?=>(?:\.\w+)*|$)$/;
+const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?)(?=>(?:\.\w+)*|$)$/;
 
 module.exports = (context, files, cb) => {
   const tasks = [];

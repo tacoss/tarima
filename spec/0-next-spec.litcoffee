@@ -41,39 +41,18 @@ module.exports = function () {
 
 ## Render pipeline
 
-Many file extensions can be chained to produce more interesting results, e.g. `file.js.rv.pug`
+Many file extensions can be chained to produce more interesting results, e.g. `file.js.pug`
 
 ```pug
 h1 Hi {{name}}!
 ```
 
-Will produce a pre-compiled view for Ractive:
+Will produce a pre-compiled view for Pug:
 
 ```js
-module.exports = function () {
-  return { v:4,
-    t:[ { t:7,
-        e:"h1",
-        f:[ "Hi ",
-          { t:2,
-            r:"name" },
-          "!" ] } ] }};
+module.exports = function (locals) {
+  // pug-compiled code...
 };
-```
-
-Web components also benefit on this, e.g. `example.svelte.pug`:
-
-```pug
-h1 Hey {{name}}!
-
-script.
-  export default {
-    data() {
-      return {
-        name: 'dud',
-      };
-    },
-  };
 ```
 
 ## Implementation
@@ -103,8 +82,6 @@ Once the last extension is reached it will be compiled for server or client side
 
 - `test.less` &rarr; `test.css.less` (default extension: `.css`)
 - `test.pug` &rarr; `test.html.pug` (default extension: `.html`)
-- `test.vue` &rarr; `test.js.vue` (default extension: `.js`)
-- `test.svelte` &rarr; `test.js.svelte` (default extension: `.js`)
 - `test.litcoffee` &rarr; `test.coffee.md` (default extension: `.js`)
 
 If the extensions has no defined support, the source code is passed without changes.
