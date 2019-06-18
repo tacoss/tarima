@@ -99,7 +99,8 @@ function watch(context, cb) {
     ? $.makeFilter(true, options.ignore)
     : false;
 
-  const sources = options.from.concat(options.watching);
+  const sources = options.from.concat(options.watching)
+    .concat(Object.keys(options.copy));
 
   const opts = {
     debounceMS: 250,

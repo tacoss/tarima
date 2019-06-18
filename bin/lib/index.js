@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const glob = require('glob');
 const micromatch = require('micromatch');
 
 const $ = require('./utils');
@@ -101,12 +102,6 @@ module.exports = (options, logger, done) => {
     ? options.copy
     : {};
 
-  Object.keys(options.copy).forEach(src => {
-    logger.info('\r\r{% log Copying files from: %} {% yellow %s %}\n', src);
-
-    $.copy(src, path.join(options.output, options.copy[src]));
-  });
-
   const filters = Array.isArray(options.filter) ? options.filter : ['**'];
   const context = plugableSupportAPI(logger, options);
 
@@ -117,6 +112,48 @@ module.exports = (options, logger, done) => {
   // devPlugins works only on dev-mode
   options.plugins = options.plugins || [];
   options.devPlugins = options.devPlugins || [];
+
+  // safe copies
+  const paths = Object.keys(options.copy).reduce((prev, cur) => {
+    prev.push({
+      prefix: cur,
+      filter: $.makeFilter(true, $.toArray(options.copy[cur])),
+    });
+
+    return prev;
+  }, []);
+
+  context.copy = (file, baseDir, isMatched) => {
+    if (isMatched) {
+      // FIXME: make a helper of this...
+      const srcFile = path.join(options.cwd, baseDir, file);
+      const destFile = path.join(options.output, file);
+
+      if (!$.exists(destFile) || ($.mtime(destFile) < $.mtime(srcFile))) {
+        $.copy(srcFile, destFile);
+      }
+      return;
+    }
+
+    for (let i = 0; i < paths.length; i += 1) {
+      if (paths[i].prefix === baseDir && paths[i].filter(file)) {
+        context.dist({
+          src: path.join(baseDir, file),
+          dest: path.relative(options.cwd, path.join(options.output, file)),
+          type: 'copy',
+        });
+        return;
+      }
+    }
+  };
+
+  Object.keys(options.copy).forEach(src => {
+    logger.info('\r\r{% log Copying files from: %} {% yellow %s %}\n', src);
+
+    $.toArray(options.copy[src]).forEach(sub => {
+      glob.sync(sub, { cwd: src, nodir: true }).forEach(x => context.copy(x, src, true));
+    });
+  });
 
   // internally used
   context.cache = cacheableSupportAPI(options.cacheFile);
