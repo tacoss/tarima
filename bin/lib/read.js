@@ -76,22 +76,25 @@ function watch(context, cb) {
   }
 
   function on(evt, skip) {
-    let type = (evt.action === 1 || evt.action === 2)
-      ? 'changed'
-      : null;
-
-    type = type || (evt.action === 0 ? 'add' : null);
-    type = type || (evt.action === 3 ? 'unlink' : null);
-
     const fullpath = path.join(evt.newDirectory || evt.directory, evt.newFile || evt.file);
-    const file = path.relative(options.cwd, fullpath);
 
-    type = (skip && skip(file)) ? 'ignore' : type;
+    if ($.isFile(fullpath)) {
+      let type = (evt.action === 1 || evt.action === 2)
+        ? 'changed'
+        : null;
 
-    debug(`${type} ${file}`);
+      type = type || (evt.action === 0 ? 'add' : null);
+      type = type || (evt.action === 3 ? 'unlink' : null);
 
-    if (type !== 'ignore') {
-      add(file);
+      const file = path.relative(options.cwd, fullpath);
+
+      type = (skip && skip(file)) ? 'ignore' : type;
+
+      debug(`${type} ${file}`);
+
+      if (type !== 'ignore') {
+        add(file);
+      }
     }
   }
 
