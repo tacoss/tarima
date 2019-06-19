@@ -125,24 +125,26 @@ module.exports = (options, logger, done) => {
 
   context.copy = (file, baseDir, isMatched) => {
     if (isMatched) {
-      // FIXME: make a helper of this...
       const srcFile = path.join(options.cwd, baseDir, file);
       const destFile = path.join(options.output, file);
 
       if (!$.exists(destFile) || ($.mtime(destFile) < $.mtime(srcFile))) {
         $.copy(srcFile, destFile);
       }
-      return;
+      return true;
     }
 
     for (let i = 0; i < paths.length; i += 1) {
-      if (paths[i].prefix === baseDir && paths[i].filter(file)) {
-        context.dist({
-          src: path.join(baseDir, file),
-          dest: path.relative(options.cwd, path.join(options.output, file)),
+      if (file.indexOf(paths[i].prefix) === 0) {
+        const destFile = path.relative(paths[i].prefix, file);
+
+        // only copy if matches, otherwise ignore
+        if (paths[i].filter(destFile)) context.dist({
+          src: path.join(options.cwd, file),
+          dest: path.relative(options.cwd, path.join(options.output, destFile)),
           type: 'copy',
         });
-        return;
+        return true;
       }
     }
   };
@@ -151,7 +153,7 @@ module.exports = (options, logger, done) => {
     logger.info('\r\r{% log Copying files from: %} {% yellow %s %}\n', src);
 
     $.toArray(options.copy[src]).forEach(sub => {
-      glob.sync(sub, { cwd: src, nodir: true }).forEach(x => context.copy(x, src, true));
+      glob.sync(sub, { cwd: src, nodir: true }).every(x => context.copy(x, src, true));
     });
   });
 

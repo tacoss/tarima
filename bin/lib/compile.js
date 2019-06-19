@@ -87,15 +87,8 @@ module.exports = (context, files, cb) => {
   }
 
   files.forEach(src => {
-    const baseDir = src.split('/')[0];
-
-    if (options.copy[baseDir]) {
-      context.copy(path.relative(baseDir, src), baseDir);
-      return;
-    }
-
     // skip early
-    if (watching(src)) {
+    if (watching(src) || copy(src)) {
       debug('WATCH %s', src);
       return;
     }
