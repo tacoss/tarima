@@ -98,7 +98,7 @@ function watch(context, cb) {
     }
   }
 
-  const isIgnore = !(options.ignore && options.ignore.length)
+  const isIgnore = (options.ignore && options.ignore.length)
     ? $.makeFilter(true, options.ignore)
     : false;
 
