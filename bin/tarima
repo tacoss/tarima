@@ -505,11 +505,7 @@ process.on('SIGINT', () => {
 let _restart;
 
 process.nextTick(() => {
-  let _start;
-
   if (!logger.isEnabled() && !(_.flags.debug && _.flags.verbose)) {
-    _start = new Date();
-
     process.stdout.write('\rProcessing sources...\r');
   }
 
@@ -533,7 +529,7 @@ process.nextTick(() => {
     if (!logger.isEnabled() && !(_.flags.debug && _.flags.verbose)) {
       process.stdout.write(`\r${result.output.length} file${
         result.output.length === 1 ? '' : 's'
-      } built in ${(new Date() - _start) / 1000}s\n`);
+      } ${result.output.length === 1 ? 'was' : 'were'} built\n`);
     }
 
     debug('done %s file%s added',
