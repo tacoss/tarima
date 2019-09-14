@@ -114,14 +114,10 @@ module.exports = (options, logger, done) => {
   options.devPlugins = options.devPlugins || [];
 
   // safe copies
-  const paths = Object.keys(options.copy).reduce((prev, cur) => {
-    prev.push({
-      prefix: cur,
-      filter: $.makeFilter(true, $.toArray(options.copy[cur])),
-    });
-
-    return prev;
-  }, []);
+  const paths = Object.keys(options.copy).map(key => ({
+    target: options.copy[key],
+    prefix: key,
+  }));
 
   context.copy = (file, baseDir, isMatched) => {
     if (isMatched) {
@@ -138,10 +134,9 @@ module.exports = (options, logger, done) => {
       if (file.indexOf(paths[i].prefix) === 0) {
         const destFile = path.relative(paths[i].prefix, file);
 
-        // only copy if matches, otherwise ignore
-        if (paths[i].filter(destFile)) context.dist({
+        context.dist({
           src: path.join(options.cwd, file),
-          dest: path.relative(options.cwd, path.join(options.output, destFile)),
+          dest: path.relative(options.cwd, path.join(options.output, paths[i].target, destFile)),
           type: 'copy',
         });
         return true;
@@ -152,9 +147,17 @@ module.exports = (options, logger, done) => {
   Object.keys(options.copy).forEach(src => {
     logger.info('\r\r{% log Copying files from: %} {% yellow %s %}\n', src);
 
+    let count = 0;
+
     $.toArray(options.copy[src]).forEach(sub => {
-      glob.sync(sub, { cwd: src, nodir: true }).every(x => context.copy(x, src, true));
+      glob.sync('*', { cwd: src, nodir: true }).every(x => {
+        count += 1;
+
+        return context.copy(x, src, true);
+      });
     });
+
+    logger.info('\r\r{% line.cyan %s file%s copied %}\n', count, count === 1 ? '' : 's');
   });
 
   // internally used
