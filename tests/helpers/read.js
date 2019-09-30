@@ -5,6 +5,6 @@ const exists = require('./exists');
 module.exports = filepath => {
   filepath = path.join(__dirname, '../fixtures', filepath);
   if (exists(filepath)) {
-    fs.readFileSync(filepath).toString();
+    return fs.readFileSync(filepath).toString();
   }
 };

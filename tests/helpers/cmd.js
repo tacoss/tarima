@@ -8,7 +8,7 @@ const execCommand = (cmd, callback) => {
   execCommand.stdout = null;
   execCommand.exitStatus = null;
 
-  let cli = [path.join(__dirname, '../../bin/tarima')];
+  let cli = [path.join(__dirname, '../../bin/cli.js')];
 
   if (typeof cmd === 'function') {
     callback = cmd;

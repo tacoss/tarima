@@ -1,4 +1,4 @@
-#!/bin/env/node
+#!/usr/bin/env node
 
 'use strict';
 
@@ -11,7 +11,7 @@ const wargs = require('wargs');
 // common helpers
 const die = process.exit.bind(process);
 
-const $ = require('./lib/utils');
+const $ = require('./lib/utils'); // eslint-disable-line
 
 const DEFAULTS = {
   bundle: '**/index.js',
@@ -71,8 +71,8 @@ const logger = require('log-pose')
   .getLogger(12, process.stdout, process.stderr);
 
 if (_.flags.debug && _.flags.verbose) {
-  require('debug').enable('*');
-  require('log-pose').setLevel(false);
+  require('debug').enable('*'); // eslint-disable-line
+  require('log-pose').setLevel(false); // eslint-disable-line
 }
 
 // local debug
@@ -180,7 +180,7 @@ const run = (opts, cb) => {
   });
 };
 
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process'); // eslint-disable-line
 
 // empty dummy
 let mainPkg = {};
@@ -189,7 +189,7 @@ const cwd = process.cwd();
 const pkg = path.join(cwd, 'package.json');
 
 // load .env
-const env = require('dotenv').config();
+const env = require('dotenv').config(); // eslint-disable-line
 
 if (env.error && env.error.code !== 'ENOENT') {
   $.errLog(env.error);

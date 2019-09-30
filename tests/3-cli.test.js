@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 /* global describe, it */
 
-describe('CLI', () => {
+describe.only('CLI', () => {
   describe('asking for --help', () => {
     beforeEach(done => {
       cmd('--help', done);
@@ -30,7 +30,7 @@ describe('CLI', () => {
 
     it('should copy unsupported files (default)', done => {
       cmd('a -fy sample.txt', () => {
-        expect(!cmd.exitStatus).toBe(true);
+        expect(!cmd.exitStatus).to.eql(true);
         expect(cmd.stderr).to.eql('');
         expect(cmd.stdout).to.match(/copy.+?sample\.txt/);
         expect(cmd.stdout).to.contain('1 file written');
@@ -51,7 +51,7 @@ describe('CLI', () => {
 
     it('should bundle without mixed modules', done => {
       cmd('a -fby good.js', () => {
-        expect(!cmd.exitStatus).toBe(true);
+        expect(!cmd.exitStatus).to.eql(true);
         expect(cmd.stderr).to.eql('');
         expect(cmd.stdout).to.contain('build/a/good.js');
         expect(cmd.stdout).to.contain('1 file written');

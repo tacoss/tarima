@@ -29,15 +29,16 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=0.4.8"
+    "node": ">=0.8"
   },
   "scripts": {
-    "dev": "npm run spec -- --verbose --autoTest --watchFolders lib",
+    "dev": "npm run test:ci -- -w",
     "lint": "eslint lib bin",
-    "spec": "jasmine-node --coffee spec",
-    "cover": "nyc --x '**/spec/**' -- jasmine-node --coffee spec",
+    "mocha": "_mocha --bail --exit --recursive --file ./tests/helpers.js -bR spec tests/*.test.js",
+    "test:ci": "NODE_ENV=test npm run mocha --",
+    "cover": "nyc --silent --x '**/tests/**' -- npm run test:ci",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
-    "test": "npm run lint && npm run spec --"
+    "test": "npm run lint && npm run test:ci --"
   },
   "dependencies": {
     "debug": "^4.0.1",
@@ -63,6 +64,7 @@
     "babel-core": "^6.18.2",
     "babel-preset-es2015": "^6.24.0",
     "buble": "^0.19.3",
+    "chai": "^4.2.0",
     "codecov": "^3.1.0",
     "coffeescript": "^2.3.1",
     "ejs": "^2.5.2",
@@ -72,11 +74,10 @@
     "fast-async": "^6.2.2",
     "gen-pug-source-map": "^1.0.0",
     "handlebars": "^4.4.0",
-    "jasmine-node": "^3.0.0",
     "kramed": ">=0.5.5",
     "less": "^3.8.1",
     "liquid-node": "^3.0.0",
-    "node-sass": "^4.9.3",
+    "mocha": "^6.2.1",
     "nodent": "^3.1.3",
     "nyc": "^14.1.1",
     "postcss": "^7.0.2",
@@ -94,7 +95,8 @@
     "typescript": "^3.0.3"
   },
   "optionalDependencies": {
-    "node-notifier": "^5.1.2",
+    "node-notifier": "^6.0.0",
+    "node-sass": "^4.9.3",
     "nsfw": "^1.2.2"
   }
 }

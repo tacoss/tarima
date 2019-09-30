@@ -171,18 +171,20 @@ describe('Scripting', () => {
     });
   });
 
-  describe('ES6 (swc)', () => {
-    test([
-      'x.es6',
-      'const x = async () => 42;\nexport default async () => await x();',
-      {
-        swc: true
-      }
-    ], result => {
-      expect(result.source).to.contain('var x = async function');
-      expect(result.source).to.contain('module.exports = async');
+  if (process.env.CI) {
+    describe('ES6 (swc)', () => {
+      test([
+        'x.es6',
+        'const x = async () => 42;\nexport default async () => await x();',
+        {
+          swc: true
+        }
+      ], result => {
+        expect(result.source).to.contain('var x = async function');
+        expect(result.source).to.contain('module.exports = async');
+      });
     });
-  });
+  }
 });
 
 describe('Mixed', () => {
