@@ -9,6 +9,6 @@ before_script:
 script:
   - 'npm run cover'
 after_success:
-  - 'npm run cover:up'
+  - 'npm run ci:report'
 notifications:
   email: false

@@ -5,6 +5,7 @@
 *.log
 *.todo
 .fusebox
+.nyc_output
 /build
 /public
 /coverage

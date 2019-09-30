@@ -38,6 +38,8 @@
     "test:ci": "NODE_ENV=test npm run mocha --",
     "cover": "nyc --silent --x '**/tests/**' -- npm run test:ci",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
+    "html:report": "nyc report -r html",
+    "ci:report": "nyc report -r lcov && npm run cover:up",
     "test": "npm run lint && npm run test:ci --"
   },
   "dependencies": {
