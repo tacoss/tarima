@@ -102,36 +102,3 @@ If the extensions has no defined support, the source code is passed without chan
   "extension": "js"
 }
 ```
-
-Specs for rendering:
-
-    render = require('../lib/helpers/render')
-
-    describe 'Renderer', ->
-      it 'will run on supported extensions', (done) ->
-        partial =
-          filename: 'test.js.pug'
-          source: 'h1 It works!'
-          parts: ['js', 'pug']
-          runtimes: []
-          options: {}
-          deps: []
-
-        render partial, (err, result) ->
-          expect(result.source).toContain 'function template'
-          expect(result.source).toContain 'It works!'
-          expect(result.runtimes[0]).toContain 'ug-runtime'
-          done()
-
-      it 'will skip all unsupported extensions', (done) ->
-        partial =
-          filename: 'test.foo.bar'
-          source: 'test code'
-          parts: ['foo', 'bar']
-          runtimes: []
-          options: {}
-          deps: []
-
-        render partial, (err, result) ->
-          expect(result).toEqual partial
-          done()
