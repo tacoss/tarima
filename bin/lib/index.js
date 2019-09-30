@@ -150,7 +150,7 @@ module.exports = (options, logger, done) => {
     let count = 0;
 
     $.toArray(options.copy[src]).forEach(sub => {
-      glob.sync('*', { cwd: src, nodir: true }).every(x => {
+      glob.sync('*', { cwd: sub, nodir: true }).every(x => {
         count += 1;
 
         return context.copy(x, src, true);
