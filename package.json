@@ -4,7 +4,7 @@
   "description": "Templating madness!",
   "main": "lib/index.js",
   "bin": {
-    "tarima": "bin/tarima"
+    "tarima": "./bin/cli.js"
   },
   "files": [
     "lib/**",
