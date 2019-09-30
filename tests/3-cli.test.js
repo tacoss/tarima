@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 /* global describe, it */
 
-describe.only('CLI', () => {
+describe('CLI', () => {
   describe('asking for --help', () => {
     beforeEach(done => {
       cmd('--help', done);
