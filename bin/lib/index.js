@@ -100,7 +100,14 @@ module.exports = (options, logger, done) => {
   // normalize copy-patterns
   options.copy = options.copy !== null && typeof options.copy === 'object'
     ? options.copy
-    : {};
+    : [];
+
+  if (Array.isArray(options.copy)) {
+    options.copy = options.copy.reduce((prev, cur) => {
+      prev[cur] = '.';
+      return prev;
+    }, {});
+  }
 
   const filters = Array.isArray(options.filter) ? options.filter : ['**'];
   const context = plugableSupportAPI(logger, options);
@@ -150,10 +157,12 @@ module.exports = (options, logger, done) => {
     let count = 0;
 
     $.toArray(options.copy[src]).forEach(sub => {
-      glob.sync('*', { cwd: sub, nodir: true }).every(x => {
+      glob.sync('**', { cwd: src, nodir: true }).every(x => {
         count += 1;
 
-        return context.copy(x, src, true);
+        const dest = path.join(sub, x);
+
+        return context.copy(dest, src, true);
       });
     });
 

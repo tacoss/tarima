@@ -3,12 +3,19 @@ const exec = require('child_process').exec;
 
 process.chdir(path.join(__dirname, '../fixtures'));
 
-const execCommand = (cmd, callback) => {
+const execCommand = (cmd, _cwd, callback) => {
   execCommand.stderr = null;
   execCommand.stdout = null;
   execCommand.exitStatus = null;
 
   let cli = [path.join(__dirname, '../../bin/cli.js')];
+  let cwd = process.cwd();
+
+  if (typeof _cwd === 'string') {
+    cwd = _cwd;
+  } else {
+    callback = _cwd;
+  }
 
   if (typeof cmd === 'function') {
     callback = cmd;
@@ -16,7 +23,7 @@ const execCommand = (cmd, callback) => {
     cli.push(cmd);
   }
 
-  cli = exec(cli.join(' '), (error, out, err) => {
+  cli = exec(cli.join(' '), { cwd }, (error, out, err) => {
     execCommand.stdout = out;
     execCommand.stderr = err;
 

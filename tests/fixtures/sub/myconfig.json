@@ -1,0 +1,10 @@
+{
+  "from": "src",
+  "output": "dist",
+  "rename": [
+    "**/src/**:{fullpath/1}"
+  ],
+  "copy": [
+    "static/files"
+  ]
+}

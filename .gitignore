@@ -10,4 +10,5 @@
 /coverage
 /node_modules
 /bower_components
-/spec/fixtures/build
+/tests/fixtures/build
+/tests/fixtures/sub/dist

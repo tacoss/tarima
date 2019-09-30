@@ -59,5 +59,15 @@ describe.only('CLI', () => {
         done();
       });
     });
+
+    it('should copy from static folders', done => {
+      cmd('-fc myconfig.json', `${__dirname}/fixtures/sub`, () => {
+        expect(cmd.stdout).to.contain('Loading settings from myconfig.json');
+        expect(cmd.stdout).to.contain('Output to: dist');
+        expect(cmd.stdout).to.contain('Copying files from: static/files');
+        expect(cmd.stdout).to.contain('dist/index.html');
+        done();
+      });
+    });
   });
 });
