@@ -79,6 +79,7 @@ module.exports.init = options => {
     return _.src
       .map(src => {
         if (src.indexOf(':') === -1 && !$.exists(path.join(options.output, src))) {
+          if (_.required) throw new Error(`Required source to include: ${src}`);
           return;
         }
 
