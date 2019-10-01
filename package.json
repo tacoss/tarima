@@ -73,7 +73,7 @@
     "ejs": "^2.5.2",
     "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.18.2",
     "fast-async": "^6.2.2",
     "gen-pug-source-map": "^1.0.0",
     "handlebars": "^4.4.0",
