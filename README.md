@@ -416,7 +416,28 @@ A common pattern is ignoring everything which starts with underscore:
 }
 ```
 
-### 3.8 - Rollup.js
+### 3.8 - Copying from sources
+
+Copied files can be placed elsewhere within the output directory, e.g.
+
+```json
+{
+  "tarima": {
+    "copy": {
+      "vendor/*.txt": "other",
+      "vendor/assets": "."
+    }
+  }
+}
+```
+
+So, `vendor/sample.txt` will endup as `dest/other/sample.txt`
+
+Sources without globs are copied maintaining the same base directory.
+
+> When used as arrays or when not specified, the target directory is `.`.
+
+### 4.0 - Rollup.js
 
 You can provide a configuration file for [rollup](https://github.com/rollup/rollup) using the `rollupFile` option:
 
@@ -443,7 +464,7 @@ You can setup the specific behavior of bundling using `bundleOptions`:
 
 All given options are passed directly when calling the `view.bundle()` method.
 
-### 3.9 - Locals
+### 4.1 - Locals
 
 You can pass a global `locals` object accesible for all parsed templates, this way you can reuse anything do you need:
 
@@ -459,7 +480,7 @@ You can pass a global `locals` object accesible for all parsed templates, this w
 
 Given locals are passed directly when calling any `render()` method on Tarima.
 
-### 3.10 - Plugins
+### 4.2 - Plugins
 
 Using the `plugins` option you can declare scripts or modules to be loaded and perform specific tasks, common plugins are:
 
@@ -483,10 +504,11 @@ All `plugins` are loaded automatically by Tarima on the startup.
 
 > `devPlugins` are loaded only if the watch-mode is enabled from CLI
 
-### 3.11 - Settings
+### 5.0 - Settings
 
 - `cwd` &mdash; project's directory
 - `from` &mdash; source directories to process, not globs!
+- `copy` &mdash; static directories to copy, object or array
 - `output` &mdash; destination for generated files
 - `public` &mdash; public directory for serving assets
 - `cacheFile` &mdash; store processed details from files
@@ -513,6 +535,10 @@ All `plugins` are loaded automatically by Tarima on the startup.
   "from": [
     "lib/myapp/templates",
     "lib/myapp_web/assets"
+  ],
+  "copy": [
+    "vendor/fonts",
+    "vendor/*.txt"
   ],
   "watching": [
     "lib/myapp/application.js",
