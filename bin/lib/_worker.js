@@ -78,6 +78,10 @@ module.exports.init = options => {
   options.bundleOptions.helpers.includeTag = function _include(_) {
     return _.src
       .map(src => {
+        if (src.indexOf(':') === -1 && !$.exists(path.join(options.output, src))) {
+          return;
+        }
+
         if (String(src).indexOf('.css') > -1) {
           return `<link rel="stylesheet" href="${src}">`;
         }
@@ -86,8 +90,9 @@ module.exports.init = options => {
           return `<script src="${src}"></script>`;
         }
 
-        throw new Error(`Unsupported source for <@include>: ${src}`);
+        throw new Error(`Unsupported source to include: ${src}`);
       })
+      .filter(Boolean)
       .join('\n');
   };
 

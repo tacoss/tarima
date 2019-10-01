@@ -84,6 +84,9 @@ module.exports = cacheFile => {
             return;
           }
 
+          // cleanup
+          delete cache[id]._offset;
+
           if (cache[id].dirty === false) {
             delete cache[id].dirty;
             delete cache[id].mtime;

@@ -407,7 +407,7 @@ let child;
 
 function infoFiles(result) {
   if (isDev && result.output.length) {
-    $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''}\n${result.output.slice(0, 3).join('\n')}`,
+    $.notify(`${result.output.length} file${result.output.length !== 1 ? 's' : ''}\n${result.output.slice(0, 3).join(', ')}`,
       defaultConfig.notifications.title,
       defaultConfig.notifications.okIcon);
   }
