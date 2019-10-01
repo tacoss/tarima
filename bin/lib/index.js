@@ -136,8 +136,11 @@ module.exports = (options, logger, done) => {
 
       if (!$.exists(destFile) || ($.mtime(destFile) < $.mtime(srcFile))) {
         $.copy(srcFile, destFile);
+
+        return 1;
       }
-      return true;
+
+      return 0;
     }
 
     const found = paths.find(x => x.prefix(file));
@@ -150,8 +153,11 @@ module.exports = (options, logger, done) => {
         dest: path.relative(options.cwd, destFile),
         type: 'copy',
       });
-      return true;
+
+      return 1;
     }
+
+    return 0;
   };
 
   Object.keys(options.copy).forEach(src => {
@@ -162,13 +168,10 @@ module.exports = (options, logger, done) => {
     $.toArray(options.copy[src]).forEach(sub => {
       const [base, filter] = src.split(/(?=\*)/);
 
-      glob.sync(filter || '**', { cwd: base, nodir: true }).every(x => {
-        count += 1;
-
-        const dest = path.join(sub, x);
-
-        return context.copy(dest, base.replace(/\/$/, ''), true);
-      });
+      glob.sync(filter || '**', { cwd: base, nodir: true })
+        .forEach(x => {
+          count += context.copy(path.join(sub, x), base.replace(/\/$/, ''), true);
+        });
     });
 
     logger.info('\r\r{% line.cyan %s file%s copied %}\n', count, count === 1 ? '' : 's');
