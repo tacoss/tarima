@@ -103,7 +103,18 @@ function watch(context, cb) {
     : false;
 
   const sources = options.from.concat(options.watching)
-    .concat(Object.keys(options.copy));
+    .concat(Object.keys(options.copy).reduce((prev, cur) => {
+      if (!cur.includes('*')) {
+        prev.push(cur);
+      } else {
+        const base = cur.split('*')[0].replace(/\/$/, '');
+
+        if (!prev.includes(base)) {
+          prev.push(base);
+        }
+      }
+      return prev;
+    }, []));
 
   const opts = {
     debounceMS: 250,

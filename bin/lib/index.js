@@ -120,16 +120,19 @@ module.exports = (options, logger, done) => {
   options.plugins = options.plugins || [];
   options.devPlugins = options.devPlugins || [];
 
-  // safe copies
-  const paths = Object.keys(options.copy).map(key => ({
-    target: options.copy[key],
-    prefix: key,
-  }));
+  // safe copies (static)
+  const paths = Object.keys(options.copy)
+    .map(key => ({
+      target: options.copy[key],
+      prefix: $.makeFilter(true, [key]),
+      baseDir: key.split('*')[0].replace(/\/$/, ''),
+    }));
 
   context.copy = (file, baseDir, isMatched) => {
     if (isMatched) {
+      const subDir = baseDir.includes('/') ? path.basename(baseDir) : '';
       const srcFile = path.join(options.cwd, baseDir, file);
-      const destFile = path.join(options.output, file);
+      const destFile = path.join(options.output, subDir, file);
 
       if (!$.exists(destFile) || ($.mtime(destFile) < $.mtime(srcFile))) {
         $.copy(srcFile, destFile);
@@ -137,17 +140,17 @@ module.exports = (options, logger, done) => {
       return true;
     }
 
-    for (let i = 0; i < paths.length; i += 1) {
-      if (file.indexOf(paths[i].prefix) === 0) {
-        const destFile = path.relative(paths[i].prefix, file);
+    const found = paths.find(x => x.prefix(file));
 
-        context.dist({
-          src: path.join(options.cwd, file),
-          dest: path.relative(options.cwd, path.join(options.output, paths[i].target, destFile)),
-          type: 'copy',
-        });
-        return true;
-      }
+    if (found) {
+      const destFile = path.join(options.output, found.target, path.relative(found.baseDir, file));
+
+      context.dist({
+        src: path.join(options.cwd, file),
+        dest: path.relative(options.cwd, destFile),
+        type: 'copy',
+      });
+      return true;
     }
   };
 
@@ -157,12 +160,14 @@ module.exports = (options, logger, done) => {
     let count = 0;
 
     $.toArray(options.copy[src]).forEach(sub => {
-      glob.sync('**', { cwd: src, nodir: true }).every(x => {
+      const [base, filter] = src.split(/(?=\*)/);
+
+      glob.sync(filter || '**', { cwd: base, nodir: true }).every(x => {
         count += 1;
 
         const dest = path.join(sub, x);
 
-        return context.copy(dest, src, true);
+        return context.copy(dest, base.replace(/\/$/, ''), true);
       });
     });
 
