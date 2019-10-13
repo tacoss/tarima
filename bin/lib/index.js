@@ -130,9 +130,9 @@ module.exports = (options, logger, done) => {
 
   context.copy = (file, baseDir, isMatched) => {
     if (isMatched) {
-      const subDir = baseDir.includes('/') ? path.basename(baseDir) : '';
+      const subDir = baseDir.includes('/') && isMatched !== '.' ? path.basename(baseDir) : '';
       const srcFile = path.join(options.cwd, baseDir, file);
-      const destFile = path.join(options.output, subDir, file);
+      const destFile = path.join(options.output, isMatched !== true ? isMatched : subDir, file);
 
       if (!$.exists(destFile) || ($.mtime(destFile) < $.mtime(srcFile))) {
         $.copy(srcFile, destFile);
@@ -166,11 +166,11 @@ module.exports = (options, logger, done) => {
     let count = 0;
 
     $.toArray(options.copy[src]).forEach(sub => {
-      const [base, filter] = src.split(/(?=\*)/);
+      const [base, filter] = src.split(/\/(?=\*)/);
 
       glob.sync(filter || '**', { cwd: base, nodir: true })
         .forEach(x => {
-          count += context.copy(path.join(sub, x), base.replace(/\/$/, ''), true);
+          count += context.copy(x, base.replace(/\/$/, ''), !filter ? true : sub);
         });
     });
 

@@ -66,6 +66,9 @@ describe('CLI', () => {
         expect(cmd.stdout).to.contain('Output to: dist');
         expect(cmd.stdout).to.contain('Copying files from: static/files');
         expect(cmd.stdout).to.contain('dist/index.html');
+        expect(read('sub/dist/files/other-0.txt')).to.contain('--');
+        expect(read('sub/dist/zero/other-0.txt')).to.contain('--');
+        expect(read('sub/dist/sample-1.txt')).to.contain('Just text');
         done();
       });
     });

@@ -4,7 +4,9 @@
   "rename": [
     "**/src/**:{fullpath/1}"
   ],
-  "copy": [
-    "static/files"
-  ]
+  "copy": {
+    "static/files": ".",
+    "static/files/*1.txt": ".",
+    "static/files/*0.txt": "zero"
+  }
 }
