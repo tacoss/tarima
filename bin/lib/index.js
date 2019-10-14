@@ -239,7 +239,7 @@ module.exports = (options, logger, done) => {
   try {
     if (require.resolve('tarima-browser-sync')) {
       lrdev = 'tarima-browser-sync';
-      lrid = 'browser-sync'
+      lrid = 'browser-sync';
     }
   } catch (e) {
     // to nothing

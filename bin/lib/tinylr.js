@@ -3,10 +3,10 @@ const url = require('url');
 
 let opn;
 let connect;
-let connect_lr;
-let tiny_lr;
+let connectLr;
+let tinyLr;
 let proxy;
-let serve_static;
+let serveStatic;
 
 function fixedBrowsers(value) {
   if (typeof value === 'string') {
@@ -17,10 +17,10 @@ function fixedBrowsers(value) {
 }
 
 function run(done) {
-  tiny_lr = tiny_lr || require('tiny-lr');
+  tinyLr = tinyLr || require('tiny-lr');
   connect = connect || require('connect');
-  connect_lr = connect_lr || require('connect-livereload');
-  serve_static = serve_static || require('serve-static');
+  connectLr = connectLr || require('connect-livereload');
+  serveStatic = serveStatic || require('serve-static');
   proxy = proxy || require('proxy-middleware');
 
   const app = connect();
@@ -40,9 +40,9 @@ function run(done) {
   let _proxy;
 
   // early as possible
-  app.use(connect_lr({
+  app.use(connectLr({
     src: `//localhost:${_port}/livereload.js?snipver=1`,
-    port: _port
+    port: _port,
   }));
 
   const serveDirs = lrOptions.serve || options.serve || [];
@@ -105,12 +105,12 @@ function run(done) {
     next();
   });
 
-  app.use(serve_static(options.public));
+  app.use(serveStatic(options.public));
 
   if (serveDirs) {
     (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs)
       .forEach(dir => {
-        app.use(serve_static(dir));
+        app.use(serveStatic(dir));
       });
   }
 
@@ -122,7 +122,7 @@ function run(done) {
     }
 
     // restart
-    LR = tiny_lr();
+    LR = tinyLr();
     LR.listen(_port, () => {
       logger.info('\r\r{% link http://localhost:%s %}%s\n',
         port, _proxy ? ` {% gray (${_proxy.replace(/^https?:\/\//, '')}) %}` : '');
@@ -146,14 +146,14 @@ function run(done) {
           Object.keys(LR.clients).forEach(k => {
             LR.clients[k].send({
               command: 'reload',
-              path: ''
+              path: '',
             });
           });
         } else {
           LR.changed({
             body: {
-              files: result.output
-            }
+              files: result.output,
+            },
           });
         }
       }, lrOptions.timeout || 100);
@@ -161,7 +161,7 @@ function run(done) {
   });
 }
 
-module.exports = function (cb) {
+module.exports = function $tinyLr(cb) {
   if (this.opts.watch && (this.opts.flags.port || this.opts.flags.proxy)) {
     run.call(this, cb);
   } else {
