@@ -115,10 +115,7 @@ module.exports = (options, logger, done) => {
   options.ignore = options.ignore || [];
   options.locals = options.locals || {};
   options.rename = options.rename || [];
-
-  // devPlugins works only on dev-mode
   options.plugins = options.plugins || [];
-  options.devPlugins = options.devPlugins || [];
 
   // safe copies (static)
   const paths = Object.keys(options.copy)
@@ -236,10 +233,23 @@ module.exports = (options, logger, done) => {
   }
 
   let src = [];
+  let lrid = 'tiny-lr';
+  let lrdev = require.resolve('./tinylr');
+
+  try {
+    if (require.resolve('tarima-browser-sync')) {
+      lrdev = 'tarima-browser-sync';
+      lrid = 'browser-sync'
+    }
+  } catch (e) {
+    // to nothing
+  }
+
+  logger.info('\r{% log LiveReload: %} {% yellow %s %}\r\n', lrid);
 
   const plugs = () => Promise.all((options.plugins || [])
-    // conditionally load devPlugins
-    .concat((options.watch === true ? options.devPlugins || [] : [])
+    // conditionally load tiny-lr support
+    .concat((options.watch === true ? [lrdev] : [])
       .map(devFile => ({ dev: true, src: devFile })))
     .map(file => {
       if (typeof file !== 'object') {

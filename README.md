@@ -485,7 +485,6 @@ Given locals are passed directly when calling any `render()` method on Tarima.
 Using the `plugins` option you can declare scripts or modules to be loaded and perform specific tasks, common plugins are:
 
 - `talavera` &mdash; support for sprites and lazy loading
-- `tarima-lr` &mdash; LiveReload integration (light-weight)
 - `tarima-browser-sync` &mdash; BrowserSync integration (heavy)
 
 Some plugins can take its configuration from `pluginOptions` or directly from the main configuration:
@@ -502,8 +501,6 @@ Some plugins can take its configuration from `pluginOptions` or directly from th
 
 All `plugins` are loaded automatically by Tarima on the startup.
 
-> `devPlugins` are loaded only if the watch-mode is enabled from CLI
-
 ### 5.0 - Settings
 
 - `cwd` &mdash; project's directory
@@ -519,7 +516,6 @@ All `plugins` are loaded automatically by Tarima on the startup.
 - `bundle` &mdash; enable bundling if it's `true`, or just files matching this
 - `bundleOptions` &mdash; enable settings for all processed sources (see above)
 - `plugins` &mdash; enable plugins for further processing, e.g. `talavera`
-- `devPlugins` &mdash; same as above, but only on watch-mode (e.g. `tarima-lr`)
 - `pluginOptions` &mdash; specific options for all enabled plugins
 - `flags` &mdash; given flags from CLI (or custom)
 - `locals` &mdash; data passed to all rendered sources
@@ -570,19 +566,12 @@ All `plugins` are loaded automatically by Tarima on the startup.
   "ignoreFiles": [
     ".gitignore"
   ],
-  "devPlugins": [
-    "tarima-lr"
-  ],
   "plugins": [
     "talavera"
   ],
   "pluginOptions": {
     "talavera": {
       "dest": "public/images"
-    },
-    "tarima-lr": {
-      "serve": "build/public",
-      "timeout": 1000
     }
   },
   "bundleOptions": {

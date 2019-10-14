@@ -43,7 +43,6 @@ try {
       V: 'verbose',
       x: 'exclude',
       l: 'plugins',
-      L: 'devPlugins',
       r: 'reloader',
       m: 'minify',
       d: 'debug',
@@ -122,11 +121,10 @@ Options:
 
   -m, --minify      Apply optimizations for final sources (uglify, csso)
   -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower -l talavera)
-  -L, --devPlugins  Same as --plugins, development only (e.g. -L tarima-lr)
 
   -o, --open        Open browser (requires browser-sync/live-reload, see below)
-  -p, --port        Enable custom port for serving files (e.g. tarima-lr)
-  -P, --proxy       Enable proxying for local server (e.g. tarima-lr)
+  -p, --port        Enable custom port for serving files (e.g. tiny-lr)
+  -P, --proxy       Enable proxying for local server (e.g. tiny-lr)
 
   -f, --force       Force rendering/bundling of all given sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
@@ -220,7 +218,6 @@ const defaultConfig = {
   bundle: $.toArray(_.flags.bundle),
   plugins: $.toArray(_.flags.plugins),
   watching: $.toArray(_.flags.watching),
-  devPlugins: $.toArray(_.flags.devPlugins),
   rename: $.toArray(_.flags.rename),
   from: _src,
   output: _.flags.output || DEFAULTS.output,
