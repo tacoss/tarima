@@ -89,7 +89,6 @@
     "rollup-plugin-node-resolve": "^5.0.1",
     "styl": ">=0.2.9",
     "sucrase": "^3.9.5",
-    "talavera": "^0.7.6",
     "terser": "^4.0.0",
     "traceur": "^0.0.111",
     "typescript": "^3.0.3"
