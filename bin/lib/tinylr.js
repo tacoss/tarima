@@ -95,10 +95,14 @@ function run(done) {
         return next();
       }
 
-      const file = path.join(options.public, url.parse(req.url).pathname);
+      const src = url.parse(req.url).pathname;
+      const file = path.join(options.public, src);
 
       if (!exists(file)) {
-        req.url = `/${options.index || 'index.html'}`;
+        const dir = path.dirname(file);
+        const prefix = exists(dir) ? `${path.dirname(src)}/` : '/';
+
+        req.url = `${prefix}${options.index || 'index.html'}`;
       }
     }
 
