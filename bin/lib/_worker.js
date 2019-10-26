@@ -68,15 +68,15 @@ module.exports.init = options => {
   options.bundleOptions.cache = ctx.cache.all() || {};
 
   // built-in helpers
-  options.bundleOptions.helpers.srcFile = _ => $.read(path.join(options.cwd, _.src[0]));
-  options.bundleOptions.helpers.destFile = _ => $.read(path.join(options.output, _.src[0]));
+  options.bundleOptions.helpers.srcFile = _ => $.read(path.join(options.cwd, _.src));
+  options.bundleOptions.helpers.destFile = _ => $.read(path.join(options.output, _.src));
   options.bundleOptions.helpers.resources = () => (options.bundleOptions.resources || []).join('\n');
 
   /* eslint-disable prefer-rest-params */
   /* eslint-disable prefer-spread */
 
   options.bundleOptions.helpers.includeTag = function _include(_) {
-    return _.src
+    return (typeof _.src === 'string' ? _.src.split(/[\s|;,]+/) : _.src)
       .map(src => {
         if (src.indexOf(':') === -1 && !$.exists(path.join(options.output, src))) {
           if (_.required) throw new Error(`Required source to include: ${src}`);
@@ -125,6 +125,15 @@ module.exports.init = options => {
   // custom events
   ctx.onWrite = ctx.emit.bind(null, 'write');
   ctx.onDelete = ctx.emit.bind(null, 'delete');
+
+  // pre-compile regex to reuse on all replacements!
+  if (!options.bundleOptions.helpers._regex) {
+    const keys = Object.keys(options.bundleOptions.helpers);
+
+    Object.defineProperty(options.bundleOptions.helpers, '_regex', {
+      value: new RegExp(`<(${keys.join('|')})([^<>]*?)(?:\\/>|>([^<>]*?)<\\/\\1>)`, 'g'),
+    });
+  }
 
   function ensureRename(view) {
     if (typeof options.rename === 'function') {
