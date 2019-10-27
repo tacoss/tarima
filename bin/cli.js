@@ -25,7 +25,7 @@ let _;
 
 try {
   _ = wargs(process.argv.slice(2), {
-    boolean: 'qvVmdfhUACI',
+    boolean: 'dqvVmdfhUACI',
     default: DEFAULTS,
     alias: {
       U: 'umd',
