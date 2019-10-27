@@ -1,7 +1,7 @@
 const path = require('path');
 const url = require('url');
 
-let opn;
+let open;
 let connect;
 let connectLr;
 let tinyLr;
@@ -132,8 +132,8 @@ function run(done) {
         port, _proxy ? ` {% gray (${_proxy.replace(/^https?:\/\//, '')}) %}` : '');
 
       if (options.flags.open) {
-        opn = opn || require('opn');
-        opn(`http://localhost:${port}`, { app: fixedBrowsers(options.flags.open) || [] })
+        open = open || require('open');
+        open(`http://localhost:${port}`, { app: fixedBrowsers(options.flags.open) || [] })
           .catch(() => {
             // do nothing
           });
