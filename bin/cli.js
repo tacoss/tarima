@@ -396,7 +396,7 @@ if (_.flags.extensions) {
 defaultConfig.bundleOptions.compileDebug = _.flags.debug;
 defaultConfig.bundleOptions.verboseDebug = _.flags.verbose;
 
-const isDev = process.env.NODE_ENV === 'development' || isWatching;
+const isDev = process.env.NODE_ENV === 'development' && isWatching;
 
 const cmd = _.raw || [];
 
