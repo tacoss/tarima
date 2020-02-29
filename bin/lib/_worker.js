@@ -54,6 +54,7 @@ module.exports.init = options => {
   ctx.started = true;
   ctx.tarimaOptions = {};
   ctx.tarimaOptions.cwd = options.cwd;
+  ctx.tarimaOptions.public = options.public;
 
   Object.keys(options.bundleOptions).forEach(key => {
     ctx.tarimaOptions[key] = options.bundleOptions[key];
