@@ -62,6 +62,7 @@ module.exports.init = options => {
   let fixedBundle = $.toArray(options.bundle);
 
   ctx.isBundle = () => false;
+  ctx._bundle = null;
   ctx._cache = null;
   ctx._data = [];
 
@@ -235,9 +236,6 @@ module.exports.init = options => {
       });
     });
   };
-
-  ctx._bundle = null;
-  ctx._cache = null;
 
   ctx.compile = (src, cb) => {
     const entry = ctx.cache.get(src) || {};
