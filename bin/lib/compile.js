@@ -7,9 +7,6 @@ const path = require('path');
 const _worker = require('./_worker');
 const support = require('../../lib/support');
 
-const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
-const RE_SCRIPTS = /\.(?:[tj]sx?|es6|(?:lit)?coffee(?:\.md)?)(?=>(?:\.\w+)*|$)$/;
-
 module.exports = (context, files, cb) => {
   const tasks = [];
 
@@ -70,16 +67,6 @@ module.exports = (context, files, cb) => {
       cache.rm(src);
       onDelete(src, entry);
     } else {
-      let ascDesc = src.split('/').length * -1;
-
-      if (RE_STYLES.test(src)) {
-        ascDesc = 2;
-      }
-
-      if (RE_SCRIPTS.test(src)) {
-        ascDesc = 1;
-      }
-
       tasks.push({ src });
     }
   }
@@ -199,12 +186,7 @@ module.exports = (context, files, cb) => {
           }
         });
       }))
-      .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
+        .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
     })
-    .then(() => {
-      _end(null, _files);
-    })
-    .catch(e => {
-      _end(e, _files);
-    });
+    .then(() => _end(null, _files)).catch(e => _end(e, _files));
 };
