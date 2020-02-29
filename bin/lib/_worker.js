@@ -167,15 +167,15 @@ module.exports.init = options => {
     }
   }
 
-  ctx.ensureWrite = (view, index) =>
+  ctx.ensureWrite = (view, index, params) =>
     Promise.resolve()
       .then(() => ctx.onWrite(view, index))
       .then(() => {
-        if (options.bundleOptions.optimizations) {
+        if (params.$minify || options.bundleOptions.optimizations) {
           const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
           const fixedOutput = ensureOptimize(view.dest, view.output, sourceMaps);
 
-          view.output = fixedOutput || view.output;
+          $.write(view.dest.replace(/\.(\w+)$/, '.min.$1'), fixedOutput || view.output);
         }
 
         if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
@@ -322,7 +322,7 @@ module.exports.init = options => {
         });
 
         index(fixedDeps);
-        ctx.ensureWrite(result, index)
+        ctx.ensureWrite(result, index, partial.params.data)
           .then(() => tasks.map(x => x()))
           .then(() => {
             ctx.cache.set(file, 'deps', fixedDeps);
