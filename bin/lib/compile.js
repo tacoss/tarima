@@ -4,7 +4,7 @@ const debug = require('debug')('tarima:compile');
 
 const path = require('path');
 
-const _compiler = require('./_compiler');
+const _worker = require('./_worker');
 const support = require('../../lib/support');
 
 const RE_STYLES = /\.(?:css|styl|less|s[ac]ss)(?=>(?:\.\w+)*|$)$/;
@@ -18,6 +18,10 @@ module.exports = (context, files, cb) => {
   const cache = context.cache;
   const match = context.match;
   const options = context.opts;
+
+  if (!_worker.shared) {
+    _worker.shared = _worker.init(options);
+  }
 
   const onDelete = context.emit.bind(null, 'delete');
 
@@ -76,7 +80,7 @@ module.exports = (context, files, cb) => {
         ascDesc = 1;
       }
 
-      tasks.push({ src, _offset: ascDesc });
+      tasks.push({ src });
     }
   }
 
@@ -128,13 +132,11 @@ module.exports = (context, files, cb) => {
   });
 
   const _subtasks = [];
-  const _workers = [];
   const _files = [];
 
   if (unknown.length) {
     dispatch(options, unknown.map(file => {
       const _target = {
-        _offset: 3,
         src: file,
         dest: dest(file),
       };
@@ -167,51 +169,39 @@ module.exports = (context, files, cb) => {
 
   Promise.all(_subtasks)
     .then(() => {
-      return tasks
-        .sort((a, b) => b._offset - a._offset)
-        .map(task => () => new Promise((resolve, reject) => {
-          const _worker = _compiler.getShared(options);
+      return tasks.map(task => () => new Promise((resolve, reject) => {
+        _worker.run(task, options, (err, result, caching) => {
+          if (err) {
+            reject(err);
+          } else {
+            cache.set(task.src, caching);
+            cache.set(task.src, 'dirty', false);
 
-          _workers.push(_worker);
+            (caching.deps || []).forEach(dep => {
+              const parent = cache.get(dep) || {};
+              const deps = parent.deps || [];
 
-          _worker.run(task, options, (err, result, caching) => {
-            if (err) {
-              reject(err);
-            } else {
-              cache.set(task.src, caching);
-              cache.set(task.src, 'dirty', false);
+              cache.set(dep, 'dirty', false);
 
-              (caching.deps || []).forEach(dep => {
-                const parent = cache.get(dep) || {};
-                const deps = parent.deps || [];
+              if (deps.indexOf(task.src) === -1) {
+                deps.push(task.src);
+                cache.set(dep, 'deps', deps);
+              }
+            });
 
-                cache.set(dep, 'dirty', false);
+            result.forEach(x => {
+              if (_files.indexOf(x) === -1) {
+                _files.push(x);
+              }
+            });
 
-                if (deps.indexOf(task.src) === -1) {
-                  deps.push(task.src);
-                  cache.set(dep, 'deps', deps);
-                }
-              });
-
-              result.forEach(x => {
-                if (_files.indexOf(x) === -1) {
-                  _files.push(x);
-                }
-              });
-
-              resolve();
-            }
-          });
-        }))
-        .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
+            resolve();
+          }
+        });
+      }))
+      .reduce((prev, cur) => prev.then(() => cur()), Promise.resolve());
     })
     .then(() => {
-      if (!options.watch) {
-        _workers.forEach(x => {
-          x.end();
-        });
-      }
-
       _end(null, _files);
     })
     .catch(e => {
