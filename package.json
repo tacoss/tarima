@@ -56,6 +56,7 @@
     "redent": "^3.0.0",
     "rewrite-exports": "^0.0.1",
     "rewrite-imports": "^2.0.3",
+    "rollup": "^2.0.2",
     "tosource": "^1.0.0",
     "wargs": "^0.9.1"
   },
@@ -84,7 +85,6 @@
     "postcss": "^7.0.2",
     "pug": ">=2.0.0-beta11",
     "rimraf": ">=2.5.4",
-    "rollup": "^2.0.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
     "styl": ">=0.2.9",
