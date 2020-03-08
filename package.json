@@ -32,15 +32,16 @@
     "node": ">=0.8"
   },
   "scripts": {
-    "dev": "npm run test:ci -- -w",
+    "dev": "npm run test:run -- -w",
     "lint": "eslint lib bin",
     "mocha": "_mocha --bail --exit --recursive --file ./tests/helpers.js -bR spec tests/*.test.js",
-    "test:ci": "NODE_ENV=test npm run mocha --",
-    "cover": "nyc --silent --x '**/tests/**' -- npm run test:ci",
+    "test:run": "NODE_ENV=test npm run mocha --",
+    "cover": "nyc --silent --x '**/tests/**' -- npm run test:run",
     "cover:up": "codecov --file=coverage/lcov.info --disable=gcov -e TRAVIS_NODE_VERSION",
     "html:report": "nyc report -r html",
     "ci:report": "nyc report -r lcov && npm run cover:up",
-    "test": "npm run lint && npm run test:ci --"
+    "test:ci": "npm run cover && npm run ci:report",
+    "test": "npm run lint && npm run test:run --"
   },
   "dependencies": {
     "debug": "^4.0.1",
