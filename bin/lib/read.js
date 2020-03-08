@@ -4,12 +4,11 @@
 /* eslint-disable global-require */
 
 const debug = require('debug')('tarima:read');
-const path = require('path');
 const glob = require('glob');
 
 const $ = require('./utils');
 
-let nsfw;
+let chokidar;
 
 function sync(id, src, cache) {
   const entry = cache.get(id) || {};
@@ -52,7 +51,7 @@ function sync(id, src, cache) {
 }
 
 function watch(context, cb) {
-  nsfw = nsfw || require('nsfw');
+  chokidar = chokidar || require('chokidar');
 
   const cache = context.cache;
   const options = context.opts;
@@ -75,29 +74,6 @@ function watch(context, cb) {
     timeout = setTimeout(next, options.interval || 200);
   }
 
-  function on(evt, skip) {
-    const fullpath = path.join(evt.newDirectory || evt.directory, evt.newFile || evt.file);
-
-    if ($.isFile(fullpath)) {
-      let type = (evt.action === 1 || evt.action === 2)
-        ? 'changed'
-        : null;
-
-      type = type || (evt.action === 0 ? 'add' : null);
-      type = type || (evt.action === 3 ? 'unlink' : null);
-
-      const file = path.relative(options.cwd, fullpath);
-
-      type = (skip && skip(file)) ? 'ignore' : type;
-
-      debug(`${type} ${file}`);
-
-      if (type !== 'ignore') {
-        add(file);
-      }
-    }
-  }
-
   const isIgnore = (options.ignore && options.ignore.length)
     ? $.makeFilter(true, options.ignore)
     : false;
@@ -116,31 +92,27 @@ function watch(context, cb) {
       return prev;
     }, []));
 
-  const opts = {
-    debounceMS: 250,
-    errorCallback: next,
-  };
-
-  const all = [];
-
   sources.forEach(dir => {
-    const base = path.join(options.cwd, dir);
+    const watcher = chokidar.watch(dir, {
+      cwd: options.cwd,
+      ignored: options.ignore,
+      persistent: true,
+      ignoreInitial: true,
+      ignorePermissionErrors: true,
+      followSymlinks: options.followSymlinks,
+    });
 
-    all.push(nsfw(base, evts => {
-      evts.forEach(evt => on(evt, isIgnore));
-    }, opts).catch(e => {
-      throw new Error(`Failed to watch '${dir}' source. ${e.message}`);
-    }));
-  });
+    watcher.on('all', (evt, file) => {
+      if (
+        (evt === 'add' || evt === 'change' || evt === 'unlink')
+        && (isIgnore ? !isIgnore(file) : true)
+      ) {
+        debug(`${evt} ${file}`);
+        add(file);
+      }
+    });
 
-  Promise.all(all).then(_all => {
-    _all.forEach(x => x.start());
-  }).catch(next);
-
-  process.on('exit', () => {
-    Promise.all(all).then(_all => {
-      _all.forEach(x => x.stop());
-    }).catch(next);
+    watcher.on('error', next);
   });
 }
 
