@@ -252,7 +252,10 @@ module.exports.init = options => {
       return cb(e);
     }
 
-    const _method = (partial.params.data.$bundle || ctx.isBundle(src)) ? 'bundle' : 'render';
+    // preset bundles through extensions, matching or inline data
+    const _method = (partial.params.parts.includes('bundle') || partial.params.data.$bundle || ctx.isBundle(src))
+      ? 'bundle'
+      : 'render';
 
     return logger(_method, src, end =>
       partial[_method]((err, output) => {
