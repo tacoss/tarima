@@ -420,8 +420,6 @@ function infoFiles(result) {
   }
 }
 
-const _close = process.version.split('.')[1] === '6' ? 'exit' : 'close';
-
 function exec(onError) {
   function restart() {
     // restart
@@ -453,7 +451,7 @@ function exec(onError) {
       }
     });
 
-    child.on(_close, exitCode => {
+    child.on('close', exitCode => {
       let message = `${_cmd}\n— `;
       let icon = defaultConfig.notifications.okIcon;
 

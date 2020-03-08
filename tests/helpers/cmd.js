@@ -34,9 +34,7 @@ const execCommand = (cmd, _cwd, callback) => {
     callback();
   });
 
-  const exitEventName = process.version.split('.')[1] === '6' ? 'exit' : 'close';
-
-  cli.on(exitEventName, code => {
+  cli.on('close', code => {
     execCommand.exitStatus = code;
   });
 };
