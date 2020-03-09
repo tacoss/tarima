@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/tacoss/tarima.png?branch=next)](https://travis-ci.org/tacoss/tarima)
 [![NPM version](https://badge.fury.io/js/tarima.png)](http://badge.fury.io/js/tarima)
-[![Coverage Status](https://codecov.io/github/tacoss/tarima/coverage.svg?branch=next)](https://codecov.io/github/tacoss/tarima)
+[![Coverage Status](https://codecov.io/github/tacoss/tarima/coverage.svg?branch=master)](https://codecov.io/github/tacoss/tarima)
 [![Known Vulnerabilities](https://snyk.io/test/npm/tarima/badge.svg)](https://snyk.io/test/npm/tarima)
 
 ![Tarima](tarima.png)
