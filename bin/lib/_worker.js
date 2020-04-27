@@ -176,8 +176,12 @@ module.exports.init = options => {
         if (params.$minify || options.bundleOptions.optimizations) {
           const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
           const fixedOutput = ensureOptimize(view.dest, view.output, sourceMaps);
+          const shouldMinify = /\.(?:css|js)$/.test(view.dest);
+          const fixedFilename = shouldMinify
+            ? view.dest.replace(/\.(\w+)$/, '.min.$1')
+            : view.dest;
 
-          $.write(view.dest.replace(/\.(\w+)$/, '.min.$1'), fixedOutput || view.output);
+          $.write(fixedFilename, fixedOutput || view.output);
         }
 
         if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
