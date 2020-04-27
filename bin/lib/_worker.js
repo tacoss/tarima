@@ -10,6 +10,7 @@ const plugableSupportAPI = require('./hooks');
 const cacheableSupportAPI = require('./caching');
 
 // /* eslint-disable import/no-unresolved */
+let htmlCompressor;
 let cssCompressor;
 let jsCompressor;
 
@@ -144,6 +145,28 @@ module.exports.init = options => {
   }
 
   function ensureOptimize(name, contents, sourceMaps) {
+    if (name.indexOf('.html') > -1) {
+      htmlCompressor = htmlCompressor || require('html-minifier').minify;
+
+      return htmlCompressor(contents, {
+        collapseBooleanAttributes: true,
+        collapseInlineTagWhitespace: true,
+        collapseWhitespace: true,
+        minifyCSS: true,
+        minifyJS: true,
+        removeAttributeQuotes: true,
+        removeCDATASectionsFromCDATA: true,
+        removeComments: true,
+        removeCommentsFromCDATA: true,
+        removeEmptyAttributes: true,
+        removeOptionalTags: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      });
+    }
+
     if (name.indexOf('.css') > -1) {
       cssCompressor = cssCompressor || require('csso').minify;
 
