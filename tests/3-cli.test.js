@@ -72,5 +72,14 @@ describe('CLI', () => {
         done();
       });
     });
+
+    it('should replace macros before any parsing', done => {
+      cmd('a -fy macros.jsx FOO=true BAR=0', () => {
+        expect(read('build/a/macros.js')).to.contain('FIXED');
+        expect(read('build/a/macros.js')).to.contain('console.log');
+        expect(read('build/a/macros.js')).to.contain('var Example =');
+        done();
+      });
+    });
   });
 });
