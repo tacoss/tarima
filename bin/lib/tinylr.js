@@ -88,13 +88,6 @@ function run(done) {
 
   app.use((req, res, next) => {
     if (req.method === 'GET') {
-      const name = url.parse(req.url).pathname;
-
-      // TODO: improve this behavior
-      if (path.basename(name).indexOf('.') > -1) {
-        return next();
-      }
-
       const src = url.parse(req.url).pathname;
       const file = path.join(options.public, src);
 
