@@ -244,7 +244,16 @@ const defaultConfig = {
 
 // apply package settings
 try {
-  $.merge(defaultConfig, mainPkg.tarima || {});
+  const pkgInfo = mainPkg.tarima || {};
+
+  // normalize some inputs per-environment
+  ['from', 'ignore', 'bundle', 'rename'].forEach(key => {
+    if (pkgInfo[key] && !Array.isArray(pkgInfo[key])) {
+      pkgInfo[key] = (pkgInfo[key].default || []).concat(pkgInfo[key][_.flags.env] || []);
+    }
+  });
+
+  $.merge(defaultConfig, pkgInfo);
 } catch (e) {
   $.errLog(`Configuration mismatch: ${_debug(e)}`);
   die(1);
