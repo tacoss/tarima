@@ -5,6 +5,7 @@ const $ = require('./utils');
 
 // initialize meta-bundler
 const tarima = require('../../lib');
+const preFilter = require('../../lib/helpers/pre-filter');
 
 const plugableSupportAPI = require('./hooks');
 const cacheableSupportAPI = require('./caching');
@@ -241,7 +242,7 @@ module.exports.init = options => {
 
     ctx._data.push(target.dest);
 
-    target.type = 'copy';
+    target.type = target.data ? 'write' : 'copy';
 
     ctx.sync(target.src);
     ctx.dist(target);
@@ -368,12 +369,12 @@ module.exports.init = options => {
   };
 };
 
-module.exports.run = (data, options, callback) => {
+module.exports.run = (target, options, callback) => {
   Promise.resolve()
     .then(() => {
-      if (!data.dest) {
+      if (!target.dest) {
         return new Promise((resolve, reject) => {
-          ctx.compile(data.src, err => {
+          ctx.compile(target.src, err => {
             if (err) {
               reject(err);
             } else {
@@ -383,10 +384,18 @@ module.exports.run = (data, options, callback) => {
         });
       }
 
-      ctx.copy(data);
+      // run pre-filter on allowed extensions only!
+      const allow = options.bundleOptions.process || [];
+      const ext = path.extname(target.src).replace('.', '');
+
+      if (allow.includes(ext)) {
+        target.data = preFilter($.read(target.src).toString(), options.bundleOptions.globals);
+      }
+
+      ctx.copy(target);
     })
     .then(() => {
-      callback(null, ctx._data, ctx.cache.get(data.src) || {});
+      callback(null, ctx._data, ctx.cache.get(target.src) || {});
     })
     .catch(e => {
       callback(e);
