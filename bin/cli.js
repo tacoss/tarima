@@ -25,13 +25,14 @@ let _;
 
 try {
   _ = wargs(process.argv.slice(2), {
-    boolean: 'dqvVmdfhUACI',
+    boolean: 'sdqvVmdfhUACI',
     default: DEFAULTS,
     alias: {
       U: 'umd',
       A: 'amd',
       C: 'cjs',
       I: 'iife',
+      s: 'sources',
       b: 'bundle',
       q: 'quiet',
       W: 'public',
@@ -128,6 +129,8 @@ Options:
 
   -f, --force       Force rendering/bundling of all given sources
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
+  -s, --sources     Save generated sourceMaps as .map files alongside outputted files
+
   -U, --umd         Save bundles as UMD wrapper
   -A, --amd         Save bundles as AMD wrapper
   -C, --cjs         Save bundles as CommonJS wrapper
@@ -395,6 +398,11 @@ if (_.flags.extensions) {
 
 defaultConfig.bundleOptions.compileDebug = _.flags.debug;
 defaultConfig.bundleOptions.verboseDebug = _.flags.verbose;
+
+if (_.flags.sources) {
+  defaultConfig.bundleOptions.sourceMaps = true;
+  defaultConfig.bundleOptions.sourceMapFiles = true;
+}
 
 const isDev = process.env.NODE_ENV === 'development' && isWatching;
 
