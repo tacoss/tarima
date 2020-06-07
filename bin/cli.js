@@ -25,9 +25,10 @@ let _;
 
 try {
   _ = wargs(process.argv.slice(2), {
-    boolean: 'sdqvVmdfhUACI',
+    boolean: 'sdqvVmdfhMUACI',
     default: DEFAULTS,
     alias: {
+      M: 'esm',
       U: 'umd',
       A: 'amd',
       C: 'cjs',
@@ -281,6 +282,10 @@ $.merge(defaultConfig.bundleOptions.extensions, defaultConfig.extensions || {});
 defaultConfig.bundleOptions.rollup = defaultConfig.bundleOptions.rollup || {};
 
 // setup rollup format
+if (_.flags.es || _.flags.esm) {
+  defaultConfig.bundleOptions.rollup.format = 'esm';
+}
+
 if (_.flags.umd) {
   defaultConfig.bundleOptions.rollup.format = 'umd';
 }
