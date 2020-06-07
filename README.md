@@ -219,13 +219,17 @@ console.log(foo);
 
 The bundler will merge up all `importee.data` with the `importer.data` before processing.
 
-> Note globals are injected during the `post-filter`for all script sources, see below.
+> Note globals are injected during the `post-filter` for all script sources.
 
-#### Filters
+Also you can use comments to conditionally render chunks of code through macros, e.g.
 
-Tarima handle sources this way: `read -> pre-filter -> compile -> post-filter`.
+```js
+//IF DEBUG
+console.log(this);
+//ENDIF
+```
 
-Passing a function as the `filter` option brings you the ability to modify the partial view during the `pre-filter` phase.
+> Macro-tags should be placed one per-line, nesting is allowed and you can use `<!--IF X-->` or `/*IF X*/` for several source-types.
 
 #### Locals
 
