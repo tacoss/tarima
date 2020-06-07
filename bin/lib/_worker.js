@@ -312,7 +312,7 @@ module.exports.init = options => {
           output._chunks.forEach(chunk => {
             tasks.push(() => {
               const sub = {
-                dest: path.relative(options.cwd, path.resolve(result.dest, '..', chunk.filename)),
+                dest: path.resolve(result.dest, '..', path.basename(chunk.filename)),
                 data: chunk.source,
                 type: 'write',
               };
