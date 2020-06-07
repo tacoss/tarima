@@ -74,10 +74,10 @@ describe('CLI', () => {
     });
 
     it('should replace macros before any parsing', done => {
-      cmd('a -fy macros.jsx FOO=true BAR=0', () => {
+      cmd('a -fy macros.js FOO=true BAR=0', () => {
         expect(read('build/a/macros.js')).to.contain('FIXED');
         expect(read('build/a/macros.js')).to.contain('console.log');
-        expect(read('build/a/macros.js')).to.contain('var Example =');
+        expect(read('build/a/macros.js')).to.contain('const Example =');
         done();
       });
     });
