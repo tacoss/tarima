@@ -1,6 +1,6 @@
 {
   "name": "tarima",
-  "version": "4.7.5",
+  "version": "4.7.9",
   "description": "Templating madness!",
   "main": "lib/index.js",
   "bin": {
@@ -62,6 +62,7 @@
     "wargs": "^0.9.1"
   },
   "devDependencies": {
+    "acorn": ">=6.4.1",
     "asciidoctor.js": "^1.5.7",
     "autoprefixer": "^9.1.5",
     "babel-core": "^6.18.2",
@@ -81,6 +82,7 @@
     "kramed": ">=0.5.5",
     "less": "^3.8.1",
     "liquid-node": "^3.0.0",
+    "minimist": ">=1.2.3",
     "mocha": "^7.1.0",
     "node-sass": "^4.9.3",
     "nodent": "^3.1.3",
@@ -94,7 +96,8 @@
     "sucrase": "^3.9.5",
     "terser": "^4.0.0",
     "traceur": "^0.0.111",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "websocket-extensions": ">=0.1.4"
   },
   "optionalDependencies": {
     "connect": "^3.7.0",
