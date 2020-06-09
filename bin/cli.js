@@ -248,7 +248,7 @@ try {
 
   // normalize some inputs per-environment
   ['from', 'ignore', 'bundle', 'rename'].forEach(key => {
-    if (pkgInfo[key] && !Array.isArray(pkgInfo[key])) {
+    if (pkgInfo[key] && !(typeof pkgInfo[key] === 'string' || Array.isArray(pkgInfo[key]))) {
       pkgInfo[key] = (pkgInfo[key].default || []).concat(pkgInfo[key][_.flags.env] || []);
     }
   });
