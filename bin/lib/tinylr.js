@@ -59,7 +59,7 @@ function run(done) {
       let _parts;
 
       if (_part.indexOf('->') !== -1 || _part.indexOf(' ') !== -1) {
-        _parts = _part.split(/\*->\s*|\s+/);
+        _parts = _part.split(/\s*->\s*|\s+/);
 
         let dest = _parts[2];
 
