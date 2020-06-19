@@ -47,6 +47,7 @@ function run(done) {
 
   const serveDirs = lrOptions.serve || options.serve || [];
   const sources = [path.relative(cwd, options.public) || '.'].concat(serveDirs);
+  const defaults = { preserveHost: true };
 
   logger.info('\r\r{% log Serving files from: %} %s\n',
     sources.map(x => `{% yellow ${x} %}`).join('{% gray , %} '));
@@ -57,11 +58,12 @@ function run(done) {
       const _part = chunk.trim();
 
       let _parts;
+      let _opts;
 
       if (_part.indexOf('->') !== -1 || _part.indexOf(' ') !== -1) {
         _parts = _part.split(/\s*->\s*|\s+/);
 
-        let dest = _parts[2];
+        let dest = _parts[1];
 
         if (/^\d+/.test(dest)) {
           dest = `:${dest}`;
@@ -76,12 +78,13 @@ function run(done) {
         }
 
         _parts[0].split(',').forEach(sub => {
-          app.use(sub, proxy(`${dest}${dest.substr(-1) !== '/' ? sub : ''}`));
+          _opts = url.parse(`${dest}${dest.substr(-1) !== '/' ? sub : ''}`);
+          app.use(sub, proxy({ ...defaults, ..._opts }));
         });
       } else {
         _parts = _part.match(/^(\w+:\/\/[\w:.]+)(\/.+?)?$/);
-
-        app.use(_parts[2] || '/', proxy(_part));
+        _opts = url.parse(_part);
+        app.use(_parts[2] || '/', proxy({ ...defaults, ..._opts }));
       }
     });
   }
