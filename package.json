@@ -81,7 +81,7 @@
     "html-minifier": "^4.0.0",
     "kramed": ">=0.5.5",
     "less": "^3.8.1",
-    "liquid-node": "^3.0.0",
+    "liquid": "^4.0.1",
     "minimist": ">=1.2.3",
     "mocha": "^7.1.0",
     "node-sass": "^4.9.3",

@@ -145,8 +145,8 @@ You can install the following dependencies for specific support:
 - `npm install traceur` &rarr; `.jsx` and `.es6.js`
 - `npm install sucrase` &rarr; `.jsx` and `.es6.js`
 - `npm install typescript` &rarr; `.ts` and `.tsx`
-- `npm install liquid-node` &rarr; `.sv` and `.liquid`
 - `npm install babel-core@^5` &rarr; `.jsx` and `.es6.js`
+- `npm install liquid` &rarr; `.liquid`
 - `npm install nodent` &rarr; to transpile `async/await` down to ES5
 
 Imported sources through Rollup.js will be processed anyway regardless they're supported or not.
