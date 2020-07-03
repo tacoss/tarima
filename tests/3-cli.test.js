@@ -81,5 +81,12 @@ describe('CLI', () => {
         done();
       });
     });
+
+    it('should resolve from multiple sources', done => {
+      cmd('a -i b -b -fy multiple.js', () => {
+        expect(read('build/a/multiple.js')).to.contain('test = 42');
+        done();
+      });
+    });
   });
 });
