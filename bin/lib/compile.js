@@ -77,7 +77,11 @@ module.exports = (context, files, cb) => {
       : id));
   }
 
-  files.forEach(src => {
+  files.sort((a, b) => {
+    if (support.isResource(a)) return -1;
+    if (support.isResource(b)) return 1;
+    return 0;
+  }).forEach(src => {
     // skip early
     if (watching(src) || copy(src)) {
       debug('WATCH %s', src);
