@@ -526,6 +526,8 @@ process.nextTick(() => {
     process.stdout.write('\rProcessing sources...\r');
   }
 
+  const start = Date.now();
+
   run(defaultConfig, function done(err, result) {
     if (err) {
       debug('failed %s', err);
@@ -546,7 +548,9 @@ process.nextTick(() => {
     if (!logger.isEnabled() && !(_.flags.debug && _.flags.verbose)) {
       process.stdout.write(`\r${result.output.length} file${
         result.output.length === 1 ? '' : 's'
-      } ${result.output.length === 1 ? 'was' : 'were'} built\n`);
+      } ${result.output.length === 1 ? 'was' : 'were'} built in ${
+        (Date.now() - start) / 1000
+      }s\n`);
     }
 
     debug('done %s file%s added',
