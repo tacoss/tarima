@@ -47,7 +47,6 @@ try {
       x: 'exclude',
       l: 'plugins',
       r: 'reloader',
-      m: 'minify',
       d: 'debug',
       f: 'force',
       w: 'watch',
@@ -122,7 +121,6 @@ Options:
   -c, --config      Use configuration file (e.g. -c ./config.js)
                     You may also specify a suffix, e.g. -c DEV will map to ./tarima.DEV.{js,json}
 
-  -m, --minify      Apply optimizations for final sources (uglify, csso)
   -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower -l talavera)
   -i, --include     Additional folder(s) to include on bundles (e.g. -i web_modules,app/modules)
 
@@ -239,7 +237,6 @@ const defaultConfig = {
     paths: $.toArray(_.flags.include),
     globals: _.data,
     extensions: _.params,
-    optimizations: _.flags.minify,
   },
   flags: _.flags,
   reloader: _.flags.reloader,

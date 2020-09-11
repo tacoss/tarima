@@ -145,69 +145,10 @@ module.exports.init = options => {
     }
   }
 
-  function ensureOptimize(name, contents, sourceMaps) {
-    if (name.indexOf('.html') > -1) {
-      htmlCompressor = htmlCompressor || require('html-minifier').minify;
-
-      return htmlCompressor(contents, {
-        collapseBooleanAttributes: true,
-        collapseInlineTagWhitespace: true,
-        collapseWhitespace: true,
-        minifyCSS: true,
-        minifyJS: true,
-        removeAttributeQuotes: true,
-        removeCDATASectionsFromCDATA: true,
-        removeComments: true,
-        removeCommentsFromCDATA: true,
-        removeEmptyAttributes: true,
-        removeOptionalTags: true,
-        removeRedundantAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true,
-      });
-    }
-
-    if (name.indexOf('.css') > -1) {
-      cssCompressor = cssCompressor || require('csso').minify;
-
-      return cssCompressor(contents, {
-        filename: name,
-        sourceMap: sourceMaps,
-      }).css;
-    }
-
-    if (name.indexOf('.js') > -1) {
-      jsCompressor = jsCompressor || require('terser').minify;
-
-      return jsCompressor(contents, {
-        ie8: true,
-        compress: {
-          warnings: true,
-          drop_console: true,
-          unsafe_proto: true,
-          unsafe_undefined: true,
-        },
-        sourceMap: sourceMaps,
-      }).code;
-    }
-  }
-
   ctx.ensureWrite = (view, index, params) =>
     Promise.resolve()
       .then(() => ctx.onWrite(view, index))
       .then(() => {
-        if (params.$minify || options.bundleOptions.optimizations) {
-          const sourceMaps = Boolean(options.bundleOptions.compileDebug && view.sourceMap);
-          const fixedOutput = ensureOptimize(view.dest, view.output, sourceMaps);
-          const shouldMinify = /\.(?:css|js)$/.test(view.dest);
-          const fixedFilename = shouldMinify
-            ? view.dest.replace(/\.(\w+)$/, '.min.$1')
-            : view.dest;
-
-          $.write(fixedFilename, fixedOutput || view.output);
-        }
-
         if (options.bundleOptions.sourceMapFiles === true && view.sourceMap) {
           $.write(`${view.dest}.map`, JSON.stringify(view.sourceMap));
         }
@@ -319,11 +260,6 @@ module.exports.init = options => {
               };
 
               ensureRename(sub);
-
-              if (options.bundleOptions.optimizations) {
-                sub.data = ensureOptimize(chunk.filename, chunk.source) || sub.data;
-              }
-
               ctx._data.push(sub.dest);
               ctx.dist(sub);
             });

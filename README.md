@@ -118,7 +118,6 @@ Note you can merge additional files using the `!include` directive within any fr
 Tarima use some predefined keys in order to customize certain aspects of rendering, transpilation or bundling individually:
 
 - `$unpkg` &mdash; Resolve all `import` statements through `https://unpkg.com/path/to?module` URLs
-- `$minify` &mdash; Enable minification on the given module only, use if global minification is disabled
 - `$nofiles` &mdash; If enabled, will not copy from published `files` on any imported package (use with `modules`)
 - `$modules` &mdash; If enabled, will resolve external packages as `web_modules` and copy its contents for `import` usage
 - `$include` &mdash; An array of valid names to disable `modules` integration above, listed packages are bundled within your application
