@@ -48,7 +48,7 @@
     "debug": "^4.0.1",
     "dotenv": "^8.0.0",
     "fs-extra": "^8.0.1",
-    "glob": "^7.1.2",
+    "glob": "^7.1.6",
     "global-or-local": "^0.1.2",
     "js-yaml": "^3.13.1",
     "log-pose": "^0.3.4",
