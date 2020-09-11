@@ -88,6 +88,7 @@ module.exports = (context, files, cb) => {
       return;
     }
 
+    const fixed = src.replace(/^(\.{2,3}\/)+/, '@');
     const entry = cache.get(src);
 
     if (!entry) {
@@ -97,7 +98,7 @@ module.exports = (context, files, cb) => {
 
     if (!support.isSupported(src)) {
       return append(src, id => {
-        if (match(src)) {
+        if (match(fixed)) {
           debug('OK %s', id);
 
           seen[id] = 1;
@@ -111,7 +112,7 @@ module.exports = (context, files, cb) => {
     if (!seen[src]) {
       seen[src] = true;
 
-      if (match(src)) {
+      if (match(fixed)) {
         debug('ADD %s', src);
         append(src, compile);
       } else {

@@ -16,7 +16,7 @@ function makeReplacement(obj, test, rename) {
     const dir = obj.output || obj.cwd;
     const rel = value ? path.relative(dir, value) : path.relative(obj.cwd, dir);
     const ext = path.extname(rel);
-    const ok = test(rel);
+    const ok = test(rel.replace(/^(\.{1,2}\/)+/, ''));
 
     if (ok) {
       // support for dynamic path slicing and rename strategy
