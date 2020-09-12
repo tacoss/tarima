@@ -107,12 +107,10 @@ function run(done) {
 
   app.use(serveStatic(options.public));
 
-  if (serveDirs) {
-    (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs)
-      .forEach(dir => {
-        app.use(serveStatic(dir));
-      });
-  }
+  (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs)
+    .forEach(dir => {
+      app.use(serveStatic(dir));
+    });
 
   let LR;
 

@@ -17,7 +17,8 @@ module.exports = (context, files, cb) => {
   const options = context.opts;
 
   if (!_worker.shared) {
-    _worker.shared = _worker.init(options);
+    _worker.shared = true;
+    _worker.init(options);
   }
 
   const onDelete = context.emit.bind(null, 'delete');

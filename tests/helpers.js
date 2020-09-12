@@ -16,14 +16,13 @@ global.fixture = filename => {
   return path.join(__dirname, 'fixtures', filename);
 };
 
-global.tarima = (filename, source, opts, cb) => {
+global.tarima = (filename, source, opts) => {
   if (typeof source !== 'string') {
     opts = source;
     source = '';
   }
 
   if (typeof opts === 'function') {
-    cb = opts;
     opts = {};
   }
 

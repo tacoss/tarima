@@ -10,11 +10,6 @@ const preFilter = require('../../lib/helpers/pre-filter');
 const plugableSupportAPI = require('./hooks');
 const cacheableSupportAPI = require('./caching');
 
-// /* eslint-disable import/no-unresolved */
-let htmlCompressor;
-let cssCompressor;
-let jsCompressor;
-
 function prune(object) {
   if (!object || typeof object !== 'object') {
     return object;
@@ -145,7 +140,7 @@ module.exports.init = options => {
     }
   }
 
-  ctx.ensureWrite = (view, index, params) =>
+  ctx.ensureWrite = (view, index) =>
     Promise.resolve()
       .then(() => ctx.onWrite(view, index))
       .then(() => {

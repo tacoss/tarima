@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const exists = require('./exists');
 const rimraf = require('rimraf');

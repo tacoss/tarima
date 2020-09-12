@@ -556,15 +556,7 @@ process.nextTick(() => {
 
     infoFiles(result);
 
-    if (!isDev && err) {
-      if (child) {
-        child.kill();
-      }
-
-      die(1);
-    }
-
-    if (cmd.length && !err) {
+    if (cmd.length) {
       _restart = _restart || exec(this.emit.bind(null, 'error'));
       _restart();
       return;
