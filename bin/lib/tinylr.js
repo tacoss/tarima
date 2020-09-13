@@ -16,6 +16,15 @@ function fixedBrowsers(value) {
   }
 }
 
+function locateFile(dirs, src, cb) {
+  return dirs.find(dir => {
+    const file = path.join(dir, src);
+
+    if (cb(file)) return file;
+    return false;
+  });
+}
+
 function run(done) {
   tinyLr = tinyLr || require('tiny-lr');
   connect = connect || require('connect');
@@ -89,28 +98,24 @@ function run(done) {
     });
   }
 
+  const dirs = [options.public].concat(!Array.isArray(serveDirs) ? [serveDirs] : serveDirs);
+
   app.use((req, res, next) => {
     if (req.method === 'GET') {
       const src = url.parse(req.url).pathname;
-      const file = path.join(options.public, src);
+      const file = locateFile(dirs, src, dir => exists(dir));
 
-      if (!exists(file)) {
-        const dir = path.dirname(file);
-        const prefix = exists(dir) ? `${path.dirname(src)}/` : '/';
+      if (!file) {
+        const dir = locateFile(dirs, path.dirname(src), dir => exists(dir));
+        const prefix = path.dirname(src) !== '/' ? `${path.dirname(src)}/` : '';
 
-        req.url = `${prefix}${options.index || 'index.html'}`;
+        req.url = `/${prefix}${options.index || 'index.html'}`;
       }
     }
-
     next();
   });
 
-  app.use(serveStatic(options.public));
-
-  (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs)
-    .forEach(dir => {
-      app.use(serveStatic(dir));
-    });
+  dirs.forEach(dir => app.use(serveStatic(dir)));
 
   let LR;
 
