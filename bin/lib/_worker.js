@@ -77,17 +77,16 @@ module.exports.init = options => {
   options.bundleOptions.helpers.includeTag = function _include(_) {
     return (typeof _.src === 'string' ? _.src.split(/[\s|;,]+/) : _.src)
       .map(src => {
-        if (src.indexOf(':') === -1 && !$.exists(path.join(options.output, src))) {
-          if (_.required) throw new Error(`Required source to include: ${src}`);
-          return;
-        }
+        const suffix = process.env.NODE_ENV === 'production'
+          ? `?t=${Date.now()}`
+          : '?livereload=';
 
         if (String(src).indexOf('.css') > -1) {
-          return `<link rel="stylesheet" href="${src}">`;
+          return `<link rel="stylesheet" href="${src + suffix}">`;
         }
 
         if (String(src).indexOf('.js') > -1) {
-          return `<script src="${src}"></script>`;
+          return `<script src="${src + suffix}"></script>`;
         }
 
         throw new Error(`Unsupported source to include: ${src}`);
