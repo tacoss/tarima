@@ -62,7 +62,7 @@ module.exports.init = options => {
   ctx.isBundle = () => false;
   ctx._bundle = null;
   ctx._cache = null;
-  ctx._data = [];
+  ctx._data = {};
 
   options.bundleOptions.cache = ctx.cache.all() || {};
 
@@ -176,8 +176,7 @@ module.exports.init = options => {
       return;
     }
 
-    ctx._data.push(target.dest);
-
+    ctx._data[target.dest] = 1;
     target.type = target.data ? 'write' : 'copy';
 
     ctx.sync(target.src);
@@ -255,13 +254,13 @@ module.exports.init = options => {
               };
 
               ensureRename(sub);
-              ctx._data.push(sub.dest);
+              ctx._data[sub.dest] = 1;
               ctx.dist(sub);
             });
           });
         }
 
-        ctx._data.push(result.dest);
+        ctx._data[result.dest] = 1;
 
         result.output = output.source;
         result.sourceMap = output.sourceMap;
@@ -291,6 +290,10 @@ module.exports.init = options => {
             ctx.cache.set(file, 'data', prune(output.data));
 
             delete result.output;
+
+            process.nextTick(() => {
+              ctx._data[result.dest] = -1;
+            });
 
             end(result.dest);
             cb();
@@ -326,7 +329,12 @@ module.exports.run = (target, options, callback) => {
       ctx.copy(target);
     })
     .then(() => {
-      callback(null, ctx._data, ctx.cache.get(target.src) || {});
+      const sources = Object.keys(ctx._data).reduce((memo, key) => {
+        if (ctx._data[key] !== -1) memo.push(key);
+        return memo;
+      }, []);
+
+      callback(null, sources, ctx.cache.get(target.src) || {});
     })
     .catch(e => {
       callback(e);
