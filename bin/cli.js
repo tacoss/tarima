@@ -36,6 +36,7 @@ try {
       i: 'include',
       s: 'sources',
       b: 'bundle',
+      a: 'alias',
       q: 'quiet',
       W: 'public',
       O: 'output',
@@ -129,6 +130,7 @@ Options:
   -P, --proxy       Enable proxying for local server (e.g. tiny-lr)
 
   -f, --force       Force rendering/bundling of all given sources
+  -a, --alias       Enable custom aliasing for bundling (e.g. -a x:./src/y.js)
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
   -s, --sources     Save generated sourceMaps as .map files alongside outputted files
 
@@ -323,6 +325,14 @@ if (rollupConfig.aliases) {
     }
   });
 }
+
+// additional aliases from given flags
+$.toArray(_.flags.alias).forEach(test => {
+  const [from, to] = test.split(':');
+
+  rollupConfig.aliases = rollupConfig.aliases || {};
+  rollupConfig.aliases[from] = to;
+});
 
 delete defaultConfig.extensions;
 
