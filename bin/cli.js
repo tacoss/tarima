@@ -14,7 +14,6 @@ const die = process.exit.bind(process);
 const $ = require('./lib/utils'); // eslint-disable-line
 
 const DEFAULTS = {
-  bundle: '**/index.js',
   public: 'public',
   output: 'build',
   env: process.env.NODE_ENV || 'development',
