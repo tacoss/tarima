@@ -106,7 +106,16 @@ function run(done) {
       const file = locateFile(dirs, src, dir => exists(dir));
 
       if (!file) {
-        const prefix = path.dirname(src) !== '/' ? `${path.dirname(src)}/` : '';
+        const baseDir = path.dirname(src);
+        const fixedDir = path.join(options.public, src);
+
+        let prefix = '';
+
+        if (exists(fixedDir)) {
+          prefix = src;
+        } else if (exists(path.dirname(fixedDir))) {
+          prefix = baseDir;
+        }
 
         req.url = `/${prefix}${options.index || 'index.html'}`;
       }
