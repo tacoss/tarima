@@ -134,6 +134,7 @@ Options:
   -b, --bundle      Scripts matching this will be bundled (e.g. -b "**/main/*.js")
   -s, --sources     Save generated sourceMaps as .map files alongside outputted files
 
+  -M, --esm         Save bundles as ESM
   -U, --umd         Save bundles as UMD wrapper
   -A, --amd         Save bundles as AMD wrapper
   -C, --cjs         Save bundles as CommonJS wrapper
