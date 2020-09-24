@@ -288,27 +288,40 @@ if (configFile) {
 // normalize extensions
 $.merge(defaultConfig.bundleOptions.extensions, defaultConfig.extensions || {});
 
-defaultConfig.bundleOptions.rollup = defaultConfig.bundleOptions.rollup || {};
+const rollupConfig = defaultConfig.bundleOptions.rollup = defaultConfig.bundleOptions.rollup || {};
 
 // setup rollup format
 if (_.flags.es || _.flags.esm) {
-  defaultConfig.bundleOptions.rollup.format = 'esm';
+  rollupConfig.format = 'esm';
 }
 
 if (_.flags.umd) {
-  defaultConfig.bundleOptions.rollup.format = 'umd';
+  rollupConfig.format = 'umd';
 }
 
 if (_.flags.amd) {
-  defaultConfig.bundleOptions.rollup.format = 'amd';
+  rollupConfig.format = 'amd';
 }
 
 if (_.flags.cjs) {
-  defaultConfig.bundleOptions.rollup.format = 'cjs';
+  rollupConfig.format = 'cjs';
 }
 
 if (_.flags.iife) {
-  defaultConfig.bundleOptions.rollup.format = 'iife';
+  rollupConfig.format = 'iife';
+}
+
+// enable dynamic aliasing based on environment!
+if (rollupConfig.aliases) {
+  Object.assign(rollupConfig.aliases, rollupConfig.aliases.default);
+  Object.keys(rollupConfig.aliases).forEach(key => {
+    if (typeof rollupConfig.aliases[key] === 'object') {
+      if (key === _.flags.env) {
+        Object.assign(rollupConfig.aliases, rollupConfig.aliases[key]);
+      }
+      delete rollupConfig.aliases[key];
+    }
+  });
 }
 
 delete defaultConfig.extensions;
