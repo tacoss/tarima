@@ -232,24 +232,8 @@ module.exports = (options, logger, done) => {
     context.cache.reset();
   }
 
-  let src = [];
-  let lrid = 'tiny-lr';
-  let lrdev = require.resolve('./tinylr');
-
-  try {
-    if (require.resolve('tarima-browser-sync')) {
-      lrdev = 'tarima-browser-sync';
-      lrid = 'browser-sync';
-    }
-  } catch (e) {
-    // to nothing
-  }
-
-  logger.info('\r{% log LiveReload: %} {% yellow %s %}\r\n', lrid);
-
   const plugs = () => Promise.all((options.plugins || [])
-    // conditionally load tiny-lr support
-    .concat((options.watch === true ? [lrdev] : [])
+    .concat((options.watch === true ? [require.resolve('./live-server')] : [])
       .map(devFile => ({ dev: true, src: devFile })))
     .map(file => {
       if (typeof file !== 'object') {
@@ -437,6 +421,8 @@ module.exports = (options, logger, done) => {
       context.emit('end', e, result);
     }
   }
+
+  let src = [];
 
   function build(err) {
     if (!err) {

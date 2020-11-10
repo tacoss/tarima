@@ -16,8 +16,8 @@ const $ = require('./lib/utils'); // eslint-disable-line
 const DEFAULTS = {
   public: 'public',
   output: 'build',
-  env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
+  env: process.env.NODE_ENV || 'development',
 };
 
 let _;
@@ -51,7 +51,6 @@ try {
       f: 'force',
       w: 'watch',
       y: 'only',
-      o: 'open',
       p: 'port',
       P: 'proxy',
       R: 'rename',
@@ -124,9 +123,16 @@ Options:
   -l, --plugins     Shorthand option for loading plugins (e.g. -l tarima-bower -l talavera)
   -i, --include     Additional folder(s) to include on bundles (e.g. -i web_modules,app/modules)
 
-  -o, --open        Open browser (requires browser-sync/live-reload, see below)
-  -p, --port        Enable custom port for serving files (e.g. tiny-lr)
-  -P, --proxy       Enable proxying for local server (e.g. tiny-lr)
+  -p, --port        Port used for live-server
+  -h, --host        Host to bind the live-server
+  -P, --proxy       Proxy requests (e.g. -P ROUTE:URL)
+      --spa         Enable /abc to /#/abc translation for SPAs
+      --wait        Milliseconds to wait before reloading
+      --cors        Enable CORS for any origin
+      --entry-file  Serve this one on missing files
+      --middleware  Add a middleware handler
+      --no-browser  Do not launch the default browser
+      --browser     Custom browser name to launch
 
   -f, --force       Force rendering/bundling of all given sources
   -a, --alias       Enable custom aliasing for bundling (e.g. -a x:./src/y.js)
@@ -242,6 +248,18 @@ const defaultConfig = {
   },
   flags: _.flags,
   reloader: _.flags.reloader,
+  liveServer: {
+    port: _.flags.port,
+    host: _.flags.host,
+    proxy: _.flags.proxy,
+    spa: _.flags.spa,
+    wait: _.flags.wait,
+    cors: _.flags.cors,
+    file: _.flags.entryFile,
+    middleware: _.flags.middleware,
+    open: _.flags.browser !== false,
+    browser: _.flags.browser,
+  },
 };
 
 // apply package settings

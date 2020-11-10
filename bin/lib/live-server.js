@@ -1,0 +1,58 @@
+const liveServer = require('live-server');
+
+function run() {
+  const options = this.opts;
+  const serveDirs = options.serve || [];
+  const dirs = [options.public].concat(!Array.isArray(serveDirs) ? [serveDirs] : serveDirs);
+
+  if (typeof options.liveServer.proxy === 'string') {
+    options.liveServer.proxy = options.liveServer.proxy.split(';').reduce((memo, chunk) => {
+      const _part = chunk.trim();
+
+      let _parts;
+
+      if (_part.indexOf('->') !== -1 || _part.indexOf(' ') !== -1) {
+        _parts = _part.split(/\s*->\s*|\s+/);
+
+        let dest = _parts[1];
+
+        if (/^\d+/.test(dest)) {
+          dest = `:${dest}`;
+        }
+
+        if (dest.charAt() === ':') {
+          dest = `0.0.0.0${dest}`;
+        }
+
+        if (dest.indexOf('://') === -1) {
+          dest = `http://${dest}`;
+        }
+
+        _parts[0].split(',').forEach(sub => {
+          memo.push([sub, `${dest}${dest.substr(-1) !== '/' ? sub : ''}`]);
+        });
+      } else {
+        _parts = _part.match(/^(\w+:\/\/[\w:.]+)(\/.+?)?$/);
+
+        memo.push([_parts[2] || '/', _part]);
+      }
+
+      return memo;
+    }, []);
+  }
+
+  liveServer.start({
+    ...options.liveServer,
+    root: dirs[0],
+    quiet: options.quiet,
+    mount: dirs.slice(1).map(_cwd => ['/', _cwd]),
+  });
+}
+
+module.exports = function $liveServer(cb) {
+  if (this.opts.watch) {
+    run.call(this, cb);
+  } else {
+    cb();
+  }
+};
