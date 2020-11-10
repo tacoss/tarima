@@ -3,7 +3,6 @@ const liveServer = require('live-server');
 function run() {
   const options = this.opts;
   const serveDirs = options.serve || [];
-  const dirs = [options.public].concat(!Array.isArray(serveDirs) ? [serveDirs] : serveDirs);
 
   if (typeof options.liveServer.proxy === 'string') {
     options.liveServer.proxy = options.liveServer.proxy.split(';').reduce((memo, chunk) => {
@@ -43,9 +42,9 @@ function run() {
 
   liveServer.start({
     ...options.liveServer,
-    root: dirs[0],
+    root: options.public,
     quiet: options.quiet,
-    mount: dirs.slice(1).map(_cwd => ['/', _cwd]),
+    mount: (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs).map(_cwd => ['/', _cwd]),
   });
 }
 
