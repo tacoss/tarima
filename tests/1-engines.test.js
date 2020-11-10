@@ -171,20 +171,18 @@ describe('Scripting', () => {
     });
   });
 
-  if (process.env.CI) {
-    describe('ES6 (swc)', () => {
-      test([
-        'x.es6',
-        'const x = async () => 42;\nexport default async () => await x();',
-        {
-          swc: true
-        }
-      ], result => {
-        expect(result.source).to.contain('var x = async function');
-        expect(result.source).to.contain('module.exports = async');
-      });
+  describe('ES6 (swc)', () => {
+    test([
+      'x.es6',
+      'const x = async () => 42;\nexport default async () => await x();',
+      {
+        swc: true
+      }
+    ], result => {
+      expect(result.source).to.contain('const x = async');
+      expect(result.source).to.contain('module.exports = async');
     });
-  }
+  });
 });
 
 describe('Mixed', () => {
@@ -234,13 +232,11 @@ describe('Mixed', () => {
 });
 
 describe('Stylesheets', () => {
-  if (process.env.CI) {
-    describe('SASS', () => {
-      test(['x.sass', '$x: red;\n*\n  color: $x'], result => {
-        expect(result.source).to.contain('color: red');
-      });
+  describe('SASS', () => {
+    test(['x.sass', '$x: red;\n*\n  color: $x'], result => {
+      expect(result.source).to.contain('color: red');
     });
-  }
+  });
 
   // FIXME: why this?
   // Error.call = (x) -> new Error(x)
@@ -294,7 +290,6 @@ describe('Stylesheets', () => {
       }
     ], result => {
       expect(result.source).to.contain('-webkit');
-      expect(result.source).to.contain('-moz');
       expect(result.extension).to.eql('css');
     });
   });

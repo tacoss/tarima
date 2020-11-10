@@ -6,5 +6,3 @@ ci: lib deps ## Run CI scripts
 
 deps: package*.json
 	@(((ls node_modules | grep .) > /dev/null 2>&1) || npm i) || true
-	@(((ls node_modules | grep sass) > /dev/null 2>&1) || npm i node-sass) || true
-	@(((ls node_modules | grep @swc) > /dev/null 2>&1) || npm i @swc/core) || true
