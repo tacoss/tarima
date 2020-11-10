@@ -4,7 +4,7 @@ node_js:
   - 11
   - 12
 before_script:
-  - 'npm i swc node-sass'
+  - 'npm i @swc/core node-sass'
 script:
   - 'npm run cover'
 after_success:
