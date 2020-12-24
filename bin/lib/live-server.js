@@ -1,6 +1,6 @@
 const liveServer = require('live-server');
 
-function run() {
+function run(next) {
   const options = this.opts;
   const serveDirs = options.serve || [];
 
@@ -43,9 +43,11 @@ function run() {
   liveServer.start({
     ...options.liveServer,
     root: options.public,
-    quiet: options.quiet,
+    wait: 200,
+    logLevel: 0,
     mount: (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs).map(_cwd => ['/', _cwd]),
   });
+  next();
 }
 
 module.exports = function $liveServer(cb) {
