@@ -31,7 +31,7 @@ function run(next) {
           memo.push([sub, `${dest}${dest.substr(-1) !== '/' ? sub : ''}`]);
         });
       } else {
-        _parts = _part.match(/^(\w+:\/\/[\w:.]+)(\/.+?)?$/);
+        _parts = _part.match(/^(\w+:\/\/[\w:.]+)(\/.*?)?$/);
 
         memo.push([_parts[2] || '/', _part]);
       }
