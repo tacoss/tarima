@@ -33,7 +33,7 @@ function run(next) {
       } else {
         _parts = _part.match(/^(\w+:\/\/[\w:.]+)(\/.*?)?$/);
 
-        memo.push([_parts[2] || '/', _part]);
+        memo.push([(_parts && _parts[2]) || '/', _part]);
       }
 
       return memo;
