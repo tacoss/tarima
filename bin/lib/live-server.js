@@ -45,6 +45,7 @@ function run(next) {
     root: options.public,
     wait: 200,
     logLevel: 0,
+    watch: [options.output].concat(serveDirs),
     mount: (!Array.isArray(serveDirs) ? [serveDirs] : serveDirs).map(_cwd => ['/', _cwd]),
   });
   next();
