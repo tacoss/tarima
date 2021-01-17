@@ -52,7 +52,7 @@ function run(next) {
 }
 
 module.exports = function $liveServer(cb) {
-  if (this.opts.watch) {
+  if (this.opts.watch && this.opts.serve !== false) {
     run.call(this, cb);
   } else {
     cb();

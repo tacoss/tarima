@@ -32,6 +32,7 @@ try {
       A: 'amd',
       C: 'cjs',
       I: 'iife',
+      S: 'no-serve',
       i: 'include',
       s: 'sources',
       b: 'bundle',
@@ -126,13 +127,15 @@ Options:
   -p, --port        Port used for live-server
   -h, --host        Host to bind the live-server
   -P, --proxy       Proxy requests (e.g. -P ROUTE:URL)
+  -S, --no-serve    Disable live-server during watch mode
+      --serve       Additional directories to mount (mmultiple)
+      --no-browser  Do not launch the default browser
+      --browser     Custom browser name to launch
+      --middleware  Add a middleware handler
+      --entry-file  Serve this one on missing files
       --spa         Enable /abc to /#/abc translation for SPAs
       --wait        Milliseconds to wait before reloading
       --cors        Enable CORS for any origin
-      --entry-file  Serve this one on missing files
-      --middleware  Add a middleware handler
-      --no-browser  Do not launch the default browser
-      --browser     Custom browser name to launch
 
   -f, --force       Force rendering/bundling of all given sources
   -a, --alias       Enable custom aliasing for bundling (e.g. -a x:./src/y.js)
@@ -226,6 +229,7 @@ const _src = _._;
 const defaultConfig = {
   cwd,
   watch: isWatching,
+  serve: _.flags.serve,
   force: _.flags.force === true,
   bundle: $.toArray(_.flags.bundle),
   plugins: $.toArray(_.flags.plugins),
@@ -272,6 +276,10 @@ try {
       pkgInfo[key] = (pkgInfo[key].default || []).concat(pkgInfo[key][_.flags.env] || []);
     }
   });
+
+  if (defaultConfig.serve === false) {
+    delete pkgInfo.serve;
+  }
 
   $.merge(defaultConfig, pkgInfo);
 } catch (e) {
