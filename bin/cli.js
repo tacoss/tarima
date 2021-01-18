@@ -612,7 +612,7 @@ process.nextTick(() => {
     }
 
     if (isDev) {
-      logger.printf('\r\r{% log Waiting for changes... %} {% gray [press CTRL-C to quit] %}\r');
+      logger.printf('\r\r{% log Waiting for changes... %} {% gray [press CTRL-C to quit] %}\n');
       return;
     }
 
