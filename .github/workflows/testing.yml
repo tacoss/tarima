@@ -11,4 +11,4 @@ jobs:
         env:
           BROWSER: chromium:headless
         with:
-          args: ci
+          args: make ci
